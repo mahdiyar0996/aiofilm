@@ -108,3 +108,20 @@ body {
 .normal-font{
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+.bg-hover-darkyellow{
+  background-color: #ffc107 !important;
+}
+.bg-hover-darkyellow:hover{
+  background-color: #ad8305 !important;
+}
+
+.bg-darkyellow{
+  background-color: #ad8305 !important;
+}
+
+.bg-cyan{
+  background-color: #699ce6 !important
+}
+

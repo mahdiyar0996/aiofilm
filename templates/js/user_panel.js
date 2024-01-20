@@ -24,7 +24,6 @@ function userBar(){
 try{
     document.querySelector("#container-content").addEventListener('click', event=>{
         try{
-
             if(innerWidth < 770){
                 const body = document.body
                 body.querySelector('#container-content').style.opacity = ''
@@ -100,3 +99,83 @@ try{
         }
     })
 }catch{}
+
+
+try{
+    const packageBoxTags = document.querySelectorAll('.package-box-link')
+    for(let tag of packageBoxTags){
+        tag.addEventListener('click', event=>{
+            const tag = event.target
+            event.preventDefault()
+        })
+    }
+}catch{}
+
+try{
+    const packageTags = document.querySelectorAll('.package-box-bg')
+    for(let tag of packageTags){
+        tag.addEventListener('click',event=>{
+            const tagList = tag.parentElement.children
+            for(let tag of tagList){
+                if(tag.classList.contains('bg-darkyellow')){
+                    tag.classList.remove('bg-darkyellow')
+                    tag.classList.add('bg-hover-darkyellow')
+                }
+            }
+            if(tag.classList.contains('bg-hover-darkyellow')){
+                tag.classList.remove('bg-hover-darkyellow')
+                tag.classList.add('bg-darkyellow')
+                const gateway = document.querySelector('#gateways').children
+                for(let tag of gateway){
+                    if(tag.classList.contains('bg-darkyellow')){
+                        const packageList = document.querySelectorAll('.package-box-bg')
+                        getPayment(packageList)
+                    }
+                }
+            }
+        })
+    }
+}catch{}
+
+
+try{
+    const GatewayTags = document.querySelectorAll('.gateway-bg')
+    for(let tag of GatewayTags){
+        tag.addEventListener('click',event=>{
+            event.preventDefault()
+            const tagList = tag.parentElement.children
+            for(let tag of tagList){
+                if(tag.classList.contains('bg-darkyellow')){
+                    tag.classList.remove('bg-darkyellow')
+                    tag.classList.add('bg-hover-darkyellow')
+                }
+            }
+            if(tag.classList.contains('bg-hover-darkyellow')){
+                tag.classList.remove('bg-hover-darkyellow')
+                tag.classList.add('bg-darkyellow')
+                const packageTags = document.querySelectorAll('.package-box-bg')
+                getPayment(packageTags)
+            }
+        })
+    }
+}catch{}
+
+
+function getPayment(tagList){
+    for(let package of tagList){
+        if(package.classList.contains('bg-darkyellow')){
+            let packageDays = package.querySelector('#day')
+            let packagePrice = package.querySelector('#price')
+            let packageDiscount = package.querySelector('#discount')
+
+            let payment = document.querySelector('#payment-details')
+            payment.classList.remove('d-none')
+            let paymentList = payment.children[0].children
+            let price = packagePrice.innerText.split(' ')[0]
+            let discount = packageDiscount.innerText.split(' ')[0]
+            paymentList[1].innerText = `${packageDays.innerText} (${price} تومان)`
+            paymentList[3].innerText = `${price - discount} تومان`
+            paymentList[5].innerText = `${discount} تومان`
+        }
+    }
+}

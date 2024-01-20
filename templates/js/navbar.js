@@ -1,15 +1,17 @@
-document.querySelector('#dropdown-button').addEventListener('click', event=>{
-    const tag = document.querySelector('#dropdown-menu')
-    if(tag.classList.contains('d-none')){
-        tag.classList.remove('d-none')
-        tag.style.position = 'fixed'
-        tag.style.left = 0
-        tag.style.right = 0
-        tag.style.top = '95px'
-    }else{
-        tag.classList.add('d-none')
-    }
-})
+try{
+    document.querySelector('#dropdown-button').addEventListener('click', event=>{
+        const tag = document.querySelector('#dropdown-menu')
+        if(tag.classList.contains('d-none')){
+            tag.classList.remove('d-none')
+            tag.style.position = 'fixed'
+            tag.style.left = 0
+            tag.style.right = 0
+            tag.style.top = '95px'
+        }else{
+            tag.classList.add('d-none')
+        }
+    })
+}catch{}
 function dropdown(){
     const navBtn = document.querySelector('#modal')
     const tag = document.querySelector('#dropdown-menu').cloneNode(true)
