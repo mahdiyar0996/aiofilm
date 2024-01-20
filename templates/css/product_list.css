@@ -1,0 +1,20 @@
+.product-name-box{
+    background-color: rgb(28, 53, 102, 0.3);
+}
+
+@media only screen and (min-width: 1200px) {
+    .col-lg-25{
+      width: 23%;
+    }
+  }
+  
+  @media only screen and (max-width: 1200px) {
+    .col-md-25{
+      width: 31%;
+    }
+  }
+  @media only screen and (max-width: 768px) {
+    .col-sm-25{
+      width: 45%;
+    }
+  }

@@ -1,0 +1,110 @@
+@font-face {
+    font-family: Yekan;
+    src: url(fonts/Yekan.ttf);
+  }
+
+body {
+    font-family: Yekan;
+  }
+.text-primary {
+    color: #b3a0ff !important;
+  }
+.text-primary::placeholder {
+    color: #b3a0ff !important;
+}
+
+.bg-dark {
+    background-color: rgba(0, 0, 0, 0.83) !important;
+    backdrop-filter: blur(6px) opacity(1) !important;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #452bc4;
+    border-color: #452bc4;
+}
+
+
+.link-warning{
+  color: #fff;
+}
+
+.bg-light {
+  background-color: #d8dfe6 !important;
+}
+
+.bg-warning{
+  background-color: #232D3F;
+}
+.border-cornered{
+  border-radius: 10px 80px 10px 80px;
+}
+
+@media only screen and (min-width: 768px) {
+  nav{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
+    
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  #mobile-nav{
+    position: fixed;
+    bottom: 0%;
+    left: 0;
+    right: 0;
+    z-index: 1030;
+  }
+}
+
+#background-image::after{
+    content:'';
+    background-position: center;
+    background-image: url(/media/product/7146123.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: absolute;
+    top:0px;
+    left: 0px;
+    width:100%;
+    height:100%;
+    z-index:-1;
+    opacity: 0.1;
+}
+
+.bg-gray{
+  background: rgb(33, 35, 38);
+}
+.bg-silver{
+  background: rgba(151,158,168,1);;
+}
+
+
+.text-purple{
+  color: #8d64fd !important;
+}
+
+.border-purple{
+  border-color: #8d64fd !important;
+}
+
+.bg-dark-gray{
+  background-image: linear-gradient(45deg, #121314, transparent) !important;
+}
+
+.bg-yellow-dark{
+  background: linear-gradient(to right, rgba(63, 22, 210, 0), rgba(255, 206, 15, 0.11));
+}
+
+.bg-purple{
+  background-color: #b3a0ff !important;
+}
+
+.normal-font{
+  font-family: Arial, Helvetica, sans-serif;
+}

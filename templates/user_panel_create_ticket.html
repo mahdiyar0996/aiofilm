@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>user panel</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.rtl.min.css" integrity="sha384-gXt9imSW0VcJVHezoNQsP+TNrjYXoGcrqBZJpry9zJt8PCQjobwmhMGaDHTASo9N" crossorigin="anonymous">
+    <link href="css/css/fontawesome.css" rel="stylesheet">
+    <link href="css/css/brands.css" rel="stylesheet">
+    <link href="css/css/solid.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/user_panel.css">
+    <link rel="stylesheet" href="css/product_details.css">
+</head>
+<body dir="rtl" class="" style="background-color: #131415; transition: 0.8s; ">
+    <div id="modal" class="h-100 d-none overflow-auto" style="width: 0%;">
+        <!-- <button class="btn text-light ms-5 mt-1" style="font-size: 50px;" onclick="dropdown()">&times;</button> -->
+    </div>
+    <nav class="nav bg-dark py-3 justify-content-between sticky-md-top align-items-center px-5">
+        <div class="d-block d-md-none">
+            <i class="fa fa-bars text-light fs-1 w-100 h-100 m-1" id="navBottom-dropdown" onclick="dropdown()" style="cursor: pointer;" aria-hidden="true"></i>
+        </div>
+        <div class="navbar-brand py-3 ms-3">
+            <h1 class="text-light fs-2 p-0 m-0 pt-1 d-inline">AioFilm</h1>
+        </div>
+        <form action="" class="col-7 d-none d-md-block position-relative" id="searchform">
+            <input type="search" class="form-control text-light" style="background: rgb(47, 50, 56);
+             border: rgb(47, 50, 56) ;" placeholder="جستجوی سریع ..." >
+            <i class="fa fa-search text-muted position-absolute fs-4 top-0 end-0 mt-2 me-2"></i>
+        </form>
+        <div class="bg-primary px-1 py-1 rounded rounded-2">
+            <a href="" class="text-white text-decoration-none">ورود / عضویت</a>
+        </div>
+    </nav>
+    <div id="container-content" class="mx-3">
+        <div class="d-flex flex-row justify-content-between">
+            <div id="user-bar" class="d-none d-md-block col-md-4 col-lg-3 bg-gray border-1 border-bottom border-warning">
+                <div class="text-center text-white" style="font-family: Arial, Helvetica, sans-serif;">
+                    <img style="width: 120px; height: 120px;" class="img-fluid rounded rounded-circle mt-3" src="/media/product/1000_F_568027622_DgZfYnf1Xv2ncLvPSuYqZ7CfEuE7pBVL.jpg" alt="">
+                    <p class="mb-0 mt-1 d-b">mahdiyaram</p>
+                    <p class="mb-0 mt-1 d-b">mahdiazimi007m@gmail.com</p>
+                    <div class="d-flex flex-row justify-content-center gap-4 mt-4">
+                        <a href="" class="border border-3 border-primary rounded rounded-pill text-warning"><svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+                          </svg>
+                        </a>
+                        <a href="" class="border border-3 border-primary rounded rounded-pill text-warning"><svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+                            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6"/>
+                          </svg></a>
+                    </div>
+                </div>
+                <div class="fs-5 text-white mt-5">
+                    <ul id="button-list" class="list-unstyled">
+                        <li>
+                            <a href="" class="text-decoration-none text-warning mx-4 d-flex py-3"><i class="fa fa-th fs-3 float-start me-3" aria-hidden="true"></i>
+                                داشبورد</a>
+                        </li>
+                        <li>
+                            <a href="" class="text-decoration-none text-warning mx-4 d-flex py-3"><i class="fa fa-comment float-start me-3" aria-hidden="true"></i>
+                            نظرات من</a>
+                        </li>
+                        <li>
+                            <a href="" class="text-decoration-none text-warning mx-4 d-flex py-3"><i class="fa fa-heart float-start me-3" aria-hidden="true"></i>
+                                عناوین مورد عطاقه</a>
+                        </li>
+                        <li>
+                            <a href="" class="text-decoration-none text-warning mx-4 d-flex py-3"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="30" fill="currentColor" class="bi bi-bookmark-fill float-start me-3" viewBox="0 0 16 16">
+                                <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2"/>
+                              </svg></i>
+                            لیست تماشا</a>
+                        </li>
+                        <li class="bg-dark-gray">
+                            <a href="" class="text-decoration-none text-warning mx-4 d-flex py-3"><i class="fa fa-ticket float-start me-3" aria-hidden="true"></i>
+                                تیکت</a>
+                        </li>
+                        <li>
+                            <a href="" class="text-decoration-none text-warning mx-4 d-flex py-3"><i class="fa fa-key float-start me-3" aria-hidden="true"></i>
+                                تغییر گذرواژه</a>
+                        </li>
+                        <li>
+                            <a href="" class="text-decoration-none text-warning mx-4 d-flex py-3"><i class="fa fa-sign-out float-start me-3" aria-hidden="true"></i>
+                                خروج</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-12 col-md-8 m-0 mx-md-3">
+                <div class="d-flex flex-column text-white">
+                    <h4>ایجاد تیکت</h4>
+                    <div class="bg-gray">
+                        <div class="d-flex flex-column justify-content-start align-items-center">
+                            <form action="" class="w-75 me-auto">
+                                <div class="form-group d-flex flex-md-row flex-column px-4 py-3 justify-content-between">
+                                    <label for="department" class="col-4 col-form-label">دپارتمان</label>
+                                    <div class="col-12 col-md-6 me-auto">
+                                      <select type="text" required class="form-control form-text mx-auto" id="department" value="">
+                                        <option value="">یک گزینه را انتخاب کنید</option>
+                                        <option value="1">پشتیبانی</option>
+                                        <option value="2">مشکلات فنی</option>
+                                        <option value="3">پیشنهادات و انتقادات</option>
+                                        <option value="4">اپلیکیشن</option>
+                                        <option value="5">مشکلات ترجمه</option>
+                                      </select>
+                                    </div>
+                                </div>
+                                <div class="form-group d-flex flex-md-row flex-column px-4 py-3 justify-content-between">
+                                    <label for="subject" class="col-4 col-form-label">موضوغ</label>
+                                    <div class="col-12 col-md-6 me-auto">
+                                      <input type="text" required class="form-control form-text mx-auto" id="subject" value="">
+                                    </div>
+                                </div>
+                                <div class="form-group d-flex flex-md-row flex-column px-4 py-3 justify-content-between">
+                                    <label for="message" class="col-4 col-form-label">پیغام</label>
+                                    <div class="col-12 col-md-6 me-auto">
+                                      <textarea type="textarea" required class="form-control form-text mx-auto" id="message" value=""></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group d-flex flex-md-row flex-column px-4 py-3 justify-content-between">
+                                    <label for="file" class="col-4 col-form-label">فایل</label>
+                                    <div class="col-12 col-md-6 me-auto" style="font-family: Arial, Helvetica, sans-serif;">
+                                        <label for="file" class="btn btn-primary text-white">انتخاب فایل</label>
+                                        <input type="file" class="form-control mx-auto" hidden id="file" value="">
+                                        <p>هیچ فایلی انتخاب نشده است</p>
+                                    </div>
+                                </div>
+                                <div class="w-75 text-start">
+                                <button class="btn btn-warning col-8 col-sm-5 col-md-4 mb-4 mx-2">ارسال تیکت</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <footer>
+            <div class="d-flex flex-row justify-content-between mt-3">
+            <div class="d-flex flex-row col-6">
+                <div class="col-6 text-center text-white">
+                    <a href="" class="d-block my-3 text-decoration-none link-warning">درخواست فیلم و سریال</a>
+                    <a href="" class="d-block my-3 text-decoration-none link-warning">انتقاد و پیشنهاد</a>
+                    <a href="" class="d-block my-3 text-decoration-none link-warning">گزارش خرابی و مشکل</a>
+                </div>
+                <div class="col-6 text-center text-white">
+                    <a href="" class="d-block my-3 text-decoration-none link-warning">آیوترند</a>
+                    <a href="" class="d-block my-3 text-decoration-none link-warning">تبلیغات</a>
+                    <a href="" class="d-block my-3 text-decoration-none link-warning">DMCA</a>                
+                </div>
+            </div>
+            <div class="col-3 d-flex flex-row">
+                <div class="text-white">
+                    <a href="" class="d-block link-warning my-1"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="58" fill="currentColor" class="bi bi-instagram" viewBox="0 0 16 16">
+                        <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334"/>
+                        </svg>
+                    </a>
+                    <a href="" class="d-block link-warning my-1"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="58" fill="currentColor" class="bi bi-telegram" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.287 5.906q-1.168.486-4.666 2.01-.567.225-.595.442c-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294q.39.01.868-.32 3.269-2.206 3.374-2.23c.05-.012.12-.026.166.016s.042.12.037.141c-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8 8 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629q.14.092.27.187c.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.4 1.4 0 0 0-.013-.315.34.34 0 0 0-.114-.217.53.53 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            </div>
+        </footer>
+    </div>
+    <script src="js/user_panel.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>

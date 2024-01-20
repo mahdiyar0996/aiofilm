@@ -1,0 +1,15 @@
+@media only screen and (min-width: 992px) {
+    #image-box{
+      width: 23%;
+    }
+}
+@media only screen and (max-width: 992px) {
+    #image-box{
+      width: 30%;
+    }
+}
+@media only screen and (max-width: 770px) {
+    #image-box{
+      width: 48%;
+    }
+}

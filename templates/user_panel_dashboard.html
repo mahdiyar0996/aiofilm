@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>user panel</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.rtl.min.css" integrity="sha384-gXt9imSW0VcJVHezoNQsP+TNrjYXoGcrqBZJpry9zJt8PCQjobwmhMGaDHTASo9N" crossorigin="anonymous">
+    <link href="css/css/fontawesome.css" rel="stylesheet">
+    <link href="css/css/brands.css" rel="stylesheet">
+    <link href="css/css/solid.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/user_panel.css">
+    <link rel="stylesheet" href="css/product_details.css">
+</head>
+<body dir="rtl" class="" style="background-color: #131415; transition: 0.8s; ">
+    <div id="modal" class="h-100 d-none overflow-auto" style="width: 0%;">
+        <!-- <button class="btn text-light ms-5 mt-1" style="font-size: 50px;" onclick="dropdown()">&times;</button> -->
+    </div>
+    <div id="mobile-nav" class="d-md-none" style="background-color: rgba(0, 0, 0, 0.43);">
+        <div class="mx-4 d-flex justify-content-between">
+            <div>
+                <i class="fa fa-bars text-light fs-1 w-100 h-100 m-1" id="navBottom-dropdown" onclick="dropdown()" style="cursor: pointer;" aria-hidden="true"></i>
+            </div>
+            <div>
+                <a href="">
+                    <i class="fa fa-home text-light fs-1 w-100 h-100 m-1" style="cursor: pointer;" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div>
+                <i class="fa fa-search text-light fs-1 w-100 h-100 m-1" onclick="searchDropDown()" style="cursor: pointer;"></i>
+            </div>
+            <div>
+                <a href="">
+                    <i class="fa fa-sign-in text-light fs-1 w-100 h-100 m-1" style="cursor: pointer;" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <nav class="nav bg-dark py-3 justify-content-between sticky-md-top align-items-center px-5">
+        <div class="d-block d-md-none">
+            <i class="fa fa-bars text-light fs-1 w-100 h-100 m-1" id="navBottom-dropdown" onclick="userBar()" style="cursor: pointer;" aria-hidden="true"></i>
+        </div>
+        <div class="navbar-brand py-3 ms-3">
+            <h1 class="text-light fs-2 p-0 m-0 pt-1 d-inline">AioFilm</h1>
+        </div>
+        <form action="" class="col-7 d-none d-md-block position-relative" id="searchform">
+            <input type="search" class="form-control text-light" style="background: rgb(47, 50, 56);
+             border: rgb(47, 50, 56) ;" placeholder="جستجوی سریع ..." >
+            <i class="fa fa-search text-muted position-absolute fs-4 top-0 end-0 mt-2 me-2"></i>
+        </form>
+        <div class="bg-primary px-1 py-1 rounded rounded-2">
+            <a href="" class="text-white text-decoration-none">ورود / عضویت</a>
+        </div>
+    </nav>
+    <div id="container-content" class="mx-3">
+        <div class="d-flex flex-row justify-content-between">
+            <div id="user-bar" class="d-none d-md-block col-md-4 col-lg-3 bg-gray border-1 border-bottom border-warning">
+                <div class="text-center text-white" style="font-family: Arial, Helvetica, sans-serif;">
+                    <img style="width: 120px; height: 120px;" class="img-fluid rounded rounded-circle mt-3" src="/media/product/1000_F_568027622_DgZfYnf1Xv2ncLvPSuYqZ7CfEuE7pBVL.jpg" alt="">
+                    <p class="mb-0 mt-1 d-b">mahdiyaram</p>
+                    <p class="mb-0 mt-1 d-b">mahdiazimi007m@gmail.com</p>
+                    <div class="d-flex flex-row justify-content-center gap-4 mt-4">
+                        <a href="" class="border border-3 border-primary rounded rounded-pill text-warning"><svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+                          </svg>
+                        </a>
+                        <a href="" class="border border-3 border-primary rounded rounded-pill text-warning"><svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+                            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6"/>
+                          </svg></a>
+                    </div>
+                </div>
+                <div class="fs-5 text-white mt-5">
+                    <ul id="button-list" class="list-unstyled">
+                        <li class="bg-dark-gray">
+                            <a href="" class="text-decoration-none text-warning text-purple mx-4 d-flex py-3"><i class="fa fa-th fs-3 float-start me-3" aria-hidden="true"></i>
+                                داشبورد</a>
+                        </li>
+                        <li>
+                            <a href="" class="text-decoration-none text-warning mx-4 d-flex py-3"><i class="fa fa-comment float-start me-3" aria-hidden="true"></i>
+                            نظرات من</a>
+                        </li>
+                        <li>
+                            <a href="" class="text-decoration-none text-warning mx-4 d-flex py-3"><i class="fa fa-heart float-start me-3" aria-hidden="true"></i>
+                                عناوین مورد عطاقه</a>
+                        </li>
+                        <li>
+                            <a href="" class="text-decoration-none text-warning mx-4 d-flex py-3"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="30" fill="currentColor" class="bi bi-bookmark-fill float-start me-3" viewBox="0 0 16 16">
+                                <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2"/>
+                              </svg></i>
+                            لیست تماشا</a>
+                        </li>
+                        <li>
+                            <a href="" class="text-decoration-none text-warning mx-4 d-flex py-3"><i class="fa fa-ticket float-start me-3" aria-hidden="true"></i>
+                                تیکت</a>
+                        </li>
+                        <li>
+                            <a href="" class="text-decoration-none text-warning mx-4 d-flex py-3"><i class="fa fa-key float-start me-3" aria-hidden="true"></i>
+                                تغییر گذرواژه</a>
+                        </li>
+                        <li>
+                            <a href="" class="text-decoration-none text-warning mx-4 d-flex py-3"><i class="fa fa-sign-out float-start me-3" aria-hidden="true"></i>
+                                خروج</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-12 col-md-8 md-0 mx-md-3">
+                <div class="d-flex flex-column">
+                    <div class="bg-gray">
+                        <div class="text-white py-5 px-5 d-flex flex-row justify-content-end">
+                            <div class="">مدت زمان  باقی مانده اشتراک شما</div>
+                            <div class="ms-4 me-2">
+                                <p class="m-0 p-0">0</p>
+                                <p class="m-0 p-0">روز</p>
+                            </div>
+                            <div>
+                                <svg width="32.344" class="" height="34.659" viewBox="0 0 32.344 34.659">
+                                    <g id="Group_663" data-name="Group 663" transform="translate(-5.7 -2.471)"><path id="Path_393" data-name="Path 393" d="M36.266,46.837h6.562a2.847,2.847,0,0,0,2.844-2.844V33.421a2.847,2.847,0,0,0-2.844-2.844h-.875v-.656A1.019,1.019,0,0,0,40.932,28.9h-2.7a1.019,1.019,0,0,0-1.021,1.021v.656h-.875a2.847,2.847,0,0,0-2.844,2.844V43.957A2.751,2.751,0,0,0,36.266,46.837ZM35.5,33.421a.77.77,0,0,1,.766-.766h6.562a.77.77,0,0,1,.766.766V43.957a.77.77,0,0,1-.766.766H36.266a.77.77,0,0,1-.766-.766Z" transform="translate(-17.66 -16.794)" fill="#f6a504"></path> <path id="Path_394" data-name="Path 394" d="M48.177,63.634a.078.078,0,0,0,.073-.073V60.973a.078.078,0,0,0-.073-.073h-5.1c-.073.036-.073.073-.073.109V63.6a.078.078,0,0,0,.073.073h5.1Z" transform="translate(-23.701 -37.127)" fill="#b2b2b2"></path> <path id="Path_406" data-name="Path 406" d="M48.177,63.634a.078.078,0,0,0,.073-.073V60.973a.078.078,0,0,0-.073-.073h-5.1c-.073.036-.073.073-.073.109V63.6a.078.078,0,0,0,.073.073h5.1Z" transform="translate(-23.701 -40.127)" fill="#ccc"></path> <path id="Path_407" data-name="Path 407" d="M48.177,63.634a.078.078,0,0,0,.073-.073V60.973a.078.078,0,0,0-.073-.073h-5.1c-.073.036-.073.073-.073.109V63.6a.078.078,0,0,0,.073.073h5.1Z" transform="translate(-23.701 -43.127)" fill="#f1f3f5"></path> <path id="Path_395" data-name="Path 395" d="M8.4,21.075A13.505,13.505,0,0,1,21.887,7.586H25.5V8.971a.982.982,0,0,0,.51.875,1.123,1.123,0,0,0,.474.109,1.029,1.029,0,0,0,.547-.146l4.3-2.734a.979.979,0,0,0,0-1.677h0l-4.3-2.771a1.019,1.019,0,0,0-1.021-.036.982.982,0,0,0-.51.875V4.851H21.887A16.252,16.252,0,0,0,5.7,21.075a1.349,1.349,0,0,0,2.7,0Z" transform="translate(0 0)" fill="#b2b2b2"></path> <path id="Path_396" data-name="Path 396" d="M88.879,42.594A1.356,1.356,0,0,0,87.567,41.5a.621.621,0,0,0-.255.036,1.367,1.367,0,0,0-1.057,1.6c.109.583.182,1.167.255,1.75a1.351,1.351,0,0,0,1.349,1.24h.109a1.351,1.351,0,0,0,1.24-1.458A20.493,20.493,0,0,0,88.879,42.594Z" transform="translate(-51.169 -24.8)" fill="#b2b2b2"></path> <path id="Path_397" data-name="Path 397" d="M79.137,27.746A1.353,1.353,0,0,0,81,28.183a1.468,1.468,0,0,0,.62-.839,1.251,1.251,0,0,0-.182-1.021,13.574,13.574,0,0,0-1.24-1.713,1.437,1.437,0,0,0-.911-.51h-.146a1.376,1.376,0,0,0-.839.292,1.437,1.437,0,0,0-.51.911,1.325,1.325,0,0,0,.292.984A9.855,9.855,0,0,1,79.137,27.746Z" transform="translate(-45.802 -13.743)" fill="#b2b2b2"></path> <path id="Path_398" data-name="Path 398" d="M86.075,60.836a1.24,1.24,0,0,0-.365-.036,1.4,1.4,0,0,0-1.312.984,12.5,12.5,0,0,1-.583,1.641,1.364,1.364,0,0,0,2.516,1.057,13.035,13.035,0,0,0,.693-2.005,1.391,1.391,0,0,0-.109-1.021A1.468,1.468,0,0,0,86.075,60.836Z" transform="translate(-49.568 -37.064)" fill="#b2b2b2"></path> <path id="Path_399" data-name="Path 399" d="M75,77.5h-.036a1.361,1.361,0,0,0-.948.437,13.146,13.146,0,0,1-1.276,1.2,1.337,1.337,0,0,0-.182,1.9,1.374,1.374,0,0,0,1.9.182,14.476,14.476,0,0,0,1.531-1.458,1.331,1.331,0,0,0-.073-1.9A1.439,1.439,0,0,0,75,77.5Z" transform="translate(-42.286 -47.675)" fill="#b2b2b2"></path> <path id="Path_400" data-name="Path 400" d="M39.078,89.4a8.949,8.949,0,0,1-1.713-.365A1.24,1.24,0,0,0,37,89a1.365,1.365,0,0,0-.656.182,1.23,1.23,0,0,0-.62.8,1.38,1.38,0,0,0,.948,1.677,17.412,17.412,0,0,0,2.078.438,1.38,1.38,0,0,0,1.531-1.167,1.306,1.306,0,0,0-.255-.984A1.5,1.5,0,0,0,39.078,89.4Z" transform="translate(-19.05 -54.983)" fill="#b2b2b2"></path> <path id="Path_401" data-name="Path 401" d="M21.06,80.065a1.439,1.439,0,0,0-.911-.365h-.036a1.361,1.361,0,0,0-.948.437,1.376,1.376,0,0,0-.365.984,1.361,1.361,0,0,0,.437.948,14.375,14.375,0,0,0,1.641,1.312,1.427,1.427,0,0,0,1.9-.328,1.351,1.351,0,0,0-.328-1.9A14.082,14.082,0,0,1,21.06,80.065Z" transform="translate(-8.324 -49.073)" fill="#b2b2b2"></path> <path id="Path_402" data-name="Path 402" d="M10.71,64.511a1.3,1.3,0,0,0-.693-.766,1.529,1.529,0,0,0-.583-.146,2.134,2.134,0,0,0-.474.073,1.365,1.365,0,0,0-.8,1.75A18.184,18.184,0,0,0,9,67.355a1.353,1.353,0,0,0,2.406-1.24A12.519,12.519,0,0,1,10.71,64.511Z" transform="translate(-1.51 -38.843)" fill="#b2b2b2"></path> <path id="Path_403" data-name="Path 403" d="M58.77,88.246a1.529,1.529,0,0,0-.583-.146,1.83,1.83,0,0,0-.437.073,14.44,14.44,0,0,1-1.677.474,1.279,1.279,0,0,0-.839.583,1.406,1.406,0,0,0-.182,1.021,1.386,1.386,0,0,0,1.6,1.057,13.069,13.069,0,0,0,2.042-.583,1.3,1.3,0,0,0,.766-.693,1.248,1.248,0,0,0,.036-1.021A1.653,1.653,0,0,0,58.77,88.246Z" transform="translate(-31.341 -54.411)" fill="#b2b2b2"></path></g></svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray text-white mt-3 py-4 px-5 d-flex flex-column flex-lg-row justify-content-between"">
+                        <div class="text-white mb-2">
+                            <span class="me-3"><svg width="18.329" height="43.436" viewBox="0 0 18.329 43.436"><defs><linearGradient id="linear-gradient" x1="0.488" y1="0.915" x2="0.506" y2="0.303" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="#f8ba3e"></stop> <stop offset="1" stop-color="#d48d00"></stop></linearGradient> <linearGradient id="linear-gradient-2" x1="0.543" y1="8.178" x2="0.609" y2="19.639" xlink:href="#linear-gradient"></linearGradient> <linearGradient id="linear-gradient-3" x1="0.506" y1="0.537" x2="0.414" y2="-0.629" xlink:href="#linear-gradient"></linearGradient> <linearGradient id="linear-gradient-4" x1="0.566" y1="0.63" x2="-0.238" y2="-3.341" xlink:href="#linear-gradient"></linearGradient> <linearGradient id="linear-gradient-5" x1="0.58" y1="1.243" x2="-0.223" y2="-4.359" xlink:href="#linear-gradient"></linearGradient></defs> <g id="Group_683" data-name="Group 683" transform="translate(0)"><path id="Path_408" data-name="Path 408" d="M1381.329-307.148v37.556a1.825,1.825,0,0,1-.033.346,1.854,1.854,0,0,1-1.63,1.5c-.062.006-.125.009-.189.009h-14.624c-.064,0-.127,0-.189-.009a1.854,1.854,0,0,1-1.63-1.5,1.8,1.8,0,0,1-.033-.346v-37.556a1.852,1.852,0,0,1,1.852-1.852h14.624A1.852,1.852,0,0,1,1381.329-307.148Z" transform="translate(-1363 311.176)" fill="url(#linear-gradient)"></path> <path id="Path_409" data-name="Path 409" d="M1421.127-334.128v1.3H1411v-1.3a.92.92,0,0,1,.046-.286.837.837,0,0,1,.772-.586h8.609a.687.687,0,0,1,.665.586A1.172,1.172,0,0,1,1421.127-334.128Z" transform="translate(-1406.983 335)" fill="url(#linear-gradient-2)"></path> <path id="Path_410" data-name="Path 410" d="M1437.114-262.154h-2.762V-265h-1.506v2.846H1430v1.507h2.846v2.762h1.506v-2.762h2.762Z" transform="translate(-1424.393 270.858)" fill="#fff"></path> <path id="Path_411" data-name="Path 411" d="M1381.329-135v24.87a1.752,1.752,0,0,1-.029.321,1.832,1.832,0,0,1-1.635,1.5c-.062.006-.125.009-.189.009h-14.624c-.064,0-.127,0-.189-.009a1.832,1.832,0,0,1-1.635-1.5,1.773,1.773,0,0,1-.028-.321V-135Z" transform="translate(-1363 151.738)" fill="url(#linear-gradient-3)"></path> <path id="Path_414" data-name="Path 414" d="M1381.612,166a1.832,1.832,0,0,1-1.635,1.5c-.062.006-.125.009-.189.009h-14.625c-.064,0-.127,0-.189-.009a1.832,1.832,0,0,1-1.635-1.5Z" transform="translate(-1363.311 -124.07)" opacity="0.8" fill="url(#linear-gradient-4)"></path> <path id="Path_415" data-name="Path 415" d="M1421.6-334.414H1411.55a.837.837,0,0,1,.772-.586h8.609A.687.687,0,0,1,1421.6-334.414Z" transform="translate(-1407.486 335)" fill="url(#linear-gradient-5)"></path> <g id="Group_682" data-name="Group 682" transform="translate(1.363 22.329)"><path id="Path_412" data-name="Path 412" d="M1444.275-31.347c-.01-.018-.028-.057-.049-.057h-2.263c-.017,0-.033.019-.044.005s-.014-.018-.01-.034l.947-3.687a.052.052,0,0,0-.03-.061.056.056,0,0,0-.069.019l-4.037,5.414c-.012.017-.015,0,0,.023s.029,0,.05,0h2.076c.017,0,.033.043.043.056a.1.1,0,0,1,.011.064l-.862,4.288a.061.061,0,0,0,.033.067.055.055,0,0,0,.067-.017l4.138-6A.081.081,0,0,0,1444.275-31.347Z" transform="translate(-1433.737 37.948)" fill="#fff"></path> <path id="Path_413" data-name="Path 413" d="M1387.028-52.738a7.739,7.739,0,0,1-7.731-7.731,7.682,7.682,0,0,1,1.356-4.374l-.441-.445a.227.227,0,0,1-.057-.219.227.227,0,0,1,.161-.159l2.8-.736a.227.227,0,0,1,.218.059.227.227,0,0,1,.057.219l-.764,2.8a.227.227,0,0,1-.161.159.227.227,0,0,1-.219-.06l-.5-.5a6.171,6.171,0,0,0-.928,3.26,6.2,6.2,0,0,0,6.195,6.2,6.2,6.2,0,0,0,6.191-6.2,6.153,6.153,0,0,0-1.779-4.335,6.183,6.183,0,0,0-4.3-1.862.25.25,0,0,1-.249-.226v-1.08a.222.222,0,0,1,.087-.153l.009-.009a.293.293,0,0,1,.191-.065,7.683,7.683,0,0,1,5.365,2.314,7.683,7.683,0,0,1,2.219,5.415A7.74,7.74,0,0,1,1387.028-52.738Zm-3.851-13.5-.015,0-2.8.736a.059.059,0,0,0-.042.041.059.059,0,0,0,.015.057l.539.544-.04.057a7.517,7.517,0,0,0-1.366,4.335,7.572,7.572,0,0,0,7.563,7.563,7.572,7.572,0,0,0,7.563-7.563,7.518,7.518,0,0,0-2.171-5.3,7.518,7.518,0,0,0-5.249-2.264h0a.137.137,0,0,0-.071.018l-.009.009a.259.259,0,0,0-.035.038v1.074c0,.023.045.058.085.059a6.35,6.35,0,0,1,4.411,1.912,6.319,6.319,0,0,1,1.827,4.452,6.369,6.369,0,0,1-6.359,6.366,6.371,6.371,0,0,1-6.362-6.366,6.338,6.338,0,0,1,1.011-3.439l.057-.088.644.65a.06.06,0,0,0,.057.015.059.059,0,0,0,.042-.041l.764-2.8a.059.059,0,0,0-.015-.057A.059.059,0,0,0,1383.176-66.241Z" transform="translate(-1379.297 68.198)" fill="#fff" stroke="#fff" stroke-width="0.5"></path></g></g></svg></span>
+                            جهت خرید اشتراک یا تمدید اعتبار اشتراک کنونی کلیک کنید.
+                        </div>
+                        <div>
+                            <a href="" class="btn btn-warning w-100 m-md-0">خرید اشتراک</a>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray text-white mt-5 py-3 px-3 pb-5">
+                        <h5>پرداخت های اخیر</h5>
+                        <!-- <h4 class="text-center my-3">
+                             چیزی پیدا نشد 
+                        </h4> -->
+                        <div class="d-flex flex-column align-items-center justify-content-center">
+                            <div class="d-flex flex-row w-100 my-3 px-3">
+                                <div class="col-4 text-center">مدت زمان اشتراک : <span>30 روز</span></div>
+                                <div class="col-4 text-center">قیمت اشتراک : <span>300000000 تومان</span></div>
+                                <div class="col-4 text-center">زمان خرید : <span>1402/3/27</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <footer>
+            <div class="d-flex flex-row justify-content-between mt-3">
+            <div class="d-flex flex-row col-6">
+                <div class="col-6 text-center text-white">
+                    <a href="" class="d-block my-3 text-decoration-none link-warning">درخواست فیلم و سریال</a>
+                    <a href="" class="d-block my-3 text-decoration-none link-warning">انتقاد و پیشنهاد</a>
+                    <a href="" class="d-block my-3 text-decoration-none link-warning">گزارش خرابی و مشکل</a>
+                </div>
+                <div class="col-6 text-center text-white">
+                    <a href="" class="d-block my-3 text-decoration-none link-warning">آیوترند</a>
+                    <a href="" class="d-block my-3 text-decoration-none link-warning">تبلیغات</a>
+                    <a href="" class="d-block my-3 text-decoration-none link-warning">DMCA</a>                
+                </div>
+            </div>
+            <div class="col-3 d-flex flex-row">
+                <div class="text-white">
+                    <a href="" class="d-block link-warning my-1"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="58" fill="currentColor" class="bi bi-instagram" viewBox="0 0 16 16">
+                        <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334"/>
+                        </svg>
+                    </a>
+                    <a href="" class="d-block link-warning my-1"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="58" fill="currentColor" class="bi bi-telegram" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.287 5.906q-1.168.486-4.666 2.01-.567.225-.595.442c-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294q.39.01.868-.32 3.269-2.206 3.374-2.23c.05-.012.12-.026.166.016s.042.12.037.141c-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8 8 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629q.14.092.27.187c.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.4 1.4 0 0 0-.013-.315.34.34 0 0 0-.114-.217.53.53 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            </div>
+        </footer>
+    </div>
+    <div id="dropdown-menu" class="d-none row flex-row" style="background: rgba(31, 36, 48, 1)">
+        <div class="col-2 d-flex flex-column">
+            <button class="btn text-white mt-3 fs-5 fs-5">فیلم و سریال</button>
+            <button class="btn text-white mt-3 fs-5 fs-5">انیمه</button>
+            <button class="btn text-white mt-3 fs-5 fs-5">ایرانی</button>
+            <button class="btn text-white mt-3 fs-5 fs-5">در حال پخش</button>
+        </div>
+        <div id="left-menu" class="col-10 d-flex flex-column">
+            <div class="border-1 border-bottom">
+                <button class="text-center text-white w-50 btn active pt-3 fw-bold fs-6">ژانر</p>
+                <button class="text-center text-white w-50 btn active pt-3 fw-bold fs-6">سال</p>
+            </div>
+            <div>
+                <div class="w-100 d-flex flex-wrap text-center mt-4 gap-4 justify-content-between align-items-start">
+                    <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
+                </div>
+                <div class="d-none w-100 d-flex flex-wrap text-center mt-4 gap-4 justify-content-between">
+                    <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="dropdown-menu" class="d-none row flex-row" style="background: rgba(31, 36, 48, 1)">
+        <div class="col-2 d-flex flex-column">
+            <button class="btn text-white mt-3 fs-5 fs-5">فیلم و سریال</button>
+            <button class="btn text-white mt-3 fs-5 fs-5">انیمه</button>
+            <button class="btn text-white mt-3 fs-5 fs-5">ایرانی</button>
+            <button class="btn text-white mt-3 fs-5 fs-5">در حال پخش</button>
+        </div>
+        <div id="left-menu" class="col-10 d-flex flex-column">
+            <div class="border-1 border-bottom">
+                <button class="text-center text-white w-50 btn active pt-3 fw-bold fs-6">ژانر</p>
+                <button class="text-center text-white w-50 btn active pt-3 fw-bold fs-6">سال</p>
+            </div>
+            <div>
+                <div class="w-100 d-flex flex-wrap text-center mt-4 gap-4 justify-content-between align-items-start">
+                    <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
+                </div>
+                <div class="d-none w-100 d-flex flex-wrap text-center mt-4 gap-4 justify-content-between">
+                    <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/user_panel.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
