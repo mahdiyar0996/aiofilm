@@ -1,5 +1,5 @@
-function dropdown(){
-    const modal = document.querySelector('#modal')
+function userBar(){
+    const modal = document.querySelector('#userModal')
     const tag = document.querySelector('#user-bar').cloneNode(true)
     const container = document.querySelector('#container-content')
     container.style.opacity = 0.3
@@ -31,7 +31,7 @@ try{
                 console.log(body)
                 if(body.classList.contains('overflow-hidden')){
                     body.classList.remove('overflow-hidden')
-                    const modal = document.querySelector('#modal')
+                    const modal = document.querySelector('#userModal')
                     if(modal.classList.contains('overflow-auto')){
                         const tag = document.querySelector('#user-bar')
                         modal.removeChild(tag)
