@@ -6,11 +6,11 @@ function userBar(){
     document.body.classList.add('overflow-hidden')
     if(modal.children.length == 0){
         tag.classList.remove('d-none')
-        tag.classList.add('w-100')
+        tag.style.width = '60%'
         modal.appendChild(tag)
         modal.classList.remove('d-none')
         modal.classList.add('bg-dark')
-        modal.style.width = '60vw'
+        modal.style.width = '100vw'
         modal.style.position = 'fixed'
         modal.style.zIndex = 999;
     }else{
@@ -22,9 +22,9 @@ function userBar(){
 }
 
 try{
-    document.querySelector("#container-content").addEventListener('click', event=>{
+    document.querySelector("#userModal").addEventListener('click', event=>{
         try{
-            if(innerWidth < 770){
+            
                 const body = document.body
                 body.querySelector('#container-content').style.opacity = ''
                 console.log(body)
@@ -43,7 +43,7 @@ try{
                         modal.style.zIndex = '';
                     }
                 }
-            }
+            
         }catch{}
     })
 }catch{}
