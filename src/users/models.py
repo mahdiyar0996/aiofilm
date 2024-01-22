@@ -80,6 +80,10 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractBase):
     
 
 
+
+
+
+
 class Ticket(AbstractBase):
     user = models.ForeignKey(User, verbose_name='کاربر', related_name='%(class)s', on_delete=models.CASCADE)
     subject = models.CharField('موضوغ', max_length=252)
