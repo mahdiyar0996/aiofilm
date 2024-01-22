@@ -12,6 +12,7 @@ class AbstractBase(models.Model):
     
     def active_users(self):
         return self.objects.filter(is_active=True)
+    
     class Meta:
         abstract = True
         
