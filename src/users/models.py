@@ -52,6 +52,7 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractBase):
     first_name = models.CharField('نام', max_length=64, blank=True, null=True)
     last_name = models.CharField('نام خانوادگی', max_length=64, blank=True, null=True)
     city = models.CharField('شهر', max_length=55, blank=True, null=True)
+    age = models.SmallIntegerField('سن', blank=True, null=True)
     is_superuser = models.BooleanField('ادمین', db_default=False, db_index=True)
     is_staff = models.BooleanField('کارکنان', db_default=False, db_index=True)
     ipaddress = models.GenericIPAddressField('ایپی آدرس', blank=True, null=True)
@@ -134,15 +135,39 @@ class Reply(AbstractBase):
 
 
 class Ticket(AbstractBase):
+    departments = (
+        ('پشتیبانی', 'پشتیبانی'),
+        ('مشکلات فنی', 'مشکلات فنی'),
+        ('پیشنهادات و انتقادات', 'پیشنهادات و انتقادات'),
+        ('اپلیکیشن', 'اپلیکیشن'),
+        ('مشکلات ترجمه', 'مشکلات ترجمه'),
+    )
+    
     user = models.ForeignKey(User, verbose_name='کاربر', related_name='%(class)s', on_delete=models.CASCADE)
+    department = models.CharField('دپارتمان', choices=departments, max_length=64, db_index=True)
     subject = models.CharField('موضوغ', max_length=252)
     message = models.TextField('پیغام')
     file = models.FileField("فایل", blank=True, null=True, upload_to='files/ticket/')
     
     class Meta:
-        db_table = 'ticket'
+        db_table = 'Ticket'
         verbose_name = 'ticket'
         verbose_name_plural = 'tickets'
+    
+    def __str__(self):
+        return self.user.username
+    
+    
+    
+class TicketReply(AbstractBase):
+    ticket = models.ForeignKey(Ticket, verbose_name='کاربر', related_name='%(class)s', on_delete=models.CASCADE)
+    message = models.TextField('پیغام')
+    file = models.FileField("فایل", blank=True, null=True, upload_to='files/ticket_replies/')
+    
+    class Meta:
+        db_table = 'Ticket_Reply'
+        verbose_name = 'ticket_reply'
+        verbose_name_plural = 'ticket_replies'
     
     def __str__(self):
         return self.user.username
