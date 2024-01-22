@@ -84,6 +84,7 @@ class Movie(AbstractBase):
     image = models.ImageField('عکس', upload_to='media/product/images/')
     name = models.CharField('نام', max_length=252)
     persian_name = models.CharField('نام فارسی', max_length=252)
+    summary = models.TextField('خلاصه', blank=True, null=True)
     average_time = models.SmallIntegerField("مدت زمان", blank=True, null=True)
     product_of = models.CharField('محصول', max_length=64, blank=True, null=True)
     quality = models.CharField('کیفیت نمایش', max_length=64, choices=qualities, blank=True, null=True)
