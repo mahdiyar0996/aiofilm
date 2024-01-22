@@ -13,43 +13,53 @@ class AbstractBase(models.Model):
     
     class Meta:
         abstract = True
+     
         
-class Categories(AbstractBase):
+class Category(AbstractBase):
     title = models.CharField('عنوان', max_length=64)
      
     class Meta:
-        db_table = 'Categories'
+        db_table = 'Category'
         verbose_name = 'category'
         verbose_name_plural = 'categories'
  
-class Seasons(AbstractBase):
+ 
+class Season(AbstractBase):
     season_number = models.SmallIntegerField('فصل', db_index=True)
      
     class Meta:
-        db_table = 'Seasons'
+        db_table = 'Season'
         verbose_name = 'season'
         verbose_name_plural = 'seasons'
         
         
-class Episodes(AbstractBase):
-    movie = models.ForeignKey('Movies', verbose_name='فیلم', related_name='%(class)s', on_delete=models.CASCADE, blank=True, null=True)
-    season = models.ForeignKey(Seasons, verbose_name='فصل', related_name='%(class)s', on_delete=models.CASCADE, blank=True, null=True)
+class Episode(AbstractBase):
+    movie = models.ForeignKey('Movie', verbose_name='فیلم', related_name='%(class)s', on_delete=models.CASCADE, blank=True, null=True)
+    season = models.ForeignKey(Season, verbose_name='فصل', related_name='%(class)s', on_delete=models.CASCADE, blank=True, null=True)
     file = models.FileField('فایل', upload_to='media/product/files')
  
     class Meta:
-        db_table = 'Episodes'
+        db_table = 'Episode'
         verbose_name = 'episode'
         verbose_name_plural = 'episodes'
+        
+    def __str__(self):
+        return self.movie.name
  
-class Genres(AbstractBase):
+ 
+class Genre(AbstractBase):
     title = models.CharField('عنوان', max_length=62)
     
     class Meta:
         db_table = 'Genres'
         verbose_name = 'genre'
         verbose_name_plural = 'genres'
+        
+    def __str__(self):
+        return self.title
 
-class Movies(AbstractBase):
+
+class Movie(AbstractBase):
     qualities = [
         ('WEB-DL', 'WEB-DL'),
         ('HDTV', 'HDTV'),
@@ -68,9 +78,9 @@ class Movies(AbstractBase):
         ('پنجشنبه', 6),
         ('جمعه', 7),
     ]
-    category = models.ForeignKey(Categories, verbose_name="مجموعه", related_name='%(class)s', db_index=True, on_delete=models.DO_NOTHING)
-    genre = models.ManyToManyField(Genres, verbose_name="ژانر", related_name='%(class)s', db_index=True)
-    season = models.ManyToManyField(Seasons, verbose_name="فصل", related_name='%(class)s')
+    category = models.ForeignKey(Category, verbose_name="مجموعه", related_name='%(class)s', db_index=True, on_delete=models.DO_NOTHING)
+    genre = models.ManyToManyField(Genre, verbose_name="ژانر", related_name='%(class)s', db_index=True)
+    season = models.ManyToManyField(Season, verbose_name="فصل", related_name='%(class)s')
     image = models.ImageField('عکس', upload_to='media/product/images/')
     name = models.CharField('نام', max_length=252)
     persian_name = models.CharField('نام فارسی', max_length=252)
@@ -79,10 +89,18 @@ class Movies(AbstractBase):
     quality = models.CharField('کیفیت نمایش', max_length=64, choices=qualities, blank=True, null=True)
     imdb_rate = models.PositiveSmallIntegerField('رتبه imdb')
     age_limit = models.SmallIntegerField('محدوده سنی', default=13)
-    Director = models.CharField("کارگردان", max_length=64, blank=True, null=True)
+    director = models.CharField("کارگردان", max_length=64, blank=True, null=True)
     super_stars = models.CharField('ستارگان', max_length=252, blank=True, null=True)
     is_ongoing = models.BooleanField('وضعیت پخش', db_default=False)
     ongoing_day = models.PositiveSmallIntegerField('روز پخش', choices=ongoing_days, db_default=False)
     release_at = models.DateField('پخش از', blank=True, null=True)
     translation_team = models.CharField('تیم ترجمه',max_length=64, blank=True, null=True)
-    Translator = models.CharField('مترجم', max_length=64, blank=True, null=True)
+    translator = models.CharField('مترجم', max_length=64, blank=True, null=True)
+
+    class Meta:
+        db_table = 'Movie'
+        verbose_name = 'movie'
+        verbose_name_plural = 'movies'
+        
+    def __str__(self):
+        return self.title

@@ -8,7 +8,7 @@ from django_jalali.db import models as jmodels
 class AbstractBase(models.Model):
     updated_at = jmodels.jDateTimeField("اخرین بروزرسانی",auto_now=True)
     created_at = jmodels.jDateTimeField("زمان ساخت",auto_now_add=True)
-    is_active = models.BooleanField("وضعیت", default=True, db_index=True)
+    is_active = models.BooleanField("وضعیت", default=True)
     
     def active_users(self):
         return self.objects.filter(is_active=True)
@@ -77,10 +77,58 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractBase):
     def admin_users(self):
         return self.objects.filter(is_admin=True)
     
+
+class Favorite(AbstractBase):
+    movie = models.ForeignKey('products.Movie', verbose_name='فیلم', related_name='%(class)s', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, verbose_name='کاربر', related_name='%(class)s', on_delete=models.CASCADE)
     
+    class Meta:
+        db_table = 'Favorite'
+        verbose_name = 'favorite'
+        verbose_name_plural = 'favorites'
+    
+    def __str__(self):
+        return self.movie.name
+    
+class Bookmark(AbstractBase):
+    movie = models.ForeignKey('products.Movie', verbose_name='فیلم', related_name='%(class)s', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, verbose_name='کاربر', related_name='%(class)s', on_delete=models.CASCADE)
+    
+    class Meta:
+        db_table = 'Bookmark'
+        verbose_name = 'bookmark'
+        verbose_name_plural = 'bookmarks'
+    
+    def __str__(self):
+        return self.movie.name    
 
+class Comment(AbstractBase):
+    user = models.ForeignKey(User, verbose_name='کاربر', related_name='%(class)s', on_delete=models.CASCADE)
+    movie = models.ForeignKey('products.Movie', verbose_name='فیلم', related_name='%(class)s', on_delete=models.CASCADE)
+    text = models.TextField('متن')
+    
+    class Meta:
+        db_table = 'Comment'
+        verbose_name = 'comment'
+        verbose_name_plural = 'comments'
+    
+    def __str__(self):
+        return self.user.username
 
+class Reply(AbstractBase):
+    user = models.ForeignKey(User, verbose_name='کاربر', related_name='%(class)s', on_delete=models.CASCADE)
+    reply_to = models.ForeignKey(User, verbose_name='پاسخ به', related_name='reply_to', on_delete=models.CASCADE)
+    movie = models.ForeignKey('products.Movie', verbose_name='فیلم', related_name='%(class)s', on_delete=models.CASCADE)
+    text = models.TextField('متن')
 
+    class Meta:
+        db_table = 'Reply'
+        verbose_name = 'reply'
+        verbose_name_plural = 'replies'
+        ordering = ['created_at']
+    
+    def __str__(self):
+        return self.user.username
 
 
 
