@@ -17,6 +17,7 @@ class AbstractBase(models.Model):
         
 class Category(AbstractBase):
     title = models.CharField('عنوان', max_length=64, null=True)
+    slug = models.SlugField('اسلاگ', max_length=64, null=True)
      
     class Meta:
         db_table = 'Category'
@@ -52,7 +53,7 @@ class Movie(AbstractBase):
     )
     category = models.ForeignKey(Category, verbose_name="مجموعه", related_name='%(class)s', db_index=True, on_delete=models.DO_NOTHING)
     genre = models.ManyToManyField('Genre', verbose_name="ژانر", related_name='%(class)s', db_index=True)
-    image = models.ImageField('عکس', upload_to='media/product/images/')
+    image = models.ImageField('عکس', upload_to='media/products/images/')
     name = models.CharField('نام', max_length=252)
     persian_name = models.CharField('نام فارسی', max_length=252)
     summary = models.TextField('خلاصه', blank=True, null=True)
@@ -117,7 +118,7 @@ class Season(AbstractBase):
 class Episode(AbstractBase):
     movie = models.ForeignKey('Movie', verbose_name='فیلم', related_name='%(class)s', on_delete=models.CASCADE, blank=True, null=True)
     season = models.ForeignKey(Season, verbose_name='فصل', related_name='%(class)s', on_delete=models.CASCADE, blank=True, null=True)
-    file = models.FileField('فایل', upload_to='media/product/files')
+    file = models.FileField('فایل', upload_to='media/products/files')
     is_active = None
  
     class Meta:

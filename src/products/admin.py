@@ -4,7 +4,7 @@ from .models import Movie, Category, Serial, Genre, Season, Episode
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    fields = ['title', 'created_at', 'updated_at']
+    fields = ['title', 'slug', 'created_at', 'updated_at']
     readonly_fields = ['created_at', 'updated_at']
     
     
