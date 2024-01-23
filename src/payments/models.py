@@ -36,13 +36,20 @@ class PaymentMethod(AbstractBase):
         verbose_name = 'payment_methods'
         verbose_name_plural = 'payment_methods'
         
+    def __str__(self):
+        return self.name
+        
         
 class Payment(AbstractBase):
     user = models.ForeignKey('users.User', verbose_name='کاربر', related_name="%(class)s", on_delete=models.DO_NOTHING)
     subscribe = models.ForeignKey(Subscribe, verbose_name='اشتراک', related_name='%(class)s', on_delete=models.DO_NOTHING)
     method = models.ForeignKey(PaymentMethod, verbose_name='بانک', related_name='%(class)s', on_delete=models.DO_NOTHING)
+    is_active = None
 
     class Meta:
         db_table = 'Payment'
         verbose_name = 'payment'
         verbose_name_plural = 'payments'
+        
+    def __str__(self):
+        return self.user
