@@ -138,3 +138,12 @@ body {
   margin-left: 1px;
   margin-right: 1px;
 }
+
+.bg-darkcyan{
+  background: rgba(20, 24, 33, .75) !important;
+}
+
+
+.border-nt1-child:nth-child(1n+1){
+  border-left: 1px solid #e5e7eb;
+}

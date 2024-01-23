@@ -1,29 +1,52 @@
-<div id="dropdown-menu" class="d-none row flex-row" style="background: rgba(31, 36, 48, 1)">
-    <div class="col-2 d-flex flex-column">
-        <button class="btn text-white mt-3 fs-5 fs-5">فیلم و سریال</button>
-        <button class="btn text-white mt-3 fs-5 fs-5">انیمه</button>
-        <button class="btn text-white mt-3 fs-5 fs-5">ایرانی</button>
-        <button class="btn text-white mt-3 fs-5 fs-5">در حال پخش</button>
+<div id="dropdown-menu" class="d-none row flex-row mx-5 bg-darkcyan" >
+    <div class="col-2 d-flex flex-column bg-darkcyan"" >
+        <button id="movie" class="btn text-white py-3 fs-5 fs-5" onclick="showItems(event, 'movie')" " onmouseover="showItems(event, 'movie')">فیلم و سریال</button>
+        <button id="serial" class="btn text-white py-3 fs-5 fs-5" onclick="showItems(event, 'genre')" " onmouseover="showItems(event, 'genre')">انیمه</button>
+        <button id="persian" class="btn text-white py-3 fs-5 fs-5" onclick="showItems(event, 'movie')" " onmouseover="showItems(event, 'movie')">ایرانی</button>
+        <button id="ongoing" class="btn text-white py-3 fs-5 fs-5" onclick="showItems(event, 'movie')" " onmouseover="showItems(event, 'movie')">در حال پخش</button>
     </div>
-    <div id="left-menu" class="col-10 d-flex flex-column">
-        <div class="border-1 border-bottom">
-            <button class="text-center text-white w-50 btn active pt-3 fw-bold fs-6">ژانر</p>
-            <button class="text-center text-white w-50 btn active pt-3 fw-bold fs-6">سال</p>
-        </div>
-        <div>
-            <div class="w-100 d-flex flex-wrap text-center mt-4 gap-4 justify-content-between align-items-start">
-                <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
-                <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
-                <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
-                <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
-                <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
+    <div id="left-menu" class="col-10 bg-darkcyan">
+        <div id="movie" class=" d-flex flex-column">
+            <div class="border-1 border-bottom d-flex flex-row">
+                <button class="text-center text-white btn shadow-none w-50 pt-3 fw-bold fs-6 bg-dark" onmouseover="showItems(event,'genre')" onclick="showItems(event,'genre')">ژانر</button>
+                <button class="text-center text-white btn shadow-none w-50 pt-3 fw-bold fs-6" onmouseover="showItems(event,'year')" onclick="showItems(event,'genre')">سال</button>
             </div>
-            <div class="d-none w-100 d-flex flex-wrap text-center mt-4 gap-4 justify-content-between">
-                <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
-                <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
-                <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
-                <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
-                <a href="" class="link-warning text-decoration-none d-block" style="width: 16%;">اکشن</a>
+            <div>
+                <div id="genre" class="w-100 d-flex flex-wrap text-center justify-content-between align-items-start">
+                    <a href="" class="link-warning text-decoration-none d-block py-3 border-nt1-child" style="width: 20%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block py-3 border-nt1-child" style="width: 20%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block py-3 border-nt1-child" style="width: 20%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block py-3 border-nt1-child" style="width: 20%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block py-3" style="width: 20%;">اکشن</a>
+                </div>
+                <div id="year" class="w-100 d-flex flex-wrap text-center justify-content-between align-items-start">
+                    <a href="" class="link-warning text-decoration-none d-block py-2 border-nt1-child" style="width: 20%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block py-2 border-nt1-child" style="width: 20%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block py-2 border-nt1-child" style="width: 20%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block py-2 border-nt1-child" style="width: 20%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block py-2" style="width: 20%;">اکشssssن</a>
+                </div>
+            </div>
+        </div><div id="genre" class=" d-flex flex-column d-none">
+            <div class="border-1 border-bottom d-flex flex-row">
+                <button class="text-center text-white btn shadow-none w-50 pt-3 fw-bold fs-6 bg-dark" onmouseover="showItems(event,'genre')" onclick="showItems(event,'genre')">ژانر</button>
+                <button class="text-center text-white btn shadow-none w-50 pt-3 fw-bold fs-6" onmouseover="showItems(event,'year')" onclick="showItems(event,'genre')">سال</button>
+            </div>
+            <div>
+                <div id="genre" class="w-100 d-flex flex-wrap text-center justify-content-between align-items-start">
+                    <a href="" class="link-warning text-decoration-none d-block py-2 border-nt1-child" style="width: 20%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block py-2 border-nt1-child" style="width: 20%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block py-2 border-nt1-child" style="width: 20%;">sadsadsadsadaاکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block py-2 border-nt1-child" style="width: 20%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block py-2" style="width: 20%;">اکشن</a>
+                </div>
+                <div id="year" class="w-100 d-flex flex-wrap text-center justify-content-between align-items-start">
+                    <a href="" class="link-warning text-decoration-none d-block py-2 border-nt1-child" style="width: 20%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block py-2 border-nt1-child" style="width: 20%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block py-2 border-nt1-child" style="width: 20%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block py-2 border-nt1-child" style="width: 20%;">اکشن</a>
+                    <a href="" class="link-warning text-decoration-none d-block py-2" style="width: 20%;">اکشssssن</a>
+                </div>
             </div>
         </div>
     </div>

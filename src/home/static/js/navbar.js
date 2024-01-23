@@ -55,10 +55,8 @@ function searchDropDown(){
 addEventListener("resize", (event) => {
     if(innerWidth < 768){
         let modal = document.querySelector('#modal')
-        console.log(modal)
         if(!modal.classList.contains('d-none')){
             modal.classList.add('d-none')
-            // document.querySelector('#dropdown-menu').classList.add('d-none')
         }
     }else if(innerWidth > 768){
         let dropdown = document.querySelector('#dropdown-menu')
@@ -68,3 +66,22 @@ addEventListener("resize", (event) => {
     }     
     
 });
+
+function showItems(event,input){
+    const tag = event.target
+    const parentTagButtons = tag.parentElement.children
+    const parentTag = tag.parentElement.parentElement.children[1].children
+    for(let item of parentTag){
+        if(item.classList.contains('d-none') && item.id == input){
+            item.classList.remove('d-none')
+        }else if(!item.classList.contains('d-none') && item.id != input){
+            item.classList.add('d-none')
+
+        }
+    }
+    for(let item of parentTagButtons){
+        console.log(item)
+        item.classList.remove('bg-dark', 'text-warning')
+    }
+    tag.classList.add('bg-dark', 'text-warning')
+}
