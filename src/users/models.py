@@ -83,7 +83,7 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractBase):
 class Favorite(AbstractBase):
     movie = models.ForeignKey('products.Movie', verbose_name='فیلم', related_name='%(class)s', on_delete=models.CASCADE)
     user = models.ForeignKey(User, verbose_name='کاربر', related_name='%(class)s', on_delete=models.CASCADE)
-    
+    is_active = None
     class Meta:
         db_table = 'Favorite'
         verbose_name = 'favorite'
@@ -95,7 +95,7 @@ class Favorite(AbstractBase):
 class Bookmark(AbstractBase):
     movie = models.ForeignKey('products.Movie', verbose_name='فیلم', related_name='%(class)s', on_delete=models.CASCADE)
     user = models.ForeignKey(User, verbose_name='کاربر', related_name='%(class)s', on_delete=models.CASCADE)
-    
+    is_active = None
     class Meta:
         db_table = 'Bookmark'
         verbose_name = 'bookmark'
