@@ -1,7 +1,7 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
-from .models import User, Favorite, Bookmark, Comment, Reply, Ticket, TicketReply
-
+from django.contrib.auth.models import Group
+from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin, GroupAdmin
+from .models import User, Groups,Favorite, Bookmark, Comment, Reply, Ticket, TicketReply
 
 class FavoriteAdmin(admin.StackedInline):
     model = Favorite
@@ -12,10 +12,19 @@ class BookmarkAdmin(admin.StackedInline):
     fields = ['movie', 'user']
     extra = 0
 
-
+admin.site.unregister(Group)
+@admin.register(Groups)
+class GroupAdmin(GroupAdmin):
+    fields = ['name', 'permissions']
+    list_display = ['name']
+    list_display_links = ['name']
+    list_filter = ['name',]
+    search_fields = ['name']
+    
 @admin.register(User)
 class UserAdmin(DjangoUserAdmin):
     fieldsets = (
+        ("Permissions",{"fields": ("groups","user_permissions",),},),
         ('', {'fields': ['username', 'email', "avatar",'password', 'ipaddress']}),
         ('', {'fields': ['first_name', 'last_name', 'city', 'age']}),
         ('', {'fields': ['is_superuser', 'is_staff', 'is_active']}),
@@ -28,7 +37,7 @@ class UserAdmin(DjangoUserAdmin):
     search_fields = ['id', 'username', 'email']
     readonly_fields = ['created_at', 'updated_at', 'last_password_reset']
     inlines = [FavoriteAdmin, BookmarkAdmin]
-    
+
     
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):

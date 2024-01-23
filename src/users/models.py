@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models import F, Q
-from django.contrib.auth.models import (BaseUserManager,
+from django.contrib.auth.models import (BaseUserManager, Group as DjangoGroup,
                                         AbstractBaseUser,
                                         PermissionsMixin,)
 from django_jalali.db import models as jmodels
@@ -15,7 +15,17 @@ class AbstractBase(models.Model):
     
     class Meta:
         abstract = True
+
+class Groups(DjangoGroup):
+    
+    class Meta:
+        db_table = 'Groups'
+        verbose_name = 'group'
+        verbose_name_plural = 'groups'
+        proxy = True
         
+
+  
         
 class UserManager(BaseUserManager):
     use_in_migrations = True
