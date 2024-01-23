@@ -93,7 +93,7 @@ class Genre(AbstractBase):
 class Serial(AbstractBase):
     movie =  models.ForeignKey(Movie, verbose_name=("فیلم"),related_name="%(class)s", on_delete=models.DO_NOTHING)
     season = models.ForeignKey('Season', verbose_name='فصل', related_name="%(class)s", on_delete=models.DO_NOTHING)
-
+    is_active = None
     class Meta:
         db_table = 'Serial'
         verbose_name = 'serial'
@@ -104,7 +104,7 @@ class Serial(AbstractBase):
  
 class Season(AbstractBase):
     season_number = models.SmallIntegerField('فصل', db_index=True)
-     
+    is_active = None
     class Meta:
         db_table = 'Season'
         verbose_name = 'season'
@@ -118,6 +118,7 @@ class Episode(AbstractBase):
     movie = models.ForeignKey('Movie', verbose_name='فیلم', related_name='%(class)s', on_delete=models.CASCADE, blank=True, null=True)
     season = models.ForeignKey(Season, verbose_name='فصل', related_name='%(class)s', on_delete=models.CASCADE, blank=True, null=True)
     file = models.FileField('فایل', upload_to='media/product/files')
+    is_active = None
  
     class Meta:
         db_table = 'Episode'
