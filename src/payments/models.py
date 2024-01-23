@@ -28,21 +28,21 @@ class Subscribe(AbstractBase):
     def __str__(self):
         return self.name
 
-class Bank(AbstractBase):
+class PaymentMethod(AbstractBase):
     name = models.CharField('نام بانک', max_length=64)
 
     class Meta:
-        db_table = 'Bank'
-        verbose_name = 'bank'
-        verbose_name_plural = 'banks'
+        db_table = 'Payment_Methods'
+        verbose_name = 'payment_methods'
+        verbose_name_plural = 'payment_methods'
         
         
-class PaymentMethod(AbstractBase):
+class Payment(AbstractBase):
     user = models.ForeignKey('users.User', verbose_name='کاربر', related_name="%(class)s", on_delete=models.DO_NOTHING)
     subscribe = models.ForeignKey(Subscribe, verbose_name='اشتراک', related_name='%(class)s', on_delete=models.DO_NOTHING)
-    bank = models.ForeignKey(Bank, verbose_name='بانک', related_name='%(class)s', on_delete=models.DO_NOTHING)
+    method = models.ForeignKey(PaymentMethod, verbose_name='بانک', related_name='%(class)s', on_delete=models.DO_NOTHING)
 
     class Meta:
-        db_table = 'PaymentMethod'
-        verbose_name = 'payment_method'
-        verbose_name_plural = 'payment_methods'
+        db_table = 'Payment'
+        verbose_name = 'payment'
+        verbose_name_plural = 'payments'
