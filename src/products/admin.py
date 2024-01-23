@@ -34,7 +34,16 @@ class SeasonAdmin(admin.StackedInline):
     model = Season
     fields = ['season_number']
     readonly_fields = ['created_at', 'updated_at']
-
+    
+    
+@admin.register(Episode)
+class EpisodeAdmin(admin.ModelAdmin):
+    fields = ['movie', 'season', 'file', 'created_at', 'updated_at']
+    readonly_fields = ['created_at', 'updated_at']
+    list_display = ['id','movie', 'season', 'file']
+    list_display_links = ['id', 'movie', 'season', 'file']
+    search_fields = ['movie',]
+    list_per_page = 100
 
 class EpisodeAdmin(admin.StackedInline):
     model = Episode

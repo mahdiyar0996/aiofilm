@@ -65,6 +65,14 @@ class TicketAdmin(admin.ModelAdmin):
     list_per_page = 100
     list_filter = ['is_active',]
     search_fields = ['text']
-    readonly_fields = ['user', 'department', 'subject', 'message', 'file', 'created_at', 'updated_at']
+    readonly_fields = ['created_at', 'updated_at']
+    # readonly_fields = ['user', 'department', 'subject', 'message', 'file', 'created_at', 'updated_at']
     inlines = [TicketReplyAdmin,]
-    
+
+
+@admin.register(TicketReply)
+class TicketReplyAdmin(admin.ModelAdmin):
+    fields = ['ticket', 'message', 'file', 'created_at', 'updated_at']
+    list_display = ['id', 'ticket', 'is_active', 'created_at', 'updated_at']
+    list_display_links = ['id', 'ticket']
+    readonly_fields = ['created_at', 'updated_at']

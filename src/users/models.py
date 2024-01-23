@@ -160,7 +160,7 @@ class Ticket(AbstractBase):
     
     
 class TicketReply(AbstractBase):
-    ticket = models.ForeignKey(Ticket, verbose_name='کاربر', related_name='%(class)s', on_delete=models.CASCADE)
+    ticket = models.ForeignKey(Ticket, verbose_name='تیکت', related_name='%(class)s', on_delete=models.CASCADE)
     message = models.TextField('پیغام')
     file = models.FileField("فایل", blank=True, null=True, upload_to='files/ticket_replies/')
     
