@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Movie, Category, Serial, Genre, Season, Episode
+from .models import Movie, Category, Serial, Genre, Season, Episode, Years
 
 
 @admin.register(Category)
@@ -11,7 +11,7 @@ class CategoryAdmin(admin.ModelAdmin):
     
 @admin.register(Genre)
 class GenreAdmin(admin.ModelAdmin):
-    fields = ['title', 'created_at', 'updated_at']
+    fields = ['title', 'slug', 'created_at', 'updated_at']
     readonly_fields = ['created_at', 'updated_at']
     list_display_links = ['id', 'title']
     list_display = ['id','title', 'created_at', 'updated_at']
@@ -24,7 +24,7 @@ class SerialAdmin(admin.StackedInline):
 
 @admin.register(Season)
 class SeasonAdmin(admin.ModelAdmin):
-    fields = ['season_number', 'created_at', 'updated_at']
+    fields = ['season_number','language', 'created_at', 'updated_at']
     readonly_fields = ['created_at', 'updated_at']
     list_display_links = ['id', 'season_number']
     list_display = ['id','season_number', 'created_at', 'updated_at']
@@ -32,7 +32,7 @@ class SeasonAdmin(admin.ModelAdmin):
 
 class SeasonAdmin(admin.StackedInline):
     model = Season
-    fields = ['season_number']
+    fields = ['season_number', 'language']
     readonly_fields = ['created_at', 'updated_at']
     
     
@@ -51,15 +51,22 @@ class EpisodeAdmin(admin.StackedInline):
     readonly_fields = ['created_at', 'updated_at']
     extra = 0
 
+@admin.register(Years)
+class YearAdmin(admin.ModelAdmin):
+    fields = ['year']
+    list_display = ['id', 'year']
+    list_display_links = ['id', 'year']
+    readonly_fields = ['created_at', 'updated_at']
+
 @admin.register(Movie)
 class MovieAdmin(admin.ModelAdmin):
     fieldsets = (
         ('', {'fields': ['image', 'name', 'persian_name']}),
         ('', {'fields': ['category', 'genre']}),
         ('', {'fields': ['is_ongoing', 'is_active' , 'summary']}),
-        ('', {'fields': ['ongoing_day', 'average_time', 'product_of','anime_type', 'quality', 'imdb_rate', 'age_limit']}),
+        ('', {'fields': ['ongoing_day', 'average_time', 'language', 'product_of','anime_type', 'quality', 'imdb_rate', 'age_limit']}),
         ('', {'fields': ['director', 'super_stars', 'translation_team', 'translator']}),
-        ('', {'fields': ['release_at', 'created_at', 'updated_at']})
+        ('', {'fields': ['year', 'release_at', 'created_at', 'updated_at']})
     )
     filter_horizontal = ('genre',)
     readonly_fields = ['created_at', 'updated_at']

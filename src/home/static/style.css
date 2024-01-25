@@ -155,3 +155,8 @@ body {
 .border-nt1-child:nth-child(1n+1){
   border-left: 1px solid #e5e7eb;
 }
+
+
+.w-70{
+  width: 70%;
+}

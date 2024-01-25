@@ -28,6 +28,16 @@ class Category(AbstractBase):
         return self.title
 
 
+class Years(AbstractBase):
+    year = models.CharField('سال', max_length=62)
+    class Meta:
+        db_table = 'Years'
+        verbose_name = 'year'
+        verbose_name_plural = 'years'
+        
+    def __str__(self):
+        return self.year
+        
 class Movie(AbstractBase):
     qualities = [
         ('WEB-DL', 'WEB-DL'),
@@ -51,11 +61,18 @@ class Movie(AbstractBase):
         ('سریالی', 'series'),
         ('ova', 'ova'),
     )
+    language_type = (
+        ('هاردساب', 'هاردساب'),
+        ('هاردساب اختصاصی', 'هاردساب اختصاصی'),
+        ('دوبله فارسی', 'دوبله فارسی'),
+    )
+    year = models.ForeignKey(Years, verbose_name='سال پخش', related_name="%(class)s", db_index=True, on_delete=models.DO_NOTHING)
     category = models.ForeignKey(Category, verbose_name="مجموعه", related_name='%(class)s', db_index=True, on_delete=models.DO_NOTHING)
     genre = models.ManyToManyField('Genre', verbose_name="ژانر", related_name='%(class)s', db_index=True)
-    image = models.ImageField('عکس', upload_to='media/products/images/')
+    image = models.ImageField('عکس', upload_to='products/images/')
     name = models.CharField('نام', max_length=252)
     persian_name = models.CharField('نام فارسی', max_length=252)
+    language = models.CharField('زبان ترجمه', max_length=62, choices=language_type, blank=True, null=True)
     summary = models.TextField('خلاصه', blank=True, null=True)
     average_time = models.SmallIntegerField("مدت زمان", blank=True, null=True)
     product_of = models.CharField('محصول', max_length=64, blank=True, null=True)
@@ -81,11 +98,16 @@ class Movie(AbstractBase):
 
 class Genre(AbstractBase):
     title = models.CharField('عنوان', max_length=62)
+    slug = models.SlugField('اسلاگ', max_length=62)
     
     class Meta:
         db_table = 'Genres'
         verbose_name = 'genre'
         verbose_name_plural = 'genres'
+        
+    def to_dict(self):
+        return {'id': self.id,
+                'title': self.title}
         
     def __str__(self):
         return self.title
@@ -104,7 +126,13 @@ class Serial(AbstractBase):
         return self.movie.name
  
 class Season(AbstractBase):
+    language_types = (
+        ('دوبله فارسی', 'دوبله فارسی'),
+        ('زیرنویس چسبیده', 'زیرنویس چسبیده'),
+        ('زبان اصلی', 'زبان اصلی'),
+    )
     season_number = models.SmallIntegerField('فصل', db_index=True)
+    language = models.CharField('زبان (زیرنویس) (دوبله)', max_length=62, choices=language_types)
     is_active = None
     class Meta:
         db_table = 'Season'
@@ -112,13 +140,13 @@ class Season(AbstractBase):
         verbose_name_plural = 'seasons'
         
     def __str__(self):
-        return f"فصل {self.season_number}"
+        return f"فصل {self.season_number} {self.language}"
         
         
 class Episode(AbstractBase):
     movie = models.ForeignKey('Movie', verbose_name='فیلم', related_name='%(class)s', on_delete=models.CASCADE, blank=True, null=True)
     season = models.ForeignKey(Season, verbose_name='فصل', related_name='%(class)s', on_delete=models.CASCADE, blank=True, null=True)
-    file = models.FileField('فایل', upload_to='media/products/files')
+    file = models.FileField('فایل', upload_to='products/files')
     is_active = None
  
     class Meta:

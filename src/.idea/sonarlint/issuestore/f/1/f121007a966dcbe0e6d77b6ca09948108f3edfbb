@@ -1,5 +1,8 @@
 
-spython:S4144 "[Update this function so that its implementation is not identical to create_user on line 28.(åŠ–¤
-5python:S65530"Remove this "null=True" flag.(º€Ôà
-:python:S65531"Remove this "null=True" flag.(ÅÒ–šÿÿÿÿÿ
-5python:S65532"Remove this "null=True" flag.(ù”Çö
+npython:S1192^"ODefine a constant instead of duplicating this literal 'products.Movie' 4 times.(ÿö®œ8ƒÙ …Ô1
+opython:S1192_"KDefine a constant instead of duplicating this literal 'Ú©Ø§Ø±Ø¨Ø±' 5 times.(Ü×ó¦üÿÿÿÿ8„Ù …Ô1
+jpython:S1192^"KDefine a constant instead of duplicating this literal '%(class)s' 10 times.(ÿö®œ8„Ù …Ô1
+spython:S4144."[Update this function so that its implementation is not identical to create_user on line 42.(åŠ–¤
+5python:S6553>"Remove this "null=True" flag.(º€Ôà
+:python:S6553?"Remove this "null=True" flag.(ÅÒ–šÿÿÿÿÿ
+Apython:S6553@"Remove this "null=True" flag.(Ñ•ÃØÿÿÿÿÿ8ˆÙ …Ô1
