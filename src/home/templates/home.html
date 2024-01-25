@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
+{% load filters %}
     {% block head %}
     <meta name="keywords" content="دانلود فیلم, دانلود انیمه, دانلود سریال کره ای , دانلود سریال ترکی, دانلود رایگان سریال, دانلود زیرنویس فارسی, دانلود فیلم با لینک مستقیم">
     <meta name="description" content="رسانه تفریحی آیوفیلم، دانلود انواع فیلم و سریال، دانلود انیمه، دانلود سریال کره ای، دانلود سریال ترکی">
@@ -17,58 +15,49 @@
     <link href="{% static 'home.css' %}" rel="stylesheet">
     <link href="{% static '/css/product_list.css' %}" rel="stylesheet">
     {% endblock head %}
-        
-</head>
-<body dir="rtl">
     {% block body %}
-    <div class="">
         <div class="mt-4" style="height: 100vh;">
             <div class="text-warning position-relative d-flex justify-content-between align-items-center">
                 <i class="fa fa-star fs-4 top-0 start-0 position-absolute"></i>
                 <h2 class="d-inline fs-3" style="margin-right: 30px;">پیشنهاد ویژه آیوفیلم</h2>
             </div>
             <div class="row flex-row flex-wrap g-4 g-md-1 mt-5">
-                <div class="position-relative product-box">
-                    <a href="" class="d-block position-relative" id="image-box">
-                        <p class="bg-light text-dark opacity-100 rounded-top rounded-pill top-0 position-absolute" style="left: 10%;">+17</p>
-                        <p class="bg-light text-dark opacity-100 rounded rounded-pill position-absolute m-0" style="right: 10%;top: 1%;font-family: Arial, Helvetica, sans-serif;">S2 EP12</p>
-                        <p class="bg-light text-dark opacity-100 rounded rounded-3 position-absolute m-0" style="right: 10%;bottom: 3%;font-family: Arial, Helvetica, sans-serif;">سافت ساب</p>
-                        <p class="bg-light text-dark opacity-100 rounded rounded-3 position-absolute m-0" style="left: 10%;bottom: 3%;font-family: Arial, Helvetica, sans-serif;">7.65</p>
-                        <img  class="img-fluid" src="/media/product/1000_F_568027622_DgZfYnf1Xv2ncLvPSuYqZ7CfEuE7pBVL.jpg"
+                {% for movie in movies|order_by_merge_sort_descending:'favorite_count'|slice:5 %}
+                <div class="position-relative product-box gap-1">
+                    <a href="" class="d-block position-relative w-100 h-100" id="image-box">
+                        <p class="bg-light text-dark opacity-100 rounded-top rounded-pill top-0 position-absolute normal-font" style="left: 5%;">+{{ movie.age_limit }}</p>
+                        <p class="bg-light text-dark opacity-100 rounded rounded-pill position-absolute m-0 normal-font" style="right: 5%;top: 1%;">S2 EP12</p>
+                        <p class="bg-light text-dark opacity-100 rounded rounded-3 position-absolute m-0 normal-font" style="right: 5%;bottom: 3%; font-size: 14px;">{{ movie.language }}</p>
+                        <p class="bg-light text-dark opacity-100 rounded rounded-3 position-absolute m-0 normal-font" style="left: 5%;bottom: 3%;">{{ movie.imdb_rate }}</p>
+                        <img  class="img-fluid w-100 h-100" src="/media/{{ movie.image }}"
                         style="height: 300px;" alt="">
-                        <div class="d-none w-100 h-100 d-flex justify-content-center align-items-center position-absolute top-0 text-white normal-font product-name-box">
-                            <section class="link-warning w-50" style="overflow-wrap: break-word;">The Exorcist: Belisssssssssssssssever 2023</section>
-                        </div>
-                    </a>
-                </div><div class="position-relative product-box">
-                    <a href="" class="d-block position-relative" id="image-box">
-                        <p class="bg-light text-dark opacity-100 rounded-top rounded-pill top-0 position-absolute" style="left: 10%;">+17</p>
-                        <p class="bg-light text-dark opacity-100 rounded rounded-pill position-absolute m-0" style="right: 10%;top: 1%;font-family: Arial, Helvetica, sans-serif;">S2 EP12</p>
-                        <p class="bg-light text-dark opacity-100 rounded rounded-3 position-absolute m-0" style="right: 10%;bottom: 3%;font-family: Arial, Helvetica, sans-serif;">سافت ساب</p>
-                        <p class="bg-light text-dark opacity-100 rounded rounded-3 position-absolute m-0" style="left: 10%;bottom: 3%;font-family: Arial, Helvetica, sans-serif;">7.65</p>
-                        <img  class="img-fluid" src="/media/product/1000_F_568027622_DgZfYnf1Xv2ncLvPSuYqZ7CfEuE7pBVL.jpg"
-                        style="height: 300px;" alt="">
-                        <div class="d-none w-100 h-100 d-flex justify-content-center align-items-center position-absolute top-0 text-white normal-font product-name-box">
-                            <section class="link-warning w-50" style="overflow-wrap: break-word;">The Exorcist: Believer 2023</section>
+                        <div class="d-none w-100 h-100 top-0 d-flex justify-content-center align-items-center position-absolute text-white normal-font product-name-box">
+                            <section class="link-warning w-70 text-center" style="overflow-wrap: break-word;">{{ movie.name}} : {{ movie.year__year}}</section>
                         </div>
                     </a>
                 </div>
+                {% endfor %}
             </div>
             <div class="text-muted bg-gradient position-relative d-flex align-items-center mt-5">
                 <h1 class="d-inline ms-2 fs-3">به تازگی در آیوفیلم</h1>
                 <button class="btn btn-warning ms-auto border-cornered">مشاهده بیشتر></button>
             </div>
             <div class="row flex-row flex-nowrap mt-5">
-                <div class="position-relative product-box">
-                    <a href="" class="d-block position-relative" id="image-box">
-                        <p class="bg-light text-dark opacity-100 rounded-top rounded-pill top-0 position-absolute" style="left: 10%;">+17</p>
-                        <p class="bg-light text-dark opacity-100 rounded rounded-pill position-absolute m-0" style="right: 10%;top: 1%;font-family: Arial, Helvetica, sans-serif;">S2 EP12</p>
-                        <p class="bg-light text-dark opacity-100 rounded rounded-3 position-absolute m-0" style="right: 10%;bottom: 3%;font-family: Arial, Helvetica, sans-serif;">سافت ساب</p>
-                        <p class="bg-light text-dark opacity-100 rounded rounded-3 position-absolute m-0" style="left: 10%;bottom: 3%;font-family: Arial, Helvetica, sans-serif;">7.65</p>
-                        <img  class="img-fluid" src="/media/product/1000_F_568027622_DgZfYnf1Xv2ncLvPSuYqZ7CfEuE7pBVL.jpg"
+                {% for movie in movies|order_by_merge_sort:'created_at'|slice:5 %}
+                <div class="position-relative product-box gap-1">
+                    <a href="" class="d-block position-relative w-100 h-100" id="image-box">
+                        <p class="bg-light text-dark opacity-100 rounded-top rounded-pill top-0 position-absolute normal-font" style="left: 5%;">+{{ movie.age_limit }}</p>
+                        <p class="bg-light text-dark opacity-100 rounded rounded-pill position-absolute m-0 normal-font" style="right: 5%;top: 1%;">S2 EP12</p>
+                        <p class="bg-light text-dark opacity-100 rounded rounded-3 position-absolute m-0 normal-font" style="right: 5%;bottom: 3%; font-size: 14px;">{{ movie.language }}</p>
+                        <p class="bg-light text-dark opacity-100 rounded rounded-3 position-absolute m-0 normal-font" style="left: 5%;bottom: 3%;">{{ movie.imdb_rate }}</p>
+                        <img  class="img-fluid w-100 h-100" src="/media/{{ movie.image }}"
                         style="height: 300px;" alt="">
+                        <div class="d-none w-100 h-100 top-0 d-flex justify-content-center align-items-center position-absolute text-white normal-font product-name-box">
+                            <section class="link-warning w-70 text-center" style="overflow-wrap: break-word;">{{ movie.name}} : {{ movie.year__year}}</section>
+                        </div>
                     </a>
                 </div>
+                {% endfor %}
             </div>
             {% for category in categories %}
             <div class="text-muted bg-gradient position-relative d-flex align-items-center mt-5">
@@ -76,8 +65,8 @@
                 <a class="btn btn-warning ms-auto border-cornered">مشاهده بیشتر></a>
             </div>
             <div class="row flex-row flex-nowrap mt-5">
-                {% for movie in movies %}
-                {% if movie.category == category.id%}
+                {% for movie in movies|filter_by_category:category.slug %}
+                {% if movie.category__slug == category.slug and forloop.counter <= 5 %}
                 <div class="position-relative product-box gap-1">
                     <a href="" class="d-block position-relative w-100 h-100" id="image-box">
                         <p class="bg-light text-dark opacity-100 rounded-top rounded-pill top-0 position-absolute normal-font" style="left: 5%;">+{{ movie.age_limit }}</p>
@@ -95,12 +84,8 @@
                 {% endfor %}
             </div>
             {% endfor %}
-        </div>
-    </div>
     {% endblock body %}
     {% block script %}
     <script src="{% static 'js/navbar.js' %}" type="text/javascript"></script>
     <script src="{% static 'js/product_list.js' %}" type="text/javascript"></script>
     {% endblock script %}
-</body>
-</html>

@@ -89,7 +89,19 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractBase):
     def admin_users(self):
         return self.objects.filter(is_admin=True)
     
-
+    def to_dict(self):
+        return {
+        'id': self.id or '',
+        "username" : self.username or '',
+        "email" : self.email or '',
+        "last_password_reset" : self.last_password_reset or '',
+        "first_name" : self.first_name or '',
+        "last_name" : self.last_name or '',
+        "city" : self.city or '',
+        "age" : self.age or '',
+        "ipaddress" : self.ipaddress or '',
+        "avatar" : str(self.avatar) or '',}
+    
 class Favorite(AbstractBase):
     movie = models.ForeignKey('products.Movie', verbose_name='فیلم', related_name='%(class)s', on_delete=models.CASCADE)
     user = models.ForeignKey(User, verbose_name='کاربر', related_name='%(class)s', on_delete=models.CASCADE)

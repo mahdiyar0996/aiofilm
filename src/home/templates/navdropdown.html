@@ -1,3 +1,4 @@
+
 <div id="dropdown-menu" class="d-none row flex-row mx-5 bg-darkcyan" >
     <div class="col-2 d-none d-md-flex flex-column bg-darkcyan" >
         {% for category in categories %}
@@ -38,12 +39,9 @@
         </div>
     </div>
     <div class="d-none d-md-flex flex-wrap flex-row justify-content-between gap-2 bg-darkcyan col-12 mt-3 mb-2">
-        <a id="movie" class="btn text-center col-2 bg-dark text-white py-3 fs-5 fs-5">فیلم و سریال</a>
-        <a id="movie" class="btn text-center col-2 bg-dark text-white py-3 fs-5 fs-5">فیلم و سریال</a>
-        <a id="movie" class="btn text-center col-2 bg-dark text-white py-3 fs-5 fs-5">فیلم و سریال</a>
-        <a id="movie" class="btn text-center col-2 bg-dark text-white py-3 fs-5 fs-5">فیلم و سریال</a>
-        <a id="movie" class="btn text-center col-2 bg-dark text-white py-3 fs-5 fs-5">فیلم و سریال</a>
-        <a id="movie" class="btn text-center col-2 bg-dark text-white py-3 fs-5 fs-5">فیلم و سریال</a>
+        {% for category in categories %}
+        <a id="movie" class="btn text-center col-2 text-white bg-lightdarkcyan py-3 fs-5 fs-5">{{ category.title }}</a>
+        {% endfor %}
     </div>
 <div id="mobile-menu" class="accordion d-md-none gap-2 d-flex flex-column col-12 align-items-center text-white">
     {% for category in categories %}

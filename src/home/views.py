@@ -5,32 +5,54 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from products.models import Category, Genre, Movie, Years
 from datetime import datetime, date
-# def binary_search(query):
-#     years = []
-#     for item in query:
-#         high = len(item) - 1
-#         low = 0
-#         while low <= high:
-#             mid = high // 2
-#             year = item['movie__release_at']
-#             if year 
+from django.db.models import Count
+from config.settings import redis
+from django.core.cache import cache
+from .templatetags.filters import order_by_merge_sort
+from .decorators import debugger
+
 
 class Home(View):
+    @debugger
     def get(self, request):
-        categories = Category.objects.prefetch_related('movie').all().values('id', 'title', 'slug')
-        category_name = []
-        for item in categories:
-            category_name.append(item['title'])
+        user = redis.hget(f"user-{request.session.get('_auth_user_id')}", 'id')
+        if not user:
+            user = request.user
+            redis.hset(f"user-{request.session.get('_auth_user_id')}", mapping=request.user.to_dict())
+
+        categories = cache.get('categories')
+        if not categories:
+            categories = Category.objects.all().values('id', 'title', 'slug')
+            cache.set('categories', categories)
+
+        genres = cache.get('categories-genres')
+        if not genres:
+            category_name = []
+            for item in categories:
+                category_name.append(item['title'])
+            genres = Genre.objects.prefetch_related('movie__category')\
+            .filter(movie__category__title__in=category_name).values('movie__category', 'title').distinct()
+            cache.set('categories-genres', genres)
             
-        genres = Genre.objects.prefetch_related('movie__category').filter(movie__category__title__in=category_name).values('movie__category', 'title').distinct()
-        years = Years.objects.prefetch_related('movie__category').all().distinct().values('movie__category', 'year')
-        movies = Movie.objects.select_related('category', 'year').all().values('year__year', 'image', 'name', 'imdb_rate',
-                                            'age_limit', 'is_ongoing', 'language',
-                                            'category').order_by('?')
+        years = cache.get('categories-years')
+        if not years:
+            years = Years.objects.prefetch_related('movie__category').all().distinct().values('movie__category', 'year')
+            cache.set('categories-years', years)
+        
+        movies = cache.get('random-movies')
+        if not movies:
+            movies = Movie.objects.select_related('category', 'year').prefetch_related('favorite').\
+            annotate(favorite_count=Count('favorite')).all().values('year__year', 'image',
+                                                                     'name', 'imdb_rate',
+                                                                     'age_limit', 'is_ongoing',
+                                                                     'language', 'created_at','favorite_count',
+                                                                     'category__slug').order_by('?')[:50]            
+            cache.set('random-movies', movies)
+
         context = {'genres': genres,
                    'years': years,
                    'movies': movies,
+                   'user': user,
                    'categories': categories}
-        print(dir(request))
-        return render(request,'home.html', context)
+        return render(request, 'home.html', context)
         

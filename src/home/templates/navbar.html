@@ -17,12 +17,15 @@
             <i class="fa fa-search text-light fs-1 w-100 h-100 m-1" onclick="searchDropDown()" style="cursor: pointer;"></i>
         </div>
         <div>
-            <!-- <a href="">
+            {% if not user %}
+            <a href="">
                 <i class="fa fa-sign-in text-light fs-1 w-100 h-100 m-1" style="cursor: pointer;" aria-hidden="true"></i>
-            </a> -->
+            </a>
+            {% else %}
             <a href="">
                 <i class="fa fa-user text-light fs-1 w-100 h-100 m-1" style="cursor: pointer;" aria-hidden="true"></i>
             </a>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -41,7 +44,11 @@
                 <i class="fa fa-search text-muted position-absolute fs-4 top-0 end-0 mt-2 me-2"></i>
             </form>
             <div class="bg-primary px-1 py-1 rounded rounded-2">
+                {% if not user %}
                 <a href="" class="text-white text-decoration-none">ورود / عضویت</a>
+                {% else %}
+                <a href="" class="text-white text-decoration-none">پنل کاربری</a>
+                {% endif %}
             </div>
         </div>
     </nav>

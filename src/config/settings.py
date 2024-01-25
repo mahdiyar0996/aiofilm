@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 from .localsettings import *
+from redis import StrictRedis
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -124,6 +125,7 @@ CACHES = {
         "LOCATION": "redis://127.0.0.1:6379/0",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "REDIS_CLIENT_KWARGS": {"decode_responses": True},
             "SOCKET_CONNECT_TIMEOUT": 5,  # seconds  connection timeout
             "SOCKET_TIMEOUT": 5,  # seconds  #read and write timeout
             "IGNORE_EXCEPTIONS": True,     #when redis is down dont raise exception
@@ -131,6 +133,7 @@ CACHES = {
         }
     }
 }
+redis = StrictRedis('localhost', 6379, 0, decode_responses=True)
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
