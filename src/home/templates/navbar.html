@@ -1,6 +1,6 @@
 
 {% block navbar %}
-<div id="modal" class="w-100 d-none" style="height: 0%;">
+<div id="modal" class="w-100 d-none overflow-auto" style="height: 0%;">
     <button class="btn text-light ms-5 mt-1" style="font-size: 50px;" onclick="dropdown()">&times;</button>
 </div>
 <div id="mobile-nav" class="d-md-none" style="background-color: rgba(0, 0, 0, 0.43);">
@@ -17,8 +17,11 @@
             <i class="fa fa-search text-light fs-1 w-100 h-100 m-1" onclick="searchDropDown()" style="cursor: pointer;"></i>
         </div>
         <div>
-            <a href="">
+            <!-- <a href="">
                 <i class="fa fa-sign-in text-light fs-1 w-100 h-100 m-1" style="cursor: pointer;" aria-hidden="true"></i>
+            </a> -->
+            <a href="">
+                <i class="fa fa-user text-light fs-1 w-100 h-100 m-1" style="cursor: pointer;" aria-hidden="true"></i>
             </a>
         </div>
     </div>

@@ -28,6 +28,14 @@ body {
 .link-warning{
   color: #fff;
 }
+.link-warning:focus, .link-warning:hover {
+  color: #ffcd39 !important;
+}
+
+
+.text-white{
+  color: #fff;
+}
 
 .bg-light {
   background-color: #d8dfe6 !important;

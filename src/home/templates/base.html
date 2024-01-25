@@ -3,16 +3,21 @@
 <head>
     {% block head %}
     {% endblock head %} 
+    {% load static %}
     <link rel="icon" href="media/siteimages/favicon.ico">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
 </head>
-<body dir="rtl" style="background-color: #131415; transition: 0.8s; " class="container-sm">
+<body dir="rtl" style="background-color: #131415; transition: 0.8s; " class="container-md">
     {% include "navbar.html" %}
     {% block body %}
     {% endblock body %}
     {% include "navdropdown.html" %}
     {% block script %}
     {% endblock script %}
+    <script src="{% static 'js/jquery-3.2.1.slim.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}" ></script>
 </body>
 </html>
