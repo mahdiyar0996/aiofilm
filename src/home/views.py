@@ -16,14 +16,17 @@ class Home(View):
     @debugger
     def get(self, request):
         user = redis.hget(f"user-{request.session.get('_auth_user_id')}", 'id')
-        if not user:
+        if not user and request.session.get('_auth_user_id'):
             user = request.user
-            redis.hset(f"user-{request.session.get('_auth_user_id')}", mapping=request.user.to_dict())
+            with redis.pipeline() as pipeline:
+                pipeline.hset(f"user-{request.session.get('_auth_user_id')}", mapping=request.user.to_dict())
+                pipeline.expire(f"user-{request.session.get('_auth_user_id')}", 60 * 30)
+                pipeline.execute()
 
         categories = cache.get('categories')
         if not categories:
             categories = Category.objects.all().values('id', 'title', 'slug')
-            cache.set('categories', categories)
+            cache.set('categories', categories, 60 * 180)
 
         genres = cache.get('categories-genres')
         if not genres:
@@ -32,12 +35,12 @@ class Home(View):
                 category_name.append(item['title'])
             genres = Genre.objects.prefetch_related('movie__category')\
             .filter(movie__category__title__in=category_name).values('movie__category', 'title').distinct()
-            cache.set('categories-genres', genres)
+            cache.set('categories-genres', genres, 60 * 120)
             
         years = cache.get('categories-years')
         if not years:
             years = Years.objects.prefetch_related('movie__category').all().distinct().values('movie__category', 'year')
-            cache.set('categories-years', years)
+            cache.set('categories-years', years, 60 * 120)
         
         movies = cache.get('random-movies')
         if not movies:
@@ -47,7 +50,7 @@ class Home(View):
                                                                      'age_limit', 'is_ongoing',
                                                                      'language', 'created_at','favorite_count',
                                                                      'category__slug').order_by('?')[:50]            
-            cache.set('random-movies', movies)
+            cache.set('random-movies', movies, 60 * 1)
 
         context = {'genres': genres,
                    'years': years,
