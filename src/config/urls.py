@@ -24,5 +24,6 @@ urlpatterns = [
     path("__debug__/", include("debug_toolbar.urls")),
     path('api-auth/', include('rest_framework.urls')),
     path('', include('home.urls')),
+    path('', include('users.urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

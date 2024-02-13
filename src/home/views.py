@@ -57,5 +57,6 @@ class Home(View):
                    'movies': movies,
                    'user': user,
                    'categories': categories}
+        
         return render(request, 'home.html', context)
         
