@@ -71,11 +71,3 @@ try{
         }
     })
 }catch{}
-
-
-function modalClose(){
-    const tag = document.querySelector('#modal')
-    if(!tag.classList.contains('d-none')){
-        tag.classList.add('d-none')
-    }
-}

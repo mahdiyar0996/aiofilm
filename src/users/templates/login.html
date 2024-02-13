@@ -14,6 +14,18 @@
 </head>
 <body dir="rtl">
     <div class="py-5" style="height: 100vh; background-repeat: no-repeat;background-size: cover;background-image: url(media/siteimages/background.jpg) ;">
+        {% if messages %}
+        <div id="modal" class="top-0 bottom-0 d-flex justify-content-center start-0 end-0 position-fixed bg-dark" style="z-index: 1050;">
+            <div class="d-flex flex-column mt-5 w-50 mb-auto bg-gray text-white position-relative">
+                <div class="w-100 text-start">
+                    <button class="position-absolute m-0 p-0 text-light btn" style="right: -14px;;top: -20px;" aria-hidden="true" onclick="modalClose()"><i class="fa fa-times fs-2"></i></button>
+                </div>
+                {% for msg in messages %}
+                <div class="my-4 text-center px-3">{{ msg }}</div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
         <div class="w-100 h-100 d-flex justify-content-center align-content-center">
             <div class="bg-dark rounded rounded-3 text-light h-100 overflow-auto" style="width: 580px;">
                 <div class="d-flex flex-column flex-nowrap my-5 px-5">
@@ -22,12 +34,12 @@
                         {% csrf_token %}
                         <p class="text-danger visually-hidden">رمزعبور یا نام کاربری اشتباه است</p>
                         <div class="form-group">
-                            <input type="text" name="username" class="form-control px-3 text-primary 
+                            <input type="text" name="username" class="form-control px-3 text-primary normal-font 
                             rounded rounded-0 bg-dark border-2 border-top-0 border-end-0 border-start-0"
                              placeholder="آدرس ایمیل یا نام کاربری" required>
                         </div>
                         <div class="form-group mt-3 position-relative">
-                            <input type="password" name="password" class="form-control px-3 text-primary 
+                            <input type="password" name="password" class="form-control px-3 text-primary normal-font 
                             rounded rounded-0 bg-dark border-2 border-top-0 border-end-0 border-start-0"
                             placeholder="گذرواژه" required>
                             <i id="showpassword" class="fa-regular fa-eye top-0 mt-2 me-3 end-0 position-absolute" style="cursor: pointer;"></i>

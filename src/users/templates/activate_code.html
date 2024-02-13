@@ -1,0 +1,7 @@
+{% autoescape off %}
+سلام {{ user.username }},
+برای فعال سازی حساب خود روی لینک زیر کلیک کنید
+{{ scheme }}://{{ domain }}{% url 'user-activate' uidb64=uid token=token %}
+
+    اگر شما درخواست عضویت ندادید این ایمیل را نادیده بگیرید شخص دیگری ممکن است ایمیل شما را به اشتباه وارد کرده باشد
+{% endautoescape %}

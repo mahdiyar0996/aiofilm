@@ -40,7 +40,7 @@ class UserManager(BaseUserManager):
         return user
 
     def create_user(self, username, email, password,
-                    is_superuser=False, is_staff=False, is_active=True, **kwargs):
+                    is_superuser=False, is_staff=False, is_active=False, **kwargs):
         return self._create_user(username, email, password, is_superuser=is_superuser,
                                  is_staff=is_staff, is_active=is_active, **kwargs)
     def create_superuser(self, username, email, password,
@@ -65,6 +65,7 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractBase):
     age = models.SmallIntegerField('سن', blank=True, null=True)
     is_superuser = models.BooleanField('ادمین', db_default=False, db_index=True)
     is_staff = models.BooleanField('کارکنان', db_default=False, db_index=True)
+    is_active = models.BooleanField("وضعیت", default=False)
     ipaddress = models.GenericIPAddressField('ایپی آدرس', blank=True, null=True)
     avatar = models.ImageField('آواتار', default='/media/users/default.jpg', upload_to='media/users/', blank=True, )
     objects = UserManager()
