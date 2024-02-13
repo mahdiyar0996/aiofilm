@@ -70,7 +70,6 @@ class ResetPasswordTokenView(APIView):
                 email = EmailMessage(subject='بازیابی رمزعبور', body=message, to=[user.email,], headers=headers)
                 th1 = Thread(target=email.send)
                 th1.start()
-                messages.success(request, 'لینک بازیابی به ایمیل شما ارسال شد', 'success')
                 return Response(status=status.HTTP_200_OK)
             except User.DoesNotExist:
                 messages.error(request, "کاربری با این ایمیل وجود ندارد", 'danger')

@@ -73,7 +73,9 @@ class ResetPasswordView(View):
         form = ResetPasswordForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            requests.post(request.build_absolute_uri(reverse('password-recovery-token')), data={'email': cd['email']})
+            r = requests.post(request.build_absolute_uri(reverse('password-recovery-token')), data={'email': cd['email']})
+            if r.status_code == 200:
+                messages.success(request, 'لینک بازیابی به ایمیل شما ارسال شد', 'success')
         return redirect('password-recovery')
 
 
