@@ -30,7 +30,6 @@ class LoginView(View):
         remember = request.POST.get('rememberme')
         if form.is_valid():
             cd =  form.cleaned_data
-            print(cd)
             if '@' in cd.get('username'):
                 user = User.objects.get(email=cd['username'].strip())
             else:
@@ -43,7 +42,7 @@ class LoginView(View):
                 return redirect('user_panel')
             else:
                 form.add_error('password', 'نام کاربری یا گذرواژه اشتباه است')
-        return render(request, 'login.html', {'form': form})
+        return render(request, 'login.html', {'form': form}, status=400)
 
 
 
@@ -60,11 +59,8 @@ class RegisterView(View):
                 user.set_password(form.cleaned_data['password1'])
                 user.ipaddress = request.META['REMOTE_ADDR']
                 user.save()
-                try:
-                    requests.get(request.build_absolute_uri(reverse('send-activate-code', args=[user.pk,])))
-                except ConnectionError:
-                    pass
-            except IntegrityError:
+                requests.get(request.build_absolute_uri(reverse('send-activate-code', args=[user.pk,])))
+            except (IntegrityError, ConnectionError):
                 pass
         return render(request, 'register.html', {'form': form})
 
@@ -77,16 +73,20 @@ class ResetPasswordView(View):
         form = ResetPasswordForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            r = requests.post(request.build_absolute_uri(reverse('password-recovery-token')), data={'email': cd['email']})
-            if r.status_code == 200:
-                messages.success(request, 'لینک بازیابی به ایمیل شما ارسال شد', 'success')
-        return redirect('password-recovery')
+            try:
+                r = requests.post(request.build_absolute_uri(reverse('password-recovery-token')), data={'email': cd['email']})
+                if r.status_code == 200:
+                    messages.success(request, 'لینک بازیابی به ایمیل شما ارسال شد', 'success')
+                    return redirect('password-recovery')
+            except ConnectionError:
+                pass
+        return render(request, 'password_reset.html', {'form': form}, status=400)
 
 
 class ResetPasswordCompleteView(View):
     def get(self, request, uidb64, token):
         try:
-            uid = urlsafe_base64_decode(uidb64)
+            uid = urlsafe_base64_decode(uidb64).decode()
             user = User.objects.get(pk=uid)
         except(TypeError, ValueError, OverflowError, User.DoesNotExist):
             user = None
@@ -110,5 +110,5 @@ class ResetPasswordCompleteView(View):
                 user.save()
                 messages.success(request, 'رمزعبور شما با موفقیت تغییر کرد', 'success')
             return redirect('login')
-        return render(request, 'password_reset_complete.html', {'form': form})
+        return render(request, 'password_reset_complete.html', {'form': form}, status=400)
 

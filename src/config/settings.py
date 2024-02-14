@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     "home",
     "payments",
     "products",
-    "users"
+    "users",
 ]
 
 DEBUG_TOOLBAR_PANELS = [        #django debug toolbar panels

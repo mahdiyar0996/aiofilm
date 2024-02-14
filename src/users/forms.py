@@ -75,6 +75,7 @@ class ResetPasswordCompleteForm(forms.Form):
     
     def clean(self):
         cd = self.cleaned_data
+        print(cd)
         password1 = cd['password1']
         password2 = cd['password2']
         re.search('\d', password1)

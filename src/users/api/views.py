@@ -37,7 +37,7 @@ class ActivateCodeView(APIView):
 class UserActivateView(APIView):
     def get(self, request, uidb64, token):
         try:
-            uid = urlsafe_base64_decode(uidb64)
+            uid = urlsafe_base64_decode(uidb64).decode()
             user = User.objects.get(pk=uid)
         except(TypeError, ValueError, OverflowError, User.DoesNotExist):
             user = None
