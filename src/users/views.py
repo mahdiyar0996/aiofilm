@@ -18,7 +18,7 @@ from .tokens import email_verification_token
 from .forms import LoginForm, RegisterForm, ResetPasswordForm, ResetPasswordCompleteForm
 from django.contrib import messages
 import requests
-
+from requests.exceptions import ConnectionError
 
 class LoginView(View):
     def get(self, request):
@@ -58,8 +58,12 @@ class RegisterView(View):
             try:
                 user = form.save(commit=False)
                 user.set_password(form.cleaned_data['password1'])
+                user.ipaddress = request.META['REMOTE_ADDR']
                 user.save()
-                requests.get(request.build_absolute_uri(reverse('send-activate-code', args=[user.pk,])))
+                try:
+                    requests.get(request.build_absolute_uri(reverse('send-activate-code', args=[user.pk,])))
+                except ConnectionError:
+                    pass
             except IntegrityError:
                 pass
         return render(request, 'register.html', {'form': form})

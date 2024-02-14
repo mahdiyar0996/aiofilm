@@ -34,7 +34,7 @@ class RegisterForm(forms.ModelForm):
         password1 = cd['password1']
         password2 = cd['password2']
         re.search('\d', password1)
-        if not re.search('\d', password1):
+        if not re.search('\d', password1) or password1.lower() == password1:
             self.add_error('password1', 'رمز عبور باید حداقل ۸ کاراکتر و یک حرف بزرگ و یک عدد داشته باشد')
         elif password2 != password1:
             self.add_error('password2', 'رمز عبور مطابقت ندارد')

@@ -29,6 +29,7 @@ class ActivateCodeView(APIView):
         email = EmailMessage(subject='فعال سازی حساب کاربری', body=message, to=[user.email,], headers=headers)
         th1 = Thread(target=email.send)
         th1.start()
+    
         return Response(status=status.HTTP_200_OK)
         
         

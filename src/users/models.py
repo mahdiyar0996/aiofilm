@@ -4,6 +4,8 @@ from django.contrib.auth.models import (BaseUserManager, Group as DjangoGroup,
                                         AbstractBaseUser,
                                         PermissionsMixin,)
 from django_jalali.db import models as jmodels
+from .validators import valid_username, valid_email, valid_password
+
 
 class AbstractBase(models.Model):
     updated_at = jmodels.jDateTimeField("اخرین بروزرسانی",auto_now=True)
@@ -50,13 +52,13 @@ class UserManager(BaseUserManager):
         
 class User(AbstractBaseUser, PermissionsMixin, AbstractBase):
     objects = UserManager()
-    username = models.CharField('نام کاربری', max_length=64, unique=True, 
+    username = models.CharField('نام کاربری', max_length=64, unique=True, validators=[valid_username()],
                                 error_messages={'unique': 'کاربری با این نام وجود دارد',
                                                 'invalid': 'نام کاربری باید از حروف,اعداد و ـ باشد'})
-    email = models.EmailField('ایمیل' ,max_length=64, unique=True,
+    email = models.EmailField('ایمیل' ,max_length=64, unique=True, validators=[valid_email()],
                               error_messages={'unique': 'کاربری با این ایمیل وجود دارد',
                                               'invalid': 'لطفا یک ایمیل معتبر وارد کنید'})
-    password = models.CharField('رمز عبور', max_length=254,
+    password = models.CharField('رمز عبور', max_length=254, validators=[valid_password()],
                                 error_messages={'invalid': 'رمز کاربری باید ۸ کاراکتر یا بیشتر باشد و یک حرف بزرگ  و یک عدد داشته باشد'})
     last_password_reset = models.DateTimeField("زمان آخرین تغییر رمزعبور",null=True, blank=True)
     first_name = models.CharField('نام', max_length=64, blank=True, null=True)
