@@ -182,3 +182,24 @@ function getPayment(tagList){
     }
 }
 
+
+function userModal(){
+    userBar = document.querySelector('#user-modal')
+    if(userBar.classList.contains('d-none')){
+        userBar.classList.remove('d-none')
+    }
+    else{
+        userBar.classList.add('d-none')
+    }
+}
+
+
+function userModalClose(){
+    userBar = document.querySelector('#user-modal')
+    if(userBar.classList.contains('d-none')){
+        userBar.classList.remove('d-none')
+    }
+    else{
+        userBar.classList.add('d-none')
+    }
+}
