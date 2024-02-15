@@ -19,6 +19,7 @@ from .forms import LoginForm, RegisterForm, ResetPasswordForm, ResetPasswordComp
 from django.contrib import messages
 import requests
 from requests.exceptions import ConnectionError
+from django.db import transaction
 
 class LoginView(View):
     def get(self, request):
@@ -55,13 +56,14 @@ class RegisterView(View):
         form = RegisterForm(request.POST, initial=request.POST)
         if form.is_valid():
             try:
-                user = form.save(commit=False)
-                user.set_password(form.cleaned_data['password1'])
-                user.ipaddress = request.META['REMOTE_ADDR']
-                user.save()
-                requests.get(request.build_absolute_uri(reverse('send-activate-code', args=[user.pk,])))
+                with transaction.atomic():
+                    user = form.save(commit=False)
+                    user.set_password(form.cleaned_data['password1'])
+                    user.ipaddress = request.META['REMOTE_ADDR']
+                    user.save()
+                    requests.get(request.build_absolute_uri(reverse('send-activate-code', args=[user.pk,])))
             except (IntegrityError, ConnectionError):
-                pass
+                messages.error(request, 'مشکلی در ساخت حساب شما پیش آمد بعدا امتحان کنید')
         return render(request, 'register.html', {'form': form})
 
 class ResetPasswordView(View):
