@@ -5,7 +5,7 @@ from django.contrib.auth.models import (BaseUserManager, Group as DjangoGroup,
                                         PermissionsMixin,)
 from django_jalali.db import models as jmodels
 from .validators import valid_username, valid_email, valid_password
-
+from config.settings import redis
 
 class AbstractBase(models.Model):
     updated_at = jmodels.jDateTimeField("اخرین بروزرسانی",auto_now=True)
@@ -104,6 +104,17 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractBase):
         "age" : self.age or '',
         "ipaddress" : self.ipaddress or '',
         "avatar" : str(self.avatar) or '',}
+        
+    def get_current_user(request):
+        user_id = request.session.get('_auth_user_id')
+        user = redis.hget(f"user-{user_id}", 'id')
+        if not user and user_id:
+            user = request.user
+            with redis.pipeline() as pipeline:
+                pipeline.hset(f"user-{user_id}", mapping=request.user.to_dict())
+                pipeline.expire(f"user-{user_id}", 60 * 30)
+                pipeline.execute()
+        return user
     
 class Favorite(AbstractBase):
     movie = models.ForeignKey('products.Movie', verbose_name='فیلم', related_name='%(class)s', on_delete=models.CASCADE)

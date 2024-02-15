@@ -122,3 +122,11 @@ class ResetPasswordCompleteView(View):
             return redirect('login')
         return render(request, 'password_reset_complete.html', {'form': form}, status=400)
 
+
+
+class UserPanelView(View):
+    def get(self, request):
+        user = request.user
+        context = {'user': user,
+                   }
+        return render(request, 'user_panel_dashboard.html', context)
