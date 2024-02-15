@@ -11,6 +11,12 @@
 
 @media only screen and (max-width: 767px) {
     .product-box{
-      width: 50%;
+      width: 31%;
     }
+}
+
+@media only screen and (max-width: 576px) {
+  .product-box{
+    width: 50%;
+  }
 }
