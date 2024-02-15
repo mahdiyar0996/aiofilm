@@ -26,21 +26,27 @@
                     <br>
                     <div class="modal-body border-0 d-flex flex-column w-100 text-white">
                         <p>لطفا اشتراک خود را انتخاب کنید</p>
+                        {% for subscribe in subscribes %}
                         <div class="package-box-bg bg-hover-darkyellow text-dark rounded my-2">
                             <a href="" class="package-box-link text-decoration-none">
                                 <div class="d-flex rounded-pill mx-2 flex-row text-dark justify-content-between border-top-0 border-bottom-0 py-3 px-3" style="border: dotted;">
-                                    <div>چوبی</div>
-                                    <div id="discount" class="normal-font text-decoration-line-through"><span>150000</span> تومان </div>
-                                    <div id="price" class="normal-font"><span>140000</span> تومان </div>
-                                    <div id="day" class="normal-font"><span>7</span> روز </div>
+                                    <div>{{subscribe.name}}</div>
+                                    {% if subscribe.discount %}
+                                    <div id="price" class="normal-font text-muted text-decoration-line-through"><span>{{ subscribe.price }}</span> تومان </div>
+                                    <div id="discount" class="normal-font"><span>{{subscribe.discount}}</span> تومان </div>
+                                    {% else %}
+                                    <div id="price" class="normal-font"><span>{{subscribe.price}}</span> تومان </div>
+                                    {% endif %}
+                                    <div id="day" class="normal-font"><span>{{ subscribe.time }}</span> روز </div>
                                 </div>
                             </a>
                         </div>
+                        {% endfor %}
                         <p class="mt-3 text-white">درگاه پرداختی خود را انتخاب کنید</p>
                         <div id="gateways" class="d-flex flex-wrap justify-content-between flex-row w-100 gap-3">
-                            <a href="" class="gateway-bg col-5 col-md-3 bg-hover-darkyellow text-decoration-none text-dark text-center">بانک سامان</a>
-                            <a href="" class="gateway-bg col-5 col-md-3 bg-hover-darkyellow text-decoration-none text-dark text-center">زرین پال</a>
-                            <a href="" class="gateway-bg col-5 col-md-3 bg-hover-darkyellow text-decoration-none text-dark text-center">بانک صادرات</a>
+                            {% for bank in payment_methods %}
+                            <a href="" class="gateway-bg col-5 col-md-3 bg-hover-darkyellow text-decoration-none text-dark text-center">{{ bank.name }}</a>
+                            {% endfor %}
                         </div>
                         <div id="payment-details" class="d-none">
                             <div class="d-flex flex-row flex-wrap gap-1 justify-content-between mt-2 align-items-center mt-4">
@@ -72,9 +78,9 @@
                             <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
                           </svg>
                         </a>
-                        <a href="" class="border border-3 border-primary rounded rounded-pill text-warning"><svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+                        <a href="" class="position-relative border border-3 border-primary rounded rounded-pill text-warning"><svg xmlns="http://www.w3.org/2000/svg" width="54" height="54" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
                             <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6"/>
-                          </svg></a>
+                          </svg><span class="position-absolute border border-1 d-flex justify-content-center align-items-center p-2 bg-warning text-dark badge-circle">{{notifications_count.count}}</span></a>
                     </div>
                 </div>
                 <div class="fs-5 text-white mt-5">

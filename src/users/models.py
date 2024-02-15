@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import F, Q
+from django.db.models import F, Q, Count
 from django.contrib.auth.models import (BaseUserManager, Group as DjangoGroup,
                                         AbstractBaseUser,
                                         PermissionsMixin,)
@@ -68,6 +68,7 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractBase):
     is_superuser = models.BooleanField('ادمین', db_default=False, db_index=True)
     is_staff = models.BooleanField('کارکنان', db_default=False, db_index=True)
     is_active = models.BooleanField("وضعیت", default=False)
+    subscribe = models.DurationField('زمان اشتراک', blank=True, null=True)
     ipaddress = models.GenericIPAddressField('ایپی آدرس', blank=True, null=True)
     avatar = models.ImageField('آواتار', default='/media/users/default.jpg', upload_to='media/users/', blank=True, )
     objects = UserManager()
@@ -207,3 +208,24 @@ class TicketReply(AbstractBase):
     
     def __str__(self):
         return self.user.username
+    
+class Notification(AbstractBase):
+    user = models.ForeignKey(User, verbose_name='کاربر', related_name='%(class)s', on_delete=models.DO_NOTHING, blank=True, null=True)
+    subject =  models.CharField('موضوع',max_length=255,)
+    message = models.TextField('پیغام',)
+    is_read = models.BooleanField('خوانده شده',default=False, blank=True)
+    class Meta:
+        db_table = 'Notification'
+        verbose_name = 'notification'
+        verbose_name_plural = 'notifications'
+    
+    def __str__(self):
+        return self.subject
+    
+    
+    def get_notification_count():
+        notifications_count = Notification.objects.filter(Q(is_read=False) & Q(user=None)).aggregate(count=Count('id'))
+        return notifications_count
+        
+    
+    

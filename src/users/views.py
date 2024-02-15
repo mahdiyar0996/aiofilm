@@ -13,15 +13,17 @@ from django.core.cache import cache
 from django.contrib.sites.shortcuts import get_current_site
 from django.db import IntegrityError
 from datetime import datetime, date
-from .models import User
-from .tokens import email_verification_token
-from .forms import LoginForm, RegisterForm, ResetPasswordForm, ResetPasswordCompleteForm
 from django.contrib import messages
 import requests
 from requests.exceptions import ConnectionError
 from django.db import transaction
 import logging
-
+from .models import User, Notification
+from .tokens import email_verification_token
+from .forms import LoginForm, RegisterForm, ResetPasswordForm, ResetPasswordCompleteForm
+from payments.models import Subscribe, Payment, PaymentMethod
+from home.views import get_navbar
+from django.db.models import Q
 
 class LoginView(View):
     def get(self, request):
@@ -126,7 +128,16 @@ class ResetPasswordCompleteView(View):
 
 class UserPanelView(View):
     def get(self, request):
-        user = request.user
-        context = {'user': user,
+        user = User.get_current_user
+        notifications_count = Notification.get_notification_count()
+        payment_methods = PaymentMethod.objects.all().values('name', 'id')
+        subscribes = Subscribe.objects.all().values('name', 'price', 'discount', 'time')
+        for item in subscribes:
+            if item['discount']:
+                item['discount'] = abs((item['price'] * item['discount'] // 100) - item['price'])
+        context = {**get_navbar(),'user': user,
+                   'notifications_count': notifications_count,
+                   'subscribes': subscribes,
+                   'payment_methods': payment_methods,
                    }
         return render(request, 'user_panel_dashboard.html', context)

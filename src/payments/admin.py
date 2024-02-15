@@ -4,7 +4,7 @@ from .models import Subscribe, Payment, PaymentMethod
 
 @admin.register(Subscribe)
 class SubscribeAdmin(admin.ModelAdmin):
-    fields = ['id','name', 'price', 'discount', 'time', 'is_active', 'created_at', 'updated_at']
+    fields = ['name', 'price', 'discount', 'time', 'is_active', 'created_at', 'updated_at']
     list_display = ['id', 'name', 'price', 'discount', 'is_active', 'created_at', 'updated_at']
     list_display_links = ['id', 'name']
     list_filter = ['is_active',]
@@ -13,7 +13,7 @@ class SubscribeAdmin(admin.ModelAdmin):
 
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
-    fields = ['id', 'user', 'subscribe', 'method']
+    fields = ['user', 'subscribe', 'method']
     list_display = ['id', 'user', 'subscribe', 'method']
     list_display_links = ['id', 'user', 'subscribe', 'method']
     list_filter = ['subscribe', 'method']
@@ -23,7 +23,7 @@ class PaymentAdmin(admin.ModelAdmin):
 
 @admin.register(PaymentMethod)
 class PaymentMethodAdmin(admin.ModelAdmin):
-    fields = ['id', 'name', 'is_active', 'created_at', 'updated_at']
+    fields = ['name', 'is_active', 'created_at', 'updated_at']
     list_display = ['id', 'name', 'is_active', 'created_at', 'updated_at']
     list_display_links = ['id', 'name']
     list_filter = ['name',]

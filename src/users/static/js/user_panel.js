@@ -138,44 +138,46 @@ try{
 }catch{}
 
 
-try{
-    const GatewayTags = document.querySelectorAll('.gateway-bg')
-    for(let tag of GatewayTags){
-        tag.addEventListener('click',event=>{
-            event.preventDefault()
-            const tagList = tag.parentElement.children
-            for(let tag of tagList){
-                if(tag.classList.contains('bg-darkyellow')){
-                    tag.classList.remove('bg-darkyellow')
-                    tag.classList.add('bg-hover-darkyellow')
-                }
+// try{
+const GatewayTags = document.querySelectorAll('.gateway-bg')
+for(let tag of GatewayTags){
+    tag.addEventListener('click',event=>{
+        event.preventDefault()
+        const tagList = tag.parentElement.children
+        for(let tag of tagList){
+            if(tag.classList.contains('bg-darkyellow')){
+                tag.classList.remove('bg-darkyellow')
+                tag.classList.add('bg-hover-darkyellow')
             }
-            if(tag.classList.contains('bg-hover-darkyellow')){
-                tag.classList.remove('bg-hover-darkyellow')
-                tag.classList.add('bg-darkyellow')
-                const packageTags = document.querySelectorAll('.package-box-bg')
-                getPayment(packageTags)
-            }
-        })
-    }
-}catch{}
+        }
+        if(tag.classList.contains('bg-hover-darkyellow')){
+            tag.classList.remove('bg-hover-darkyellow')
+            tag.classList.add('bg-darkyellow')
+            const packageTags = document.querySelectorAll('.package-box-bg')
+            getPayment(packageTags)
+        }
+    })
+}
+// }catch{}
 
 
 function getPayment(tagList){
     for(let package of tagList){
         if(package.classList.contains('bg-darkyellow')){
-            let packageDays = package.querySelector('#day')
-            let packagePrice = package.querySelector('#price')
+            let packageDays = package.querySelector('#day').innerText
+            let packagePrice = package.querySelector('#price').innerText.split(' ')[0]
             let packageDiscount = package.querySelector('#discount')
-
+            if(packageDiscount){
+                packageDiscount = packageDiscount.innerText.split(' ')[0]
+            }else{
+                packageDiscount = packagePrice
+            }
             let payment = document.querySelector('#payment-details')
             payment.classList.remove('d-none')
             let paymentList = payment.children[0].children
-            let price = packagePrice.innerText.split(' ')[0]
-            let discount = packageDiscount.innerText.split(' ')[0]
-            paymentList[1].innerText = `${packageDays.innerText} (${price} تومان)`
-            paymentList[3].innerText = `${price - discount} تومان`
-            paymentList[5].innerText = `${discount} تومان`
+            paymentList[1].innerText = `${packageDays} (${packagePrice} تومان)`
+            paymentList[3].innerText = `${packagePrice - packageDiscount} تومان`
+            paymentList[5].innerText = `${packageDiscount} تومان`
         }
     }
 }

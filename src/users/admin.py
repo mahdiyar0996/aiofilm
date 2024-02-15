@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin, GroupAdmin
-from .models import User, Groups,Favorite, Bookmark, Comment, Reply, Ticket, TicketReply
+from .models import User, Groups,Favorite, Bookmark, Comment, Reply, Ticket, TicketReply, Notification
 
 class FavoriteAdmin(admin.StackedInline):
     model = Favorite
@@ -27,7 +27,7 @@ class UserAdmin(DjangoUserAdmin):
         ("Permissions",{"fields": ("groups","user_permissions",),},),
         ('', {'fields': ['username', 'email', "avatar",'password', 'ipaddress']}),
         ('', {'fields': ['first_name', 'last_name', 'city', 'age']}),
-        ('', {'fields': ['is_superuser', 'is_staff', 'is_active']}),
+        ('', {'fields': ['is_superuser', 'is_staff', 'is_active', 'subscribe']}),
         ('', {'fields': ['created_at', 'updated_at', 'last_password_reset']})
     )
     list_display = ['id', 'username', 'email', 'is_active', 'is_staff', 'is_superuser']
@@ -84,4 +84,11 @@ class TicketReplyAdmin(admin.ModelAdmin):
     fields = ['ticket', 'message', 'file', 'created_at', 'updated_at']
     list_display = ['id', 'ticket', 'is_active', 'created_at', 'updated_at']
     list_display_links = ['id', 'ticket']
+    readonly_fields = ['created_at', 'updated_at']
+
+@admin.register(Notification)
+class TicketReplyAdmin(admin.ModelAdmin):
+    fields = ['subject', 'message', 'is_active', 'created_at', 'updated_at']
+    list_display = ['id', 'subject', 'message', 'is_active', 'created_at', 'updated_at']
+    list_display_links = ['id', 'subject']
     readonly_fields = ['created_at', 'updated_at']
