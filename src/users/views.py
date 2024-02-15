@@ -20,6 +20,8 @@ from django.contrib import messages
 import requests
 from requests.exceptions import ConnectionError
 from django.db import transaction
+import logging
+
 
 class LoginView(View):
     def get(self, request):
@@ -54,16 +56,21 @@ class RegisterView(View):
     
     def post(self, request):
         form = RegisterForm(request.POST, initial=request.POST)
+        ipaddress = request.META['REMOTE_ADDR']
         if form.is_valid():
             try:
                 with transaction.atomic():
                     user = form.save(commit=False)
                     user.set_password(form.cleaned_data['password1'])
-                    user.ipaddress = request.META['REMOTE_ADDR']
+                    user.ipaddress = ipaddress
                     user.save()
-                    requests.get(request.build_absolute_uri(reverse('send-activate-code', args=[user.pk,])))
-            except (IntegrityError, ConnectionError):
-                messages.error(request, 'مشکلی در ساخت حساب شما پیش آمد بعدا امتحان کنید')
+                    try:   
+                        requests.get(request.build_absolute_uri(reverse('send-activate-code', args=[user.pk,])))
+                    except (ConnectionError) as error:
+                        logging.error(f'{error} IPAddress: {ipaddress}')
+                        messages.error(request, 'مشکلی در ساخت حساب شما پیش آمد بعدا امتحان کنید')
+            except (IntegrityError):
+                pass
         return render(request, 'register.html', {'form': form})
 
 class ResetPasswordView(View):
@@ -73,6 +80,7 @@ class ResetPasswordView(View):
 
     def post(self, request):
         form = ResetPasswordForm(request.POST)
+        ipaddress = request.META['REMOTE_ADDR']
         if form.is_valid():
             cd = form.cleaned_data
             try:
@@ -80,8 +88,8 @@ class ResetPasswordView(View):
                 if r.status_code == 200:
                     messages.success(request, 'لینک بازیابی به ایمیل شما ارسال شد', 'success')
                     return redirect('password-recovery')
-            except ConnectionError:
-                pass
+            except ConnectionError as error:
+                logging.error(f'{error} IPAddress: {ipaddress}')
         return render(request, 'password_reset.html', {'form': form}, status=400)
 
 

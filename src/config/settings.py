@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 from .localsettings import *
+import logging
 from redis import StrictRedis
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -65,6 +66,13 @@ DEBUG_TOOLBAR_PANELS = [        #django debug toolbar panels
     'debug_toolbar.panels.redirects.RedirectsPanel',
     'debug_toolbar.panels.profiling.ProfilingPanel',
 ]
+
+
+logger = logging.basicConfig(filename='errors.py',
+                             filemode='w',
+                             level=logging.DEBUG, encoding='utf-8',
+                             format='%(levelname)s:%(message)s %(asctime)s',
+                             datefmt=('%Y/%m/%d  %H:%M %p'),)
 
 
 MIDDLEWARE = [
