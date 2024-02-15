@@ -165,10 +165,10 @@ function getPayment(tagList){
     for(let package of tagList){
         if(package.classList.contains('bg-darkyellow')){
             let packageDays = package.querySelector('#day').innerText
-            let packagePrice = package.querySelector('#price').innerText.split(' ')[0]
+            let packagePrice = package.querySelector('#price').innerText.split(' ')[0].replace(',', '')
             let packageDiscount = package.querySelector('#discount')
             if(packageDiscount){
-                packageDiscount = packageDiscount.innerText.split(' ')[0]
+                packageDiscount = packageDiscount.innerText.split(' ')[0].replace(',', '')
             }else{
                 packageDiscount = packagePrice
             }

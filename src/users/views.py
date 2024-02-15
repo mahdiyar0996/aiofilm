@@ -12,7 +12,7 @@ from config.settings import redis
 from django.core.cache import cache
 from django.contrib.sites.shortcuts import get_current_site
 from django.db import IntegrityError
-from datetime import datetime, date
+from datetime import datetime
 from django.contrib import messages
 import requests
 from requests.exceptions import ConnectionError
@@ -24,6 +24,7 @@ from .forms import LoginForm, RegisterForm, ResetPasswordForm, ResetPasswordComp
 from payments.models import Subscribe, Payment, PaymentMethod
 from home.views import get_navbar
 from django.db.models import Q
+import jdatetime
 
 class LoginView(View):
     def get(self, request):
@@ -128,16 +129,48 @@ class ResetPasswordCompleteView(View):
 
 class UserPanelView(View):
     def get(self, request):
-        user = User.get_current_user
-        notifications_count = Notification.get_notification_count()
-        payment_methods = PaymentMethod.objects.all().values('name', 'id')
-        subscribes = Subscribe.objects.all().values('name', 'price', 'discount', 'time')
+        user = User.get_current_user(request)
+        days = abs((datetime.now().date() -
+                                 datetime.strptime(
+                                     user['subscribe'],
+                                     '%Y-%m-%d %H:%M:%S.%f%z').date())).days
+        user['subscribe'] = days if days > 0 else 0
+        user_id = request.session.get('_auth_user_id')
+        
+        notifications_count = redis.hgetall(f'notification-{user_id}')
+        print(notifications_count)
+        if not notifications_count:
+            notifications_count = Notification.get_notification_count()
+            with redis.pipeline() as pipeline:
+                pipeline.hset(f'notification-{user_id}', 'count', str(notifications_count['count']))
+                pipeline.expire(f'notification-{user_id}', 60 * 10)
+                pipeline.execute()
+            
+        payment_methods = cache.get(f'payment-methods')
+        if not payment_methods:
+            payment_methods = PaymentMethod.objects.all().values('name', 'id')
+            cache.set(f'payment-methods', payment_methods, 60 * 60 * 12)
+            
+        payments = cache.get(f'payment-{user_id}')
+        if not payments:
+            payments = Payment.objects.select_related('subscribe').filter(user__pk=user['id']).values(
+                'price', 'subscribe__time', 'method__name', 'created_at')[:10]
+            cache.set(f'payment-{user_id}', payments, 60 * 10)
+        for item in payments:
+            item['created_at'] = jdatetime.datetime.strptime(str(item['created_at']), '%Y-%m-%d %H:%M:%S.%f%z').date
+        subscribes =  cache.get('subscribes')
+        if not subscribes:
+            subscribes = Subscribe.objects.all().values('name', 'price', 'discount', 'time')
+            cache.set('subscribes', subscribes, 60 * 60 * 24)
         for item in subscribes:
             if item['discount']:
                 item['discount'] = abs((item['price'] * item['discount'] // 100) - item['price'])
+                
         context = {**get_navbar(),'user': user,
                    'notifications_count': notifications_count,
                    'subscribes': subscribes,
+                   'payments': payments,
                    'payment_methods': payment_methods,
                    }
+        
         return render(request, 'user_panel_dashboard.html', context)

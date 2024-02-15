@@ -84,6 +84,10 @@ def filter_by_category_name(value, ordering):
     result = filter(lambda x:x if x['category__slug'] == ordering else None, value)
     return result
     
+@register.filter(name='split_with_comma')
+def split_with_comma(value):
+    result = '{:,}'.format(value)
+    return result
 
 # @register.filter(name='build_absolute_url')
 # def build_absolute_url(value, request):

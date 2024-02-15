@@ -13,8 +13,8 @@ class SubscribeAdmin(admin.ModelAdmin):
 
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
-    fields = ['user', 'subscribe', 'method']
-    list_display = ['id', 'user', 'subscribe', 'method']
+    fields = ['user', 'subscribe', 'price','method']
+    list_display = ['id', 'user', 'subscribe', 'price', 'method']
     list_display_links = ['id', 'user', 'subscribe', 'method']
     list_filter = ['subscribe', 'method']
     search_fields = ['user',]

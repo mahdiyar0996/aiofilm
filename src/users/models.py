@@ -68,7 +68,7 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractBase):
     is_superuser = models.BooleanField('ادمین', db_default=False, db_index=True)
     is_staff = models.BooleanField('کارکنان', db_default=False, db_index=True)
     is_active = models.BooleanField("وضعیت", default=False)
-    subscribe = models.DurationField('زمان اشتراک', blank=True, null=True)
+    subscribe = models.DateTimeField('زمان اشتراک', blank=True, null=True)
     ipaddress = models.GenericIPAddressField('ایپی آدرس', blank=True, null=True)
     avatar = models.ImageField('آواتار', default='/media/users/default.jpg', upload_to='media/users/', blank=True, )
     objects = UserManager()
@@ -97,6 +97,7 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractBase):
         return {
         'id': self.id or '',
         "username" : self.username or '',
+        'subscribe': str(self.subscribe) or '',
         "email" : self.email or '',
         "last_password_reset" : self.last_password_reset or '',
         "first_name" : self.first_name or '',
@@ -106,11 +107,14 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractBase):
         "ipaddress" : self.ipaddress or '',
         "avatar" : str(self.avatar) or '',}
         
-    def get_current_user(request):
+    def get_current_user(request, field=None):
         user_id = request.session.get('_auth_user_id')
-        user = redis.hget(f"user-{user_id}", 'id')
+        if field:
+            user = redis.hget(f"user-{user_id}", field)
+        else:
+            user = redis.hgetall(f"user-{user_id}")
         if not user and user_id:
-            user = request.user
+            user = request.user.to_dict()
             with redis.pipeline() as pipeline:
                 pipeline.hset(f"user-{user_id}", mapping=request.user.to_dict())
                 pipeline.expire(f"user-{user_id}", 60 * 30)

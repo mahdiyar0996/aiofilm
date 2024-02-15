@@ -39,7 +39,7 @@ def get_navbar():
 class Home(View):
     @debugger
     def get(self, request):
-        user = User.get_current_user(request)
+        user = User.get_current_user(request, 'id')
         movies = cache.get('random-movies')
         if not movies:
             movies = Movie.objects.select_related('category', 'year').prefetch_related('favorite').\
