@@ -50,7 +50,12 @@ class LoginView(View):
                 form.add_error('password', 'نام کاربری یا گذرواژه اشتباه است')
         return render(request, 'login.html', {'form': form}, status=400)
 
-
+class LogoutView(View):
+    def get(self, request):
+        user_id = request.session.get('_auth_user_id')
+        user = redis.delete(f"user-{user_id}")
+        logout(request)
+        return redirect('home')
 
 class RegisterView(View):
     def get(self, request):
