@@ -71,7 +71,7 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractBase):
     is_active = models.BooleanField("وضعیت", default=False)
     subscribe = models.DateTimeField('زمان اشتراک', blank=True, null=True)
     ipaddress = models.GenericIPAddressField('ایپی آدرس', blank=True, null=True)
-    avatar = models.ImageField('آواتار', default='users/default.jpg', upload_to='media/users/', blank=True, )
+    avatar = models.ImageField('آواتار', default='users/default.jpg', upload_to='users/', blank=True, )
     USERNAME_FIELD = 'username'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = ['email', 'password']
@@ -120,7 +120,6 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractBase):
                 pipeline.hset(f"user-{user_id}", mapping=request.user.to_dict())
                 pipeline.expire(f"user-{user_id}", 60 * 30)
                 pipeline.execute()
-        # user['avatar'] = request.build_absolute_uri(user['avatar'])
         return user
     
     
