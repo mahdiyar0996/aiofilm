@@ -18,7 +18,7 @@ import requests
 from requests.exceptions import ConnectionError
 from django.db import transaction
 import logging
-from .models import User, Notification
+from .models import User, Notification, Ticket, TicketReply
 from .tokens import email_verification_token
 from .forms import LoginForm, RegisterForm, ResetPasswordForm, ResetPasswordCompleteForm, ChangePasswordForm,ChangeUserInformationForm
 from payments.models import Subscribe, Payment, PaymentMethod
@@ -138,8 +138,7 @@ class ResetPasswordCompleteView(View):
 class PanelView(View):
     def get(self, request):
         user = User.get_current_user(request)
-        # print(user[])
-        # print(type(user.get('subscribe')))
+        print(type(user.get('subscribe')))
         if user['subscribe'] != 'None':
             days = abs((datetime.now().date() -
                                     datetime.strptime(
@@ -251,5 +250,12 @@ class PanelEditAccountView(View):
 
 class TicketListView(View):
     def get(self, request):
-        context = {}
+        user = User.get_current_user(request)
+        user_id = request.session.get('_auth_user_id')
+        notifications_count = Notification.get_user_notifications_count(user_id)
+        tickets = Ticket.objects.filter(user__pk=user['id']).order_by('created_at').values('department', 'subject', 'admin_closed', 'user_closed','message', 'updated_at')
+        
+        context = {**get_navbar(),'user': user,
+                   'notifications_count': notifications_count,
+                   'tickets': tickets}
         return render(request, 'user_panel_ticket.html', context)

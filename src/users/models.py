@@ -6,6 +6,8 @@ from django.contrib.auth.models import (BaseUserManager, Group as DjangoGroup,
 from django_jalali.db import models as jmodels
 from .validators import valid_username, valid_email, valid_password
 from config.settings import redis
+import json
+
 
 class AbstractBase(models.Model):
     updated_at = jmodels.jDateTimeField("اخرین بروزرسانی",auto_now=True)
@@ -110,17 +112,17 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractBase):
         
     def get_current_user(request, field=None):
         user_id = request.session.get('_auth_user_id')
-        if field:
-            user = redis.hget(f"user-{user_id}", field)
-        else:
+        if not field:
             user = redis.hgetall(f"user-{user_id}")
-        if not user and user_id:
-            user = request.user.to_dict()
-            with redis.pipeline() as pipeline:
-                pipeline.hset(f"user-{user_id}", mapping=request.user.to_dict())
-                pipeline.expire(f"user-{user_id}", 60 * 30)
-                pipeline.execute()
-        user['avatar'] = request.build_absolute_uri('/media/' + user['avatar'])
+            if not user and user_id:
+                user = request.user.to_dict()
+                with redis.pipeline() as pipeline:
+                    pipeline.hset(f"user-{user_id}", mapping=request.user.to_dict())
+                    pipeline.expire(f"user-{user_id}", 60 * 30)
+                    pipeline.execute()
+            user['avatar'] = request.build_absolute_uri('/media/' + user['avatar'])
+        else:
+            user = redis.hget(f"user-{user_id}", field)
         return user
     
     
@@ -192,6 +194,9 @@ class Ticket(AbstractBase):
     subject = models.CharField('موضوغ', max_length=252)
     message = models.TextField('پیغام')
     file = models.FileField("فایل", blank=True, null=True, upload_to='files/ticket/')
+    is_active = None
+    admin_closed = models.BooleanField('بسته شده توسط ادمین', default=False)
+    user_closed = models.BooleanField('بسته شده توسط کاربر', default=False)
     
     class Meta:
         db_table = 'Ticket'
@@ -200,6 +205,7 @@ class Ticket(AbstractBase):
     
     def __str__(self):
         return self.user.username
+    
     
     
     

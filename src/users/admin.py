@@ -69,11 +69,11 @@ class TicketReplyAdmin(admin.StackedInline):
 
 @admin.register(Ticket)
 class TicketAdmin(admin.ModelAdmin):
-    fields = ['user','department','subject', 'message', 'file', 'is_active', 'created_at', 'updated_at']
-    list_display = ['id', 'department', 'user', 'subject', 'is_active', 'created_at', 'updated_at']
+    fields = ['user','department','subject', 'message', 'file', 'admin_closed', 'user_closed', 'created_at', 'updated_at']
+    list_display = ['id', 'department', 'user', 'subject', 'admin_closed', 'user_closed', 'created_at', 'updated_at']
     list_display_links = ['id', 'department', 'user', 'subject']
     list_per_page = 100
-    list_filter = ['is_active',]
+    list_filter = ['admin_closed', 'user_closed']
     search_fields = ['text']
     readonly_fields = ['created_at', 'updated_at']
     # readonly_fields = ['user', 'department', 'subject', 'message', 'file', 'created_at', 'updated_at']
