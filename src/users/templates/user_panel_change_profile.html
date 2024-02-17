@@ -3,7 +3,7 @@
     {% block head %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>user panel</title>
+    <title>ویرایش پروفایل - آیوفیلم</title>
     <link rel="stylesheet" href="{% static 'css/user_panel.css' %}">
     <link rel="stylesheet" href="{% static 'css/product_details.css' %}">
     {% endblock head %}
@@ -79,11 +79,11 @@
                 </div>
             </div>
         </div>
+    </div>
         <div id="user-modal" class="d-none d-md-none top-0 bottom-0 d-flex justify-content-start start-0 end-0 position-fixed bg-dark" style="z-index: 1050;">
             {% include 'user_panel_mobile_userbar.html' %}
         </div>
     {% endblock body %}
-        
-        {% block script %}
-        <script src="{% static 'js/user_panel.js' %}" type="text/javascript"></script>
-        {% endblock script %}
+    {% block script %}
+    <script src="{% static 'js/user_panel.js' %}" type="text/javascript"></script>
+    {% endblock script %}

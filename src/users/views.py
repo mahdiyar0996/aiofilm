@@ -247,3 +247,9 @@ class PanelEditAccountView(View):
                    'form': form}
         
         return render(request, 'user_panel_change_profile.html', context)
+
+
+class TicketListView(View):
+    def get(self, request):
+        context = {}
+        return render(request, 'user_panel_ticket.html', context)
