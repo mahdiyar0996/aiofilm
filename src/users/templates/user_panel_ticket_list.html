@@ -20,10 +20,10 @@
                 <div class="bg-gray">
                     {% if tickets %}
                     {% for ticket in tickets %}
-                    <a class="text-decoration-none d-flex flex-column text-white px-2 py-3 border-2 border-start border-end border-purple ticket-box">
+                    <a href="{% url 'ticket-details' ticket.id %}" class="text-decoration-none d-flex flex-column text-white px-2 py-3 border-2 border-start border-end border-purple ticket-box">
                         <ul class="list-unstyled d-inline">
-                            <li class="float-start">{{ ticket.subject }}</li>
-                            <li class="float-start ms-3">{{ ticket.department }}</li>
+                            <li class="float-start">موضوع :‌ {{ ticket.subject }}</li>
+                            <li class="float-start ms-3">دیپارتمنت : {{ ticket.department }}</li>
                             {% if ticket.admin_closed %}
                             <li class="float-start ms-3 px-2 bg-primary rounded rounded-pill">بسته شده توسط ادمین</li>
                             {% elif ticket.user_closed %}
@@ -32,9 +32,6 @@
                             <li class="float-start ms-3 px-2 bg-success rounded rounded-pill">باز</li>
                             {% endif %}
                         </ul>
-                        <section class="px-1 w-100 d-inline mt-1" style="overflow-wrap: break-word;">
-                            {{ ticket.message }}
-                        </section>
                         <div>آخرین بروز رسانی : <span>{{ ticket.updated_at|date:'Y/m/d H:i' }}<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock ms-1" viewBox="0 0 16 16">
                             <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
                             <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/>

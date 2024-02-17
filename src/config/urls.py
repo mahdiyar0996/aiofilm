@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("__debug__/", include("debug_toolbar.urls")),
     path('api-auth/', include('rest_framework.urls')),
+    path('_nested_admin/', include('nested_admin.urls')),
     path('', include('home.urls')),
     path('', include('users.urls')),
 ]

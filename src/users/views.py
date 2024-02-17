@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404, HttpResponse, HttpResponseNotFound
 from django.urls import reverse
 from django.views import View
@@ -18,7 +18,7 @@ import requests
 from requests.exceptions import ConnectionError
 from django.db import transaction
 import logging
-from .models import User, Notification, Ticket, TicketReply
+from .models import User, Notification, Ticket, TicketAdminReply, TicketDetails
 from .tokens import email_verification_token
 from .forms import LoginForm, RegisterForm, ResetPasswordForm, ResetPasswordCompleteForm, ChangePasswordForm,ChangeUserInformationForm
 from payments.models import Subscribe, Payment, PaymentMethod
@@ -253,9 +253,31 @@ class TicketListView(View):
         user = User.get_current_user(request)
         user_id = request.session.get('_auth_user_id')
         notifications_count = Notification.get_user_notifications_count(user_id)
-        tickets = Ticket.objects.filter(user__pk=user['id']).order_by('created_at').values('department', 'subject', 'admin_closed', 'user_closed','message', 'updated_at')
+        tickets = Ticket.objects.filter(user__pk=user['id']).order_by('created_at').values('id','department', 'subject', 'admin_closed', 'user_closed', 'updated_at')
         
         context = {**get_navbar(),'user': user,
                    'notifications_count': notifications_count,
                    'tickets': tickets}
-        return render(request, 'user_panel_ticket.html', context)
+        return render(request, 'user_panel_ticket_list.html', context)
+
+
+class TicketDetailsView(View):
+    def get(self, request, id):
+        user = User.get_current_user(request)
+        user_id = request.session.get('_auth_user_id')
+        notifications_count = Notification.get_user_notifications_count(user_id)
+        tickets_replies = TicketDetails.objects.select_related('ticket', 'user').filter(ticket__id=id, user__id=user_id).values(
+            'message', 'file','created_at', 'id',
+            'ticket__user', 'ticket__department', 'ticket__subject', 'ticket__admin_closed', "ticket__user_closed")
+        ticket_ids = [item['id'] for item in tickets_replies]
+        ticket = tickets_replies[0]
+        tickets_admin_replies = TicketAdminReply.objects.select_related('ticket').filter(ticket__in=ticket_ids).values(
+            'ticket__id', 'created_at',
+            'message', 'file','updated_at')
+        context = {**get_navbar(),'user': user,
+                   'notifications_count': notifications_count,
+                   'tickets_replies': tickets_replies,
+                   'ticket': ticket,
+                   'tickets_admin_replies': tickets_admin_replies,
+                   }
+        return render(request, 'user_panel_ticket_details.html', context)

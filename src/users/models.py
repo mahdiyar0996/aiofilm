@@ -192,11 +192,10 @@ class Ticket(AbstractBase):
     user = models.ForeignKey(User, verbose_name='کاربر', related_name='%(class)s', on_delete=models.CASCADE)
     department = models.CharField('دپارتمان', choices=departments, max_length=64, db_index=True)
     subject = models.CharField('موضوغ', max_length=252)
-    message = models.TextField('پیغام')
-    file = models.FileField("فایل", blank=True, null=True, upload_to='files/ticket/')
     is_active = None
     admin_closed = models.BooleanField('بسته شده توسط ادمین', default=False)
     user_closed = models.BooleanField('بسته شده توسط کاربر', default=False)
+    created_at = models.DateTimeField("زمان ساخت",auto_now_add=True)
     
     class Meta:
         db_table = 'Ticket'
@@ -206,13 +205,29 @@ class Ticket(AbstractBase):
     def __str__(self):
         return self.user.username
     
+class TicketDetails(AbstractBase):
+    ticket = models.ForeignKey(Ticket, verbose_name='تیکت', related_name='%(class)s', on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(User, verbose_name='کاربر', related_name='%(class)s', on_delete=models.CASCADE)
+    message = models.TextField('پیغام')
+    file = models.FileField("فایل", blank=True, null=True, upload_to='files/ticket/')
+    updated_at = models.DateTimeField("اخرین بروزرسانی",auto_now=True)
+    created_at = models.DateTimeField("زمان ساخت",auto_now_add=True)
     
+    class Meta:
+        db_table = 'TicketDetails'
+        verbose_name = 'ticket_detail'
+        verbose_name_plural = 'ticket_details'
     
+    def __str__(self):
+        return self.ticket.subject
     
-class TicketReply(AbstractBase):
-    ticket = models.ForeignKey(Ticket, verbose_name='تیکت', related_name='%(class)s', on_delete=models.CASCADE)
+class TicketAdminReply(AbstractBase):
+    ticket = models.ForeignKey(TicketDetails, verbose_name='تیکت', related_name='%(class)s', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, verbose_name='کاربر', related_name='%(class)s', on_delete=models.CASCADE)
     message = models.TextField('پیغام')
     file = models.FileField("فایل", blank=True, null=True, upload_to='files/ticket_replies/')
+    updated_at = models.DateTimeField("اخرین بروزرسانی",auto_now=True)
+    created_at = models.DateTimeField("زمان ساخت",auto_now_add=True)
     
     class Meta:
         db_table = 'Ticket_Reply'

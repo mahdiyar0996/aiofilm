@@ -3,7 +3,7 @@ from django.urls import path, include
 from .views import (LoginView, RegisterView,
 ResetPasswordView, ResetPasswordCompleteView,
 PanelView, LogoutView, PanelChangePasswordView,
-PanelEditAccountView, TicketListView)
+PanelEditAccountView, TicketListView, TicketDetailsView)
 
 urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
@@ -15,5 +15,6 @@ urlpatterns = [
     path('panel/change-password/', PanelChangePasswordView.as_view(), name='change-password'),
     path('panel/edit-account/', PanelEditAccountView.as_view(), name='user-edit-account'),
     path('panel/tickets/', TicketListView.as_view(), name='ticket-list'),
+    path('panel/tickets/<int:id>/details', TicketDetailsView.as_view(), name='ticket-details'),
     path('', include('users.api.urls')),
 ]

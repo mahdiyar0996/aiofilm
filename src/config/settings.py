@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     'rest_framework',
     "django_jalali",
+    'nested_admin',
     "home",
     "payments",
     "products",
@@ -170,7 +171,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Asia/Tehran'
+# TIME_ZONE = 'Asia/Tehran'
 
 USE_I18N = True
 

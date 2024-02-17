@@ -21,6 +21,7 @@
 
 .ticket-box:nth-child(even){
     border-top: 3px solid ;
+    border-bottom: 3px solid ;
 }
 
 .ticket-box:hover{

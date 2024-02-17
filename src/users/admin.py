@@ -1,7 +1,11 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin, GroupAdmin
-from .models import User, Groups,Favorite, Bookmark, Comment, Reply, Ticket, TicketReply, Notification
+from .models import (User, Groups,Favorite,
+                     Bookmark, Comment, Reply,
+                     Ticket, TicketAdminReply, Notification,
+                     TicketDetails)
+import nested_admin
 
 class FavoriteAdmin(admin.StackedInline):
     model = Favorite
@@ -61,34 +65,42 @@ class ReplyAdmin(admin.ModelAdmin):
     readonly_fields = ['created_at', 'updated_at']
     
     
-class TicketReplyAdmin(admin.StackedInline):
-    model = TicketReply
-    fields = ['ticket', 'message', 'file', 'created_at', 'updated_at']
+class TicketAdminReplyAdmin(nested_admin.NestedStackedInline):
+    model = TicketAdminReply
+    fields = ['user','ticket','message', 'file', 'created_at', 'updated_at']
     extra = 0
     readonly_fields = ['created_at', 'updated_at']
+    # prepopulated_fields = {'message': ('ticket', )}
+
+class TicketDetailsAdmin(nested_admin.NestedStackedInline):
+    model = TicketDetails
+    fields = ['ticket','user','message', 'file','created_at', 'updated_at']
+    extra = 0
+    readonly_fields = ['created_at', 'updated_at']
+    inlines = [TicketAdminReplyAdmin,]
+
 
 @admin.register(Ticket)
-class TicketAdmin(admin.ModelAdmin):
-    fields = ['user','department','subject', 'message', 'file', 'admin_closed', 'user_closed', 'created_at', 'updated_at']
+class TicketAdmin(nested_admin.NestedModelAdmin):
+    fields = ['user','department','subject', 'admin_closed', 'user_closed', 'created_at', 'updated_at']
     list_display = ['id', 'department', 'user', 'subject', 'admin_closed', 'user_closed', 'created_at', 'updated_at']
     list_display_links = ['id', 'department', 'user', 'subject']
     list_per_page = 100
     list_filter = ['admin_closed', 'user_closed']
     search_fields = ['text']
     readonly_fields = ['created_at', 'updated_at']
-    # readonly_fields = ['user', 'department', 'subject', 'message', 'file', 'created_at', 'updated_at']
-    inlines = [TicketReplyAdmin,]
+    inlines = [TicketDetailsAdmin,]
 
 
-@admin.register(TicketReply)
+@admin.register(TicketAdminReply)
 class TicketReplyAdmin(admin.ModelAdmin):
-    fields = ['ticket', 'message', 'file', 'created_at', 'updated_at']
-    list_display = ['id', 'ticket', 'is_active', 'created_at', 'updated_at']
-    list_display_links = ['id', 'ticket']
+    fields = ['ticket','user','message', 'file', 'created_at', 'updated_at']
+    list_display = ['id','message', 'is_active', 'created_at', 'updated_at']
+    list_display_links = ['id', 'message']
     readonly_fields = ['created_at', 'updated_at']
 
 @admin.register(Notification)
-class TicketReplyAdmin(admin.ModelAdmin):
+class NotificationAdmin(admin.ModelAdmin):
     fields = ['subject', 'message', 'is_active', 'created_at', 'updated_at']
     list_display = ['id', 'subject', 'message', 'is_active', 'created_at', 'updated_at']
     list_display_links = ['id', 'subject']
