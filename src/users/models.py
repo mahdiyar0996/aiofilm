@@ -120,6 +120,7 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractBase):
                 pipeline.hset(f"user-{user_id}", mapping=request.user.to_dict())
                 pipeline.expire(f"user-{user_id}", 60 * 30)
                 pipeline.execute()
+        user['avatar'] = request.build_absolute_uri('/media/' + user['avatar'])
         return user
     
     
