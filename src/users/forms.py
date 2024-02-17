@@ -115,6 +115,7 @@ class ChangeUserInformationForm(forms.ModelForm):
         (2, 'زن'),
     )
     sex = forms.ChoiceField(choices=genders)
+    avatar = forms.ImageField()
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'city', 'age', 'sex', 'avatar']

@@ -58,7 +58,7 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractBase):
     email = models.EmailField('ایمیل' ,max_length=64, unique=True, validators=[valid_email()],
                               error_messages={'unique': 'کاربری با این ایمیل وجود دارد',
                                               'invalid': 'لطفا یک ایمیل معتبر وارد کنید'})
-    password = models.CharField('رمز عبور', max_length=254, validators=[valid_password()],
+    password = models.CharField('رمز عبور', max_length=254,
                                 error_messages={'invalid': 'رمز کاربری باید ۸ کاراکتر یا بیشتر باشد و یک حرف بزرگ  و یک عدد داشته باشد'})
     last_password_reset = jmodels.jDateField("زمان آخرین تغییر رمزعبور",null=True, blank=True)
     first_name = models.CharField('نام', max_length=64, blank=True, null=True)
@@ -71,8 +71,7 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractBase):
     is_active = models.BooleanField("وضعیت", default=False)
     subscribe = models.DateTimeField('زمان اشتراک', blank=True, null=True)
     ipaddress = models.GenericIPAddressField('ایپی آدرس', blank=True, null=True)
-    avatar = models.ImageField('آواتار', default='/media/users/default.jpg', upload_to='media/users/', blank=True, )
-    objects = UserManager()
+    avatar = models.ImageField('آواتار', default='users/default.jpg', upload_to='media/users/', blank=True, )
     USERNAME_FIELD = 'username'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = ['email', 'password']
@@ -121,7 +120,9 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractBase):
                 pipeline.hset(f"user-{user_id}", mapping=request.user.to_dict())
                 pipeline.expire(f"user-{user_id}", 60 * 30)
                 pipeline.execute()
+        # user['avatar'] = request.build_absolute_uri(user['avatar'])
         return user
+    
     
 class Favorite(AbstractBase):
     movie = models.ForeignKey('products.Movie', verbose_name='فیلم', related_name='%(class)s', on_delete=models.CASCADE)

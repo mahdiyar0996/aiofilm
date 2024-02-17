@@ -23,8 +23,9 @@ class GroupAdmin(GroupAdmin):
     
 @admin.register(User)
 class UserAdmin(DjangoUserAdmin):
+    # fields = '__all__'
     fieldsets = (
-        ("Permissions",{"fields": ("groups","user_permissions",),},),
+        # ("Permissions",{"fields": ("groups","user_permissions",),},),
         ('', {'fields': ['username', 'email', "avatar",'password', 'ipaddress']}),
         ('', {'fields': ['first_name', 'last_name', 'city', 'age', 'sex']}),
         ('', {'fields': ['is_superuser', 'is_staff', 'is_active', 'subscribe']}),

@@ -138,12 +138,13 @@ class ResetPasswordCompleteView(View):
 class PanelView(View):
     def get(self, request):
         user = User.get_current_user(request)
-        print(type(user.get('subscribe')))
+        # print(user[])
+        # print(type(user.get('subscribe')))
         if user['subscribe'] != 'None':
             days = abs((datetime.now().date() -
                                     datetime.strptime(
                                         user['subscribe'],
-                                        '%Y-%m-%d %H:%M:%S.%f%z').date())).days
+                                        '%Y-%m-%d %H:%M:%S%z').date())).days
             user['subscribe'] = days
         else:
             user['subscribe'] = 0
@@ -223,22 +224,21 @@ class PanelEditAccountView(View):
         return render(request, 'user_panel_change_profile.html', context)
     
     def post(self, request):
-        print(request.POST)
         user = User.get_current_user(request, 'id')
         user_id = request.session.get('_auth_user_id')
         notifications_count = Notification.get_user_notifications_count(user_id)
         
         user = User.objects.get(pk=user)
-        form = ChangeUserInformationForm(request.POST, instance=user)
         
-
+        form = ChangeUserInformationForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.cleaned_data['email'] = user.email
+            form.cleaned_data['email'] = request.POST.get('avatar') if request.POST.get('avatar') else user.avatar
+            form.save()
             with redis.pipeline() as pipeline:
                 pipeline.hset(f"user-{user_id}", mapping=user.to_dict())
                 pipeline.expire(f"user-{user_id}", 60 * 30)
                 pipeline.execute()
-            form.save()
             return redirect('user-edit-account')
         form = ChangeUserInformationForm(initial=user.to_dict())
         

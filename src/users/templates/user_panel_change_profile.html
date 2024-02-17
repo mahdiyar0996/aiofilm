@@ -14,13 +14,13 @@
             <div class="col-12 col-md-8 m-0 mx-md-3">
                 <div class="d-flex flex-column">
                     <div class="bg-gray">
-                        <form action="" class="w-100 me-auto text-white" method="post">
+                        <form action="" class="w-100 me-auto text-white" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="form-group d-flex flex-md-row flex-column px-4 py-3 justify-content-between">
-                                <label for="file" class="col-4 col-form-label">عکس</label>
+                                <label for="file" class="col-3 col-form-label">عکس</label>
                                 <div class="col-12 col-md-6 me-auto" style="font-family: Arial, Helvetica, sans-serif;">
                                     <label for="file" class="btn btn-primary text-white">انتخاب فایل</label>
-                                    <input name="avatar" type="file" class="form-control mx-auto" hidden id="file" value="{{ form.avatar.value }}">
+                                    <input name="avatar" type="file" class="form-control mx-auto" hidden id="file" value="{{ form.avatar.value }}" accept="image/*">
                                     <p class="d-inline">هیچ فایلی انتخاب نشده است</p>
                                 </div>
                             </div>
