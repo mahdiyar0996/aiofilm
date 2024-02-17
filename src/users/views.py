@@ -181,7 +181,6 @@ class PanelView(View):
 
 
 class PanelChangePasswordView(View):
-    
     def get(self, request):
         user = User.get_current_user(request)
         
@@ -200,7 +199,7 @@ class PanelChangePasswordView(View):
             user = request.user
             cd = form.cleaned_data
             if user.check_password(cd['password1']):
-                form.add_error('password1', 'رمز عبور نمیتواند رمز tعلی باشد')
+                form.add_error('password1', 'رمز عبور نمیتواند رمز فعلی باشد')
                 
             if user.check_password(cd['password']):
                 user.set_password(cd['password1'])
