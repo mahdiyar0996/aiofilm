@@ -20,7 +20,7 @@ from django.db import transaction
 import logging
 from .models import User, Notification
 from .tokens import email_verification_token
-from .forms import LoginForm, RegisterForm, ResetPasswordForm, ResetPasswordCompleteForm, ChangePasswordForm
+from .forms import LoginForm, RegisterForm, ResetPasswordForm, ResetPasswordCompleteForm, ChangePasswordForm,ChangeUserInformationForm
 from payments.models import Subscribe, Payment, PaymentMethod
 from home.views import get_navbar
 from django.db.models import Q
@@ -211,14 +211,39 @@ class PanelChangePasswordView(View):
         context = {'form': form}
         return render(request, 'user_panel_change_password.html', context)
 
-class PanelChangeInformation(View):
+class PanelEditAccount(View):
     def get(self, request):
         user = User.get_current_user(request)
-        
         user_id = request.session.get('_auth_user_id')
         notifications_count = Notification.get_user_notifications_count(user_id)
-        form = ChangePasswordForm
+        form = ChangeUserInformationForm(initial=user)
         context = {**get_navbar(),'user': user,
                    'notifications_count': notifications_count,
                    'form': form}
-        return render(request, 'user_panel_change-profile.html', context)
+        return render(request, 'user_panel_change_profile.html', context)
+    
+    def post(self, request):
+        print(request.POST)
+        user = User.get_current_user(request, 'id')
+        user_id = request.session.get('_auth_user_id')
+        notifications_count = Notification.get_user_notifications_count(user_id)
+        
+        user = User.objects.get(pk=user)
+        form = ChangeUserInformationForm(request.POST, instance=user)
+        
+
+        if form.is_valid():
+            form.cleaned_data['email'] = user.email
+            with redis.pipeline() as pipeline:
+                pipeline.hset(f"user-{user_id}", mapping=user.to_dict())
+                pipeline.expire(f"user-{user_id}", 60 * 30)
+                pipeline.execute()
+            form.save()
+            return redirect('user-edit-account')
+        form = ChangeUserInformationForm(initial=user.to_dict())
+        
+        context = {**get_navbar(),'user': user,
+                   'notifications_count': notifications_count,
+                   'form': form}
+        
+        return render(request, 'user_panel_change_profile.html', context)

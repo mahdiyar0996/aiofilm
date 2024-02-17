@@ -60,11 +60,12 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractBase):
                                               'invalid': 'لطفا یک ایمیل معتبر وارد کنید'})
     password = models.CharField('رمز عبور', max_length=254, validators=[valid_password()],
                                 error_messages={'invalid': 'رمز کاربری باید ۸ کاراکتر یا بیشتر باشد و یک حرف بزرگ  و یک عدد داشته باشد'})
-    last_password_reset = models.DateField("زمان آخرین تغییر رمزعبور",null=True, blank=True)
+    last_password_reset = jmodels.jDateField("زمان آخرین تغییر رمزعبور",null=True, blank=True)
     first_name = models.CharField('نام', max_length=64, blank=True, null=True)
     last_name = models.CharField('نام خانوادگی', max_length=64, blank=True, null=True)
     city = models.CharField('شهر', max_length=55, blank=True, null=True)
     age = models.SmallIntegerField('سن', blank=True, null=True)
+    sex = models.CharField('جنسیت', max_length=55, blank=True, null=True)
     is_superuser = models.BooleanField('ادمین', db_default=False, db_index=True)
     is_staff = models.BooleanField('کارکنان', db_default=False, db_index=True)
     is_active = models.BooleanField("وضعیت", default=False)
@@ -104,6 +105,7 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractBase):
         "last_name" : self.last_name or '',
         "city" : self.city or '',
         "age" : self.age or '',
+        'sex': self.sex or '',
         "ipaddress" : self.ipaddress or '',
         "avatar" : str(self.avatar) or '',}
         

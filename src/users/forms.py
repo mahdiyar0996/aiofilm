@@ -108,7 +108,13 @@ class ChangePasswordForm(forms.Form):
 
 
 class ChangeUserInformationForm(forms.ModelForm):
-    
+    email = forms.CharField(max_length=255, required=False)
+    genders = (
+        (None, 'جنسیت خود را نتخاب کنید'),
+        (1, 'مرد'),
+        (2, 'زن'),
+    )
+    sex = forms.ChoiceField(choices=genders)
     class Meta:
         model = User
-        fields = ['username', 'email', '']
+        fields = ['username', 'first_name', 'last_name', 'city', 'age', 'sex', 'avatar']
