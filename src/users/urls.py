@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import LoginView, RegisterView, ResetPasswordView, ResetPasswordCompleteView, UserPanelView, LogoutView
+from .views import LoginView, RegisterView, ResetPasswordView, ResetPasswordCompleteView, PanelView, LogoutView, PanelChangePasswordView
 
 urlpatterns = [
     path('login', LoginView.as_view(), name='login'),
@@ -8,6 +8,7 @@ urlpatterns = [
     path('register', RegisterView.as_view(), name='register'),
     path('password-recovery', ResetPasswordView.as_view(), name='password-recovery'),
     path('password-recovery-complete/<str:uidb64>/<str:token>', ResetPasswordCompleteView.as_view(), name='password-recovery-complete'),
-    path('panel', UserPanelView.as_view(), name='user-panel'),
+    path('panel', PanelView.as_view(), name='user-panel'),
+    path('panel/change-password', PanelChangePasswordView.as_view(), name='change-password'),
     path('', include('users.api.urls')),
 ]

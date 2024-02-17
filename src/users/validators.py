@@ -17,5 +17,5 @@ def valid_username():
 
 def valid_password():
     validator = RegexValidator("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$", code='valid',
-                   message='رمز عبور حداقل باید ۸ کاراکتر یا بیشتر باشد و حداقل یک حرف بزرگ و یک عدد داشته باشد')
+                   message='')
     return validator

@@ -203,3 +203,14 @@ function userModalClose(){
         userBar.classList.add('d-none')
     }
 }
+
+
+function messageModal(){
+    userBar = document.querySelector('#message-modal')
+    if(userBar.classList.contains('d-none')){
+        userBar.classList.remove('d-none')
+    }
+    else{
+        userBar.classList.add('d-none')
+    }
+}

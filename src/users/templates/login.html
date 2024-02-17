@@ -15,10 +15,10 @@
 <body dir="rtl">
     <div class="py-5" style="height: 100vh; background-repeat: no-repeat;background-size: cover;background-image: url(media/siteimages/background.jpg) ;">
         {% if messages %}
-        <div id="modal" class="top-0 bottom-0 d-flex justify-content-center start-0 end-0 position-fixed bg-dark" style="z-index: 1050;">
+        <div id="message-modal" class="top-0 bottom-0 d-flex justify-content-center start-0 end-0 position-fixed bg-dark" style="z-index: 1050;">
             <div class="d-flex flex-column mt-5 w-50 mb-auto bg-gray text-white position-relative">
                 <div class="w-100 text-start">
-                    <button class="position-absolute m-0 p-0 text-light btn" style="right: -14px;;top: -20px;" aria-hidden="true" onclick="userModalClose()"><i class="fa fa-times fs-2"></i></button>
+                    <button class="position-absolute m-0 p-0 text-light btn" style="right: -14px;;top: -20px;" aria-hidden="true" onclick="messageModal()"><i class="fa fa-times fs-2"></i></button>
                 </div>
                 {% for msg in messages %}
                 <div class="my-4 text-center px-3">{{ msg }}</div>
@@ -65,5 +65,6 @@
         </div>
     </div>
     <script src="{% static 'js/loginvalidator.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/user_panel.js' %}" type="text/javascript.js"></script>
     <script src="{% static 'js/bootstrap.bundle.min.js' %}" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script></body>
 </html>

@@ -31,7 +31,7 @@
 </div>
 <header class="container" style="height: 98px">
     <nav class="nav bg-dark justify-content-between align-items-center">
-        <div class="container-sm d-flex flex-row justify-content-between py-3 align-items-center w-100">
+        <div class="container-sm d-flex flex-row justify-content-center justify-content-md-between py-3 align-items-center w-100">
             <div class="d-flex flex-row justify-content-between col-3">
                 <h1 class="text-light fs-2 p-0 m-0 pt-2 d-inline">AioFilm</h1>
                 <div id="dropdown-button" class="d-none d-md-block mx-auto" style="cursor: pointer;">
@@ -43,7 +43,7 @@
                  border: rgb(47, 50, 56) ;" placeholder="جستجوی سریع ..." >
                 <i class="fa fa-search text-muted position-absolute fs-4 top-0 end-0 mt-2 me-2"></i>
             </form>
-            <div class="bg-primary px-1 py-1 rounded rounded-2">
+            <div class="bg-primary px-1 py-1 rounded rounded-2 d-none d-md-block">
                 {% if not user %}
                 <a href="{% url 'login' %}" class="text-white text-decoration-none">ورود / عضویت</a>
                 {% else %}

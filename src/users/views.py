@@ -20,7 +20,7 @@ from django.db import transaction
 import logging
 from .models import User, Notification
 from .tokens import email_verification_token
-from .forms import LoginForm, RegisterForm, ResetPasswordForm, ResetPasswordCompleteForm
+from .forms import LoginForm, RegisterForm, ResetPasswordForm, ResetPasswordCompleteForm, ChangePasswordForm
 from payments.models import Subscribe, Payment, PaymentMethod
 from home.views import get_navbar
 from django.db.models import Q
@@ -45,7 +45,7 @@ class LoginView(View):
                 if remember:
                     request.session.set_expiry(0)
                 request.session.set_expiry(60 * 60 * 24 * 7)
-                return redirect('user_panel')
+                return redirect('user-panel')
             else:
                 form.add_error('password', 'نام کاربری یا گذرواژه اشتباه است')
         return render(request, 'login.html', {'form': form}, status=400)
@@ -123,6 +123,8 @@ class ResetPasswordCompleteView(View):
                 user = User.objects.get(pk=uid)
             except(TypeError, ValueError, OverflowError, User.DoesNotExist):
                 user = None
+            if user.check_password(cd['password1']):
+                form.add_error('password1', 'رمز عبور نمیتواند رمز فعلی باشد')
             if user and email_verification_token.check_token(user, token):
                 user.set_password(cd['password1'])
                 user.save()
@@ -132,24 +134,21 @@ class ResetPasswordCompleteView(View):
 
 
 
-class UserPanelView(View):
+class PanelView(View):
     def get(self, request):
         user = User.get_current_user(request)
-        days = abs((datetime.now().date() -
-                                 datetime.strptime(
-                                     user['subscribe'],
-                                     '%Y-%m-%d %H:%M:%S.%f%z').date())).days
-        user['subscribe'] = days if days > 0 else 0
+        print(type(user.get('subscribe')))
+        if user['subscribe'] != 'None':
+            days = abs((datetime.now().date() -
+                                    datetime.strptime(
+                                        user['subscribe'],
+                                        '%Y-%m-%d %H:%M:%S.%f%z').date())).days
+            user['subscribe'] = days
+        else:
+            user['subscribe'] = 0
         user_id = request.session.get('_auth_user_id')
         
-        notifications_count = redis.hgetall(f'notification-{user_id}')
-        print(notifications_count)
-        if not notifications_count:
-            notifications_count = Notification.get_notification_count()
-            with redis.pipeline() as pipeline:
-                pipeline.hset(f'notification-{user_id}', 'count', str(notifications_count['count']))
-                pipeline.expire(f'notification-{user_id}', 60 * 10)
-                pipeline.execute()
+        notifications_count = Notification.get_user_notifications_count(user_id)
             
         payment_methods = cache.get(f'payment-methods')
         if not payment_methods:
@@ -179,3 +178,35 @@ class UserPanelView(View):
                    }
         
         return render(request, 'user_panel_dashboard.html', context)
+
+
+class PanelChangePasswordView(View):
+    
+    def get(self, request):
+        user = User.get_current_user(request)
+        
+        user_id = request.session.get('_auth_user_id')
+        notifications_count = Notification.get_user_notifications_count(user_id)
+        form = ChangePasswordForm
+        context = {**get_navbar(),'user': user,
+                   'notifications_count': notifications_count,
+                   'form': form}
+        return render(request, 'user_panel_change_password.html', context)
+
+
+    def post(self, request):
+        form = ChangePasswordForm(request.POST)
+        if form.is_valid():
+            user = request.user
+            cd = form.cleaned_data
+            if user.check_password(cd['password1']):
+                form.add_error('password1', 'رمز عبور نمیتواند رمز tعلی باشد')
+                
+            if user.check_password(cd['password']):
+                user.set_password(cd['password1'])
+                user.save()
+                messages.success(request, 'رمز عبور شما با موفقیت تغییر کرد')
+            else:
+                form.add_error('password', 'رمز عبور وارد شده اشتباه است')
+        context = {'form': form}
+        return render(request, 'user_panel_change_password.html', context)

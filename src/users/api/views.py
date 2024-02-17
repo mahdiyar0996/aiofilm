@@ -18,7 +18,7 @@ class ActivateCodeView(APIView):
         
         user = User.objects.get(pk=pk)
         
-        message = render_to_string('activate_code.html', {
+        message = render_to_string('activate_code_email.html', {
         'user': user,
         'domain': current_site.domain,
         'scheme': request.scheme,
@@ -60,7 +60,7 @@ class ResetPasswordTokenView(APIView):
                 current_site = get_current_site(request)
                 user = User.objects.get(email=request.data.get('email'))
                 
-                message = render_to_string('password_recovery.html', {
+                message = render_to_string('password_recovery_email.html', {
                 'user': user,
                 'domain': current_site.domain,
                 'scheme': request.scheme,

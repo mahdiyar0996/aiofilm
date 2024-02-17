@@ -230,6 +230,16 @@ class Notification(AbstractBase):
     def get_notification_count():
         notifications_count = Notification.objects.filter(Q(is_read=False) & Q(user=None)).aggregate(count=Count('id'))
         return notifications_count
-        
+    
+    
+    def get_user_notifications_count(user_id):
+        notifications_count = redis.hgetall(f'notification-{user_id}')
+        if not notifications_count:
+            notifications_count = Notification.get_notification_count()
+            with redis.pipeline() as pipeline:
+                pipeline.hset(f'notification-{user_id}', 'count', str(notifications_count['count']))
+                pipeline.expire(f'notification-{user_id}', 60 * 10)
+                pipeline.execute()
+        return notifications_count
     
     
