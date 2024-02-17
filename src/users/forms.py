@@ -105,3 +105,10 @@ class ChangePasswordForm(forms.Form):
         elif password2 != password1:
             self.add_error('password2', 'رمز عبور مطابقت ندارد')
         return cd
+
+
+class ChangeUserInformationForm(forms.ModelForm):
+    
+    class Meta:
+        model = User
+        fields = ['username', 'email', '']

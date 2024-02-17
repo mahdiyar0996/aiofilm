@@ -60,7 +60,7 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractBase):
                                               'invalid': 'لطفا یک ایمیل معتبر وارد کنید'})
     password = models.CharField('رمز عبور', max_length=254, validators=[valid_password()],
                                 error_messages={'invalid': 'رمز کاربری باید ۸ کاراکتر یا بیشتر باشد و یک حرف بزرگ  و یک عدد داشته باشد'})
-    last_password_reset = models.DateTimeField("زمان آخرین تغییر رمزعبور",null=True, blank=True)
+    last_password_reset = models.DateField("زمان آخرین تغییر رمزعبور",null=True, blank=True)
     first_name = models.CharField('نام', max_length=64, blank=True, null=True)
     last_name = models.CharField('نام خانوادگی', max_length=64, blank=True, null=True)
     city = models.CharField('شهر', max_length=55, blank=True, null=True)

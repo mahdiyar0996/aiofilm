@@ -127,6 +127,7 @@ class ResetPasswordCompleteView(View):
                 form.add_error('password1', 'رمز عبور نمیتواند رمز فعلی باشد')
             if user and email_verification_token.check_token(user, token):
                 user.set_password(cd['password1'])
+                user.last_password_reset = jdatetime.date.now()
                 user.save()
                 messages.success(request, 'رمزعبور شما با موفقیت تغییر کرد', 'success')
             return redirect('login')
@@ -209,3 +210,15 @@ class PanelChangePasswordView(View):
                 form.add_error('password', 'رمز عبور وارد شده اشتباه است')
         context = {'form': form}
         return render(request, 'user_panel_change_password.html', context)
+
+class PanelChangeInformation(View):
+    def get(self, request):
+        user = User.get_current_user(request)
+        
+        user_id = request.session.get('_auth_user_id')
+        notifications_count = Notification.get_user_notifications_count(user_id)
+        form = ChangePasswordForm
+        context = {**get_navbar(),'user': user,
+                   'notifications_count': notifications_count,
+                   'form': form}
+        return render(request, 'user_panel_change-profile.html', context)
