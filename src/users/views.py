@@ -211,7 +211,7 @@ class PanelChangePasswordView(View):
         context = {'form': form}
         return render(request, 'user_panel_change_password.html', context)
 
-class PanelEditAccount(View):
+class PanelEditAccountView(View):
     def get(self, request):
         user = User.get_current_user(request)
         user_id = request.session.get('_auth_user_id')
