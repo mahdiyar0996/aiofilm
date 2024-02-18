@@ -28,6 +28,13 @@ from home.views import get_navbar
 from django.db.models import Q
 import jdatetime
 
+def panel_base_data(request, field=None):
+    user = User.get_current_user(request, field)
+    user_id = user['id']
+    notifications_count = Notification.get_user_notifications_count(user_id)
+    return user,user_id,notifications_count
+    
+
 class LoginView(View):
     def get(self, request):
         form = LoginForm
@@ -139,8 +146,7 @@ class ResetPasswordCompleteView(View):
 
 class PanelView(View):
     def get(self, request):
-        user = User.get_current_user(request)
-        print(type(user.get('subscribe')))
+        user,user_id,notifications_count = panel_base_data(request)
         if user['subscribe'] != 'None':
             days = abs((datetime.now().date() -
                                     datetime.strptime(
@@ -149,9 +155,6 @@ class PanelView(View):
             user['subscribe'] = days
         else:
             user['subscribe'] = 0
-        user_id = request.session.get('_auth_user_id')
-        
-        notifications_count = Notification.get_user_notifications_count(user_id)
             
         payment_methods = cache.get(f'payment-methods')
         if not payment_methods:
@@ -185,10 +188,7 @@ class PanelView(View):
 
 class PanelChangePasswordView(View):
     def get(self, request):
-        user = User.get_current_user(request)
-        
-        user_id = request.session.get('_auth_user_id')
-        notifications_count = Notification.get_user_notifications_count(user_id)
+        user,user_id,notifications_count = panel_base_data(request)
         form = ChangePasswordForm
         context = {**get_navbar(),'user': user,
                    'notifications_count': notifications_count,
@@ -197,6 +197,7 @@ class PanelChangePasswordView(View):
 
 
     def post(self, request):
+        user,user_id,notifications_count = panel_base_data(request)
         form = ChangePasswordForm(request.POST)
         if form.is_valid():
             user = request.user
@@ -210,14 +211,14 @@ class PanelChangePasswordView(View):
                 messages.success(request, 'رمز عبور شما با موفقیت تغییر کرد')
             else:
                 form.add_error('password', 'رمز عبور وارد شده اشتباه است')
-        context = {'form': form}
+        context = {**get_navbar(),'user': user,
+                   'notifications_count': notifications_count,
+                   'form': form}
         return render(request, 'user_panel_change_password.html', context)
 
 class PanelEditAccountView(View):
     def get(self, request):
-        user = User.get_current_user(request)
-        user_id = request.session.get('_auth_user_id')
-        notifications_count = Notification.get_user_notifications_count(user_id)
+        user,user_id,notifications_count = panel_base_data(request)
         form = ChangeUserInformationForm(initial=user)
         context = {**get_navbar(),'user': user,
                    'notifications_count': notifications_count,
@@ -225,11 +226,9 @@ class PanelEditAccountView(View):
         return render(request, 'user_panel_change_profile.html', context)
     
     def post(self, request):
-        user = User.get_current_user(request, 'id')
-        user_id = request.session.get('_auth_user_id')
-        notifications_count = Notification.get_user_notifications_count(user_id)
+        user,user_id,notifications_count = panel_base_data(request)
         
-        user = User.objects.get(pk=user)
+        user = User.objects.get(pk=user_id)
         
         form = ChangeUserInformationForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
@@ -252,9 +251,7 @@ class PanelEditAccountView(View):
 
 class TicketListView(View):
     def get(self, request):
-        user = User.get_current_user(request)
-        user_id = request.session.get('_auth_user_id')
-        notifications_count = Notification.get_user_notifications_count(user_id)
+        user,user_id,notifications_count = panel_base_data(request)
         tickets = cache.get(f'tickets-{user_id}')
         if not tickets:
             tickets = Ticket.objects.filter(user__pk=user['id']).order_by(
@@ -272,9 +269,7 @@ class TicketListView(View):
 
 class TicketDetailsView(View):
     def get(self, request, id):
-        user = User.get_current_user(request)
-        user_id = request.session.get('_auth_user_id')
-        notifications_count = Notification.get_user_notifications_count(user_id)
+        user,user_id,notifications_count = panel_base_data(request)
         
         tickets_replies = cache.get(f'tickets_replies-{user_id}')
         if not tickets_replies:
@@ -311,9 +306,7 @@ class TicketDetailsView(View):
         return render(request, 'user_panel_ticket_details.html', context)
     
     def post(self, request, id):
-        user = User.get_current_user(request)
-        user_id = request.session.get('_auth_user_id')
-        notifications_count = Notification.get_user_notifications_count(user_id)
+        user,user_id,notifications_count = panel_base_data(request)
         
         form = TicketDetailsForm(request.POST, request.FILES)
         if form.is_valid():
@@ -346,9 +339,7 @@ class TicketCloseByUserView(View):
 
 class TicketCreateView(View):
     def get(self, request):
-        user = User.get_current_user(request)
-        user_id = request.session.get('_auth_user_id')
-        notifications_count = Notification.get_user_notifications_count(user_id)
+        user,user_id,notifications_count = panel_base_data(request)
         form = TicketForm
         context = {**get_navbar(),'form': form,
                    'user': user, 
@@ -356,9 +347,7 @@ class TicketCreateView(View):
         return render(request, 'user_panel_create_ticket.html', context)
     
     def post(self, request):
-        user = User.get_current_user(request)
-        user_id = request.session.get('_auth_user_id')
-        notifications_count = Notification.get_user_notifications_count(user_id)
+        user,user_id,notifications_count = panel_base_data(request)
         form = TicketForm(request.POST, request.FILES)
         if form.is_valid():
             cd = form.cleaned_data
