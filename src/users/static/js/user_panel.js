@@ -214,3 +214,15 @@ function messageModal(){
         userBar.classList.add('d-none')
     }
 }
+
+
+document.querySelector('#send-reply').addEventListener('click', (target)=>{
+    const tag = target.target
+    if(!tag.classList.contains('d-none')){
+        tag.classList.add('d-none')
+        const form = document.querySelector('#ticket-form')
+        form.classList.remove('d-none')
+        form.classList.add('d-flex')
+        console.log(form)
+    }
+})

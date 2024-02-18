@@ -20,7 +20,9 @@ from django.db import transaction
 import logging
 from .models import User, Notification, Ticket, TicketAdminReply, TicketDetails
 from .tokens import email_verification_token
-from .forms import LoginForm, RegisterForm, ResetPasswordForm, ResetPasswordCompleteForm, ChangePasswordForm,ChangeUserInformationForm
+from .forms import (LoginForm, RegisterForm, ResetPasswordForm,
+                    ResetPasswordCompleteForm, ChangePasswordForm,
+                    ChangeUserInformationForm, TicketDetailsForm)
 from payments.models import Subscribe, Payment, PaymentMethod
 from home.views import get_navbar
 from django.db.models import Q
@@ -253,7 +255,14 @@ class TicketListView(View):
         user = User.get_current_user(request)
         user_id = request.session.get('_auth_user_id')
         notifications_count = Notification.get_user_notifications_count(user_id)
-        tickets = Ticket.objects.filter(user__pk=user['id']).order_by('created_at').values('id','department', 'subject', 'admin_closed', 'user_closed', 'updated_at')
+        tickets = cache.get(f'tickets-{user_id}')
+        if not tickets:
+            tickets = Ticket.objects.filter(user__pk=user['id']).order_by(
+                'created_at').values('id','department', 'subject',
+                                     'admin_closed', 'user_closed',
+                                     'updated_at')
+            cache.set(f'tickets-{user_id}', tickets, 60 * 5)
+
         
         context = {**get_navbar(),'user': user,
                    'notifications_count': notifications_count,
@@ -266,18 +275,70 @@ class TicketDetailsView(View):
         user = User.get_current_user(request)
         user_id = request.session.get('_auth_user_id')
         notifications_count = Notification.get_user_notifications_count(user_id)
-        tickets_replies = TicketDetails.objects.select_related('ticket', 'user').filter(ticket__id=id, user__id=user_id).values(
-            'message', 'file','created_at', 'id',
-            'ticket__user', 'ticket__department', 'ticket__subject', 'ticket__admin_closed', "ticket__user_closed")
+        
+        tickets_replies = cache.get(f'tickets_replies-{user_id}')
+        if not tickets_replies:
+            tickets_replies = TicketDetails.objects.select_related('ticket', 'user').filter(
+                ticket__id=id, user__id=user_id).order_by('-created_at').values(
+                'message', 'file','created_at', 'id', 'ticket__id',
+                'ticket__user', 'ticket__department', 'ticket__subject', 'ticket__admin_closed', "ticket__user_closed")
+            cache.set(f'tickets_replies-{user_id}', tickets_replies, 60 * 5)
+            
         ticket_ids = [item['id'] for item in tickets_replies]
         ticket = tickets_replies[0]
-        tickets_admin_replies = TicketAdminReply.objects.select_related('ticket').filter(ticket__in=ticket_ids).values(
-            'ticket__id', 'created_at',
-            'message', 'file','updated_at')
+        
+        ticket_is_open = True if ticket['ticket__admin_closed'] or ticket['ticket__user_closed'] else False
+        
+        tickets_admin_replies = cache.get(f'tickets_admin_replies-{user_id}')
+        if not tickets_admin_replies:
+            tickets_admin_replies = TicketAdminReply.objects.select_related('ticket').filter(
+                ticket__in=ticket_ids).order_by('-created_at').values(
+                'ticket__id', 'created_at',
+                'message', 'file','updated_at')
+            cache.set(f'tickets_admin_replies-{user_id}', tickets_admin_replies, 60 * 5)
+
+        form = TicketDetailsForm
+        
         context = {**get_navbar(),'user': user,
                    'notifications_count': notifications_count,
                    'tickets_replies': tickets_replies,
                    'ticket': ticket,
                    'tickets_admin_replies': tickets_admin_replies,
+                   'ticket_is_open': ticket_is_open,
+                   'form': form,
                    }
+        
         return render(request, 'user_panel_ticket_details.html', context)
+    
+    def post(self, request, id):
+        user = User.get_current_user(request)
+        user_id = request.session.get('_auth_user_id')
+        notifications_count = Notification.get_user_notifications_count(user_id)
+        
+        form = TicketDetailsForm(request.POST, request.FILES)
+        if form.is_valid():
+            cd = form.cleaned_data
+            ticket = Ticket.objects.get(id=id)
+            ticket_replies = TicketDetails.objects.create(ticket=ticket, user=request.user,
+                                                  message=cd['message'], file=cd['file'])
+            tickets_replies = cache.delete(f'tickets_replies-{user_id}')
+            messages.success(request, 'تیکت شما  ارسال شد', 'success')
+            return redirect('ticket-details', id)
+        context = {'form': form,
+                   'user': user, 
+                   'notifications_count': notifications_count}
+        
+        return render(request, 'user_panel_ticket_details.html', context)
+        
+
+
+class TicketCloseByUserView(View):
+    def get(self, request, id):
+        user_id = request.session.get('_auth_user_id')
+        ticket = get_object_or_404(Ticket, id=id)
+        ticket.user_closed = True
+        ticket.save()
+        cache.delete(f'tickets-{user_id}')
+        cache.delete(f'tickets_replies-{user_id}')
+        return redirect('ticket-list')
+

@@ -1,10 +1,11 @@
 from rest_framework.views import APIView, Response
+from django.shortcuts import get_object_or_404
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import EmailMessage
-from ..models import User
+from ..models import User, Ticket
 from ..tokens import email_verification_token
 from .serializers import ResetPasswordSerializer
 from django.shortcuts import redirect

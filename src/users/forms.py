@@ -1,5 +1,5 @@
 from django import forms
-from .models import User
+from .models import User, TicketDetails
 from string import digits
 import re
 from django.db.models import Q
@@ -119,3 +119,10 @@ class ChangeUserInformationForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'city', 'age', 'sex', 'avatar']
+
+
+class TicketDetailsForm(forms.ModelForm):
+    
+    class Meta:
+        model = TicketDetails
+        fields = ['message', 'file']
