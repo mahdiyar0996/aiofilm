@@ -98,6 +98,7 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractBase):
     def to_dict(self):
         return {
         'id': self.id or '',
+        'pk': self.pk or '',
         "username" : self.username or '',
         'subscribe': str(self.subscribe) or '',
         "email" : self.email or '',

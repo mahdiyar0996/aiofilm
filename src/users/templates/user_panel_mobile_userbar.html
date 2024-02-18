@@ -37,8 +37,8 @@
                   </svg></i>
                 لیست تماشا</a>
             </li>
-            <li class="{% if 'tickets' in request.path %} bg-dark-gray {% endif %}">
-                <a href="{% url 'ticket-list' %}" class="text-decoration-none text-warning mx-4 d-flex py-3 {% if 'tickets' in request.path %} text-purple {% endif %}"><i class="fa fa-ticket float-start me-3" aria-hidden="true"></i>
+            <li class="{% if 'ticket' in request.path %} bg-dark-gray {% endif %}">
+                <a href="{% url 'ticket-list' %}" class="text-decoration-none text-warning mx-4 d-flex py-3 {% if 'ticket' in request.path %} text-purple {% endif %}"><i class="fa fa-ticket float-start me-3" aria-hidden="true"></i>
                     تیکت</a>
             </li>
             <li class="{% if 'change-password' in request.path %} bg-dark-gray {% endif %}">

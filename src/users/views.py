@@ -22,7 +22,7 @@ from .models import User, Notification, Ticket, TicketAdminReply, TicketDetails
 from .tokens import email_verification_token
 from .forms import (LoginForm, RegisterForm, ResetPasswordForm,
                     ResetPasswordCompleteForm, ChangePasswordForm,
-                    ChangeUserInformationForm, TicketDetailsForm)
+                    ChangeUserInformationForm, TicketDetailsForm, TicketForm)
 from payments.models import Subscribe, Payment, PaymentMethod
 from home.views import get_navbar
 from django.db.models import Q
@@ -129,7 +129,7 @@ class ResetPasswordCompleteView(View):
                 form.add_error('password1', 'رمز عبور نمیتواند رمز فعلی باشد')
             if user and email_verification_token.check_token(user, token):
                 user.set_password(cd['password1'])
-                user.last_password_reset = jdatetime.date.now()
+                user.last_password_reset = jdatetime.datetime.now()
                 user.save()
                 messages.success(request, 'رمزعبور شما با موفقیت تغییر کرد', 'success')
             return redirect('login')
@@ -324,7 +324,7 @@ class TicketDetailsView(View):
             tickets_replies = cache.delete(f'tickets_replies-{user_id}')
             messages.success(request, 'تیکت شما  ارسال شد', 'success')
             return redirect('ticket-details', id)
-        context = {'form': form,
+        context = {**get_navbar(),'form': form,
                    'user': user, 
                    'notifications_count': notifications_count}
         
@@ -342,3 +342,35 @@ class TicketCloseByUserView(View):
         cache.delete(f'tickets_replies-{user_id}')
         return redirect('ticket-list')
 
+
+
+class TicketCreateView(View):
+    def get(self, request):
+        user = User.get_current_user(request)
+        user_id = request.session.get('_auth_user_id')
+        notifications_count = Notification.get_user_notifications_count(user_id)
+        form = TicketForm
+        context = {**get_navbar(),'form': form,
+                   'user': user, 
+                   'notifications_count': notifications_count}
+        return render(request, 'user_panel_create_ticket.html', context)
+    
+    def post(self, request):
+        user = User.get_current_user(request)
+        user_id = request.session.get('_auth_user_id')
+        notifications_count = Notification.get_user_notifications_count(user_id)
+        form = TicketForm(request.POST, request.FILES)
+        if form.is_valid():
+            cd = form.cleaned_data
+            ticket = Ticket.objects.create(user=request.user,
+                                  department=cd['department'],
+                                  subject=cd['subject'])
+            ticket_replies = TicketDetails.objects.create(ticket=ticket, user=request.user,
+                                           message=cd['message'], file=cd['file'])
+            messages.success(request, 'تیکت شما ارسال ساخته شد', 'success')
+            cache.delete(f'tickets-{user_id}')
+            return redirect('ticket-list')
+        context = {**get_navbar(),'form': form,
+                   'user': user, 
+                   'notifications_count': notifications_count}
+        return render(request, 'user_panel_create_ticket.html', context)

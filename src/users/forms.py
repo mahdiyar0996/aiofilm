@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, TicketDetails
+from .models import User, TicketDetails, Ticket
 from string import digits
 import re
 from django.db.models import Q
@@ -126,3 +126,13 @@ class TicketDetailsForm(forms.ModelForm):
     class Meta:
         model = TicketDetails
         fields = ['message', 'file']
+
+
+class TicketForm(forms.ModelForm):
+    message = forms.CharField(max_length=1000, required=True)
+    file = forms.FileField()
+    
+    class Meta:
+        model = Ticket
+        fields = ['department', 'subject']
+    
