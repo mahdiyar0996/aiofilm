@@ -11,7 +11,6 @@ from django.db import IntegrityError
 from datetime import datetime
 from django.contrib import messages
 import requests
-from django.db import connection
 from requests.exceptions import ConnectionError
 from django.db import transaction
 import logging
@@ -60,7 +59,7 @@ class LoginView(View):
 class LogoutView(View):
     def get(self, request):
         user_id = request.session.get('_auth_user_id')
-        user = redis.delete(f"user-{user_id}")
+        redis.delete(f"user-{user_id}")
         logout(request)
         return redirect('home')
 
@@ -310,9 +309,9 @@ class TicketDetailsView(View):
         if form.is_valid():
             cd = form.cleaned_data
             ticket = Ticket.objects.get(id=id)
-            ticket_replies = TicketDetails.objects.create(ticket=ticket, user=request.user,
-                                                  message=cd['message'], file=cd['file'])
-            tickets_replies = cache.delete(f'tickets_replies-{user_id}')
+            TicketDetails.objects.create(ticket=ticket, user=request.user,
+                                         message=cd['message'], file=cd['file'])
+            cache.delete(f'tickets_replies-{user_id}')
             messages.success(request, 'تیکت شما  ارسال شد', 'success')
             return redirect('ticket-details', id)
         context = {**get_navbar(),'form': form,
@@ -352,8 +351,8 @@ class TicketCreateView(View):
             ticket = Ticket.objects.create(user=request.user,
                                   department=cd['department'],
                                   subject=cd['subject'])
-            ticket_replies = TicketDetails.objects.create(ticket=ticket, user=request.user,
-                                           message=cd['message'], file=cd['file'])
+            TicketDetails.objects.create(ticket=ticket, user=request.user,
+                                         message=cd['message'], file=cd['file'])
             messages.success(request, 'تیکت شما ارسال ساخته شد', 'success')
             cache.delete(f'tickets-{user_id}')
             return redirect('ticket-list')
