@@ -9,6 +9,7 @@ import nested_admin
 
 class FavoriteAdmin(admin.StackedInline):
     model = Favorite
+    extra = 0
     fields = ['movie', 'user']
 
 class BookmarkAdmin(admin.StackedInline):

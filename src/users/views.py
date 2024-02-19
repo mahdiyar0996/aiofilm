@@ -1,24 +1,22 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import Http404, HttpResponse, HttpResponseNotFound
+from django.http import HttpResponseNotFound
 from django.urls import reverse
 from django.views import View
 from django.contrib.auth import login, logout
-from django.contrib.auth.views import LoginView as Login
-from django.contrib.sites.shortcuts import get_current_site
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.db.models import Count
+from django.utils.http import  urlsafe_base64_decode
+from django.db.models import Count, Sum, QuerySet, F
 from config.settings import redis
 from django.core.cache import cache
-from django.contrib.sites.shortcuts import get_current_site
 from django.db import IntegrityError
 from datetime import datetime
 from django.contrib import messages
 import requests
+from django.db import connection
 from requests.exceptions import ConnectionError
 from django.db import transaction
 import logging
-from .models import User, Notification, Ticket, TicketAdminReply, TicketDetails
+from products.models import Movie
+from .models import User, Notification, Ticket, TicketAdminReply, TicketDetails, Bookmark, Favorite
 from .tokens import email_verification_token
 from .forms import (LoginForm, RegisterForm, ResetPasswordForm,
                     ResetPasswordCompleteForm, ChangePasswordForm,
@@ -363,3 +361,43 @@ class TicketCreateView(View):
                    'user': user, 
                    'notifications_count': notifications_count}
         return render(request, 'user_panel_create_ticket.html', context)
+
+
+class BookmarksView(View):
+    def get(self, request):
+        user, user_id, notifications_count = panel_base_data(request)
+        
+        bookmarks = cache.get(f'bookmark-{user_id}')
+        if not bookmarks:
+            bookmarks = Bookmark.objects.select_related('movie', 'movie__category').filter(user_id=user_id).annotate(
+                count_of_favorite=Count('movie__favorite')).values(
+                    'id', 'movie_id', 'movie__name', 'movie__summary',
+                    'movie__imdb_rate', 'movie__is_ongoing', 'movie__created_at',
+                    'movie__release_at', 'movie__category__id', 'movie__category__title', 'count_of_favorite')
+            cache.set(f'bookmark-{user_id}', list(bookmarks), 60 * 5)
+                
+        context = {**get_navbar(),
+                'user': user, 
+                'bookmarks': bookmarks,
+                'notifications_count': notifications_count}
+        return render(request, 'user_panel_bookmark.html', context)
+
+
+class FavoriteView(View):
+    def get(self, request):
+        user,user_id,notifications_count = panel_base_data(request)
+        
+        favorites = cache.get(f'favorite-{user_id}')
+        if not favorites:
+            favorites = Favorite.objects.select_related('movie', 'movie__category').filter(user_id=user_id).annotate(
+                    count_of_favorite=Count('movie__favorite')).values(
+                        'id', 'movie_id', 'movie__name', 'movie__summary',
+                        'movie__imdb_rate', 'movie__is_ongoing', 'movie__created_at',
+                        'movie__release_at', 'movie__category__id', 'movie__category__title', 'count_of_favorite')
+            cache.set(f'favorite-{user_id}', favorites, 60 * 5)
+
+        context = {**get_navbar(),
+                   'user': user, 
+                   'favorites': favorites,
+                   'notifications_count': notifications_count}
+        return render(request, 'user_panel_favorite.html', context)

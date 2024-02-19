@@ -27,12 +27,12 @@
                 <a href="" class="text-decoration-none text-warning mx-4 d-flex py-3 {% if 'my-comments' in request.path %} text-purple {% endif %}"><i class="fa fa-comment float-start me-3" aria-hidden="true"></i>
                 نظرات من</a>
             </li>
-            <li class="{% if 'favorites' in request.path %} bg-dark-gray {% endif %}">
-                <a href="" class="text-decoration-none text-warning mx-4 d-flex py-3 {% if 'favorites' in request.path %} text-purple {% endif %}"><i class="fa fa-heart float-start me-3" aria-hidden="true"></i>
+            <li class="{% if 'favorits' in request.path %} bg-dark-gray {% endif %}">
+                <a href="{% url 'favorite' %}" class="text-decoration-none text-warning mx-4 d-flex py-3 {% if 'favorite' in request.path %} text-purple {% endif %}"><i class="fa fa-heart float-start me-3" aria-hidden="true"></i>
                     عناوین مورد عطاقه</a>
             </li>
-            <li class="{% if 'bookmarks' in request.path %} bg-dark-gray {% endif %}">
-                <a href="" class="text-decoration-none text-warning mx-4 d-flex py-3 {% if 'bookmarks' in request.path %} text-purple {% endif %}"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="30" fill="currentColor" class="bi bi-bookmark-fill float-start me-3" viewBox="0 0 16 16">
+            <li class="{% if 'bookmark' in request.path %} bg-dark-gray {% endif %}">
+                <a href="{% url 'bookmarks' %}" class="text-decoration-none text-warning mx-4 d-flex py-3 {% if 'bookmark' in request.path %} text-purple {% endif %}"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="30" fill="currentColor" class="bi bi-bookmark-fill float-start me-3" viewBox="0 0 16 16">
                     <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2"/>
                   </svg></i>
                 لیست تماشا</a>

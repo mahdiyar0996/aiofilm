@@ -15,6 +15,7 @@ import os
 from .localsettings import *
 import logging
 from redis import StrictRedis
+from django.urls import reverse
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -173,6 +174,8 @@ LANGUAGE_CODE = 'en-us'
 
 # TIME_ZONE = 'Asia/Tehran'
 
+
+
 USE_I18N = True
 
 USE_TZ = True
@@ -195,3 +198,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 DATE_INPUT_FORMATS = ['%d-%m-%Y']
+
+
+LOGIN_REDIRECT_URL = 'user-panel'
+LOGOUT_REDIRECT_URL = 'home'
