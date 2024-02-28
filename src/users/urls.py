@@ -5,7 +5,8 @@ from .views import (LoginView, RegisterView,
 ResetPasswordView, ResetPasswordCompleteView,
 PanelView, LogoutView, PanelChangePasswordView,
 PanelEditAccountView, TicketListView, TicketDetailsView,
-TicketCloseByUserView, TicketCreateView, BookmarksView, FavoriteView)
+TicketCloseByUserView, TicketCreateView, BookmarksView, FavoriteView,
+CommentView)
 
 urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
@@ -22,5 +23,6 @@ urlpatterns = [
     path('panel/create-ticket/', login_required(TicketCreateView.as_view()), name='ticket-create'),
     path('panel/bookmark/', login_required(BookmarksView.as_view()), name='bookmarks'),
     path('panel/favorite/', login_required(FavoriteView.as_view()), name='favorite'),
+    path('panel/comments/', login_required(CommentView.as_view()), name='comments'),
     path('', include('users.api.urls')),
 ]

@@ -162,6 +162,11 @@ class Comment(AbstractBase):
     user = models.ForeignKey(User, verbose_name='کاربر', related_name='%(class)s', on_delete=models.CASCADE)
     movie = models.ForeignKey('products.Movie', verbose_name='فیلم', related_name='%(class)s', on_delete=models.CASCADE)
     text = models.TextField('متن')
+    like = models.IntegerField('لایک', default=0)
+    dislike = models.IntegerField('دیس لایک', default=False)
+    updated_at = models.DateTimeField("اخرین بروزرسانی",auto_now=True)
+    created_at = models.DateTimeField("زمان ساخت",auto_now_add=True)
+    is_active = models.BooleanField("وضعیت", default=True)
     
     class Meta:
         db_table = 'Comment'
@@ -173,9 +178,14 @@ class Comment(AbstractBase):
 
 class Reply(AbstractBase):
     user = models.ForeignKey(User, verbose_name='کاربر', related_name='%(class)s', on_delete=models.CASCADE)
-    reply_to = models.ForeignKey(User, verbose_name='پاسخ به', related_name='reply_to', on_delete=models.CASCADE)
+    reply_to = models.ForeignKey(Comment, verbose_name='پاسخ به', related_name='reply_to', on_delete=models.CASCADE)
     movie = models.ForeignKey('products.Movie', verbose_name='فیلم', related_name='%(class)s', on_delete=models.CASCADE)
     text = models.TextField('متن')
+    like = models.IntegerField('لایک', default=0)
+    dislike = models.IntegerField('دیس لایک', default=False)
+    updated_at = models.DateTimeField("اخرین بروزرسانی",auto_now=True)
+    created_at = models.DateTimeField("زمان ساخت",auto_now_add=True)
+    is_active = models.BooleanField("وضعیت", default=True)
 
     class Meta:
         db_table = 'Reply'

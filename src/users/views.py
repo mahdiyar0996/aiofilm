@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.views import View
 from django.contrib.auth import login, logout
 from django.utils.http import  urlsafe_base64_decode
-from django.db.models import Count, Sum, QuerySet, F
+from django.db.models import Count, Sum, QuerySet, F, Case, When
 from config.settings import redis
 from django.core.cache import cache
 from django.db import IntegrityError
@@ -15,7 +15,7 @@ from requests.exceptions import ConnectionError
 from django.db import transaction
 import logging
 from products.models import Movie
-from .models import User, Notification, Ticket, TicketAdminReply, TicketDetails, Bookmark, Favorite
+from .models import User, Notification, Ticket, TicketAdminReply, TicketDetails, Bookmark, Favorite, Comment, Reply
 from .tokens import email_verification_token
 from .forms import (LoginForm, RegisterForm, ResetPasswordForm,
                     ResetPasswordCompleteForm, ChangePasswordForm,
@@ -385,7 +385,6 @@ class BookmarksView(View):
 class FavoriteView(View):
     def get(self, request):
         user,user_id,notifications_count = panel_base_data(request)
-        
         favorites = cache.get(f'favorite-{user_id}')
         if not favorites:
             favorites = Favorite.objects.select_related('movie', 'movie__category').filter(user_id=user_id).annotate(
@@ -400,3 +399,21 @@ class FavoriteView(View):
                    'favorites': favorites,
                    'notifications_count': notifications_count}
         return render(request, 'user_panel_favorite.html', context)
+
+
+class CommentView(View):
+    def get(self, request):
+        user,user_id,notifications_count = panel_base_data(request)
+        comments = Comment.objects.filter(user_id=user_id).select_related('movie').values(
+            'id', 'text', 'created_at','movie__name', 'movie__id',
+                            'movie__category__title', 'movie__name',
+                            'like', 'dislike')
+        comments_id = [comment['id'] for comment in comments]
+        replies = Reply.objects.filter(reply_to__id__in=comments_id).values(
+            'id', 'created_at', 'user__username', 'text', 'like', 'dislike')
+        context = {**get_navbar(),
+                'user': user, 
+                'comments': comments,
+                'replies': replies,
+                'notifications_count': notifications_count}
+        return render(request, 'user_panel_comments.html', context)

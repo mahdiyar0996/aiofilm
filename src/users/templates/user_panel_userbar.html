@@ -22,8 +22,8 @@
                     <a href="{% url 'user-panel' %}" class="text-decoration-none text-warning mx-4 d-flex py-3 {% if '/panel/' == request.path %} text-purple {% endif %}"><i class="fa fa-th fs-3 float-start me-3" aria-hidden="true"></i>
                         داشبورد</a>
                 </li>
-                <li class="{% if 'my-comments' in request.path %} bg-dark-gray {% endif %}">
-                    <a href="" class="text-decoration-none text-warning mx-4 d-flex py-3 {% if 'my-comments' in request.path %} text-purple {% endif %}"><i class="fa fa-comment float-start me-3" aria-hidden="true"></i>
+                <li class="{% if 'comments' in request.path %} bg-dark-gray {% endif %}">
+                    <a href="{% url 'comments' %}" class="text-decoration-none text-warning mx-4 d-flex py-3 {% if 'comments' in request.path %} text-purple {% endif %}"><i class="fa fa-comment float-start me-3" aria-hidden="true"></i>
                     نظرات من</a>
                 </li>
                 <li class="{% if 'favorite' in request.path %} bg-dark-gray {% endif %}">

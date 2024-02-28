@@ -57,7 +57,7 @@ class CommentAdmin(admin.ModelAdmin):
 
 @admin.register(Reply)
 class ReplyAdmin(admin.ModelAdmin):
-    fields = ['user','reply_to', 'movie', 'text', 'is_active', 'created_at', 'updated_at']
+    fields = ['user','reply_to', 'movie', 'text','like', 'dislike', 'is_active', 'created_at', 'updated_at']
     list_display = ['id', 'user', 'reply_to', 'movie', 'is_active']
     list_display_links = ['id', 'user', 'reply_to', 'movie']
     list_per_page = 100
