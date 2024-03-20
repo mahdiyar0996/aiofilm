@@ -182,7 +182,7 @@ class Reply(AbstractBase):
     movie = models.ForeignKey('products.Movie', verbose_name='فیلم', related_name='%(class)s', on_delete=models.CASCADE)
     text = models.TextField('متن')
     like = models.IntegerField('لایک', default=0)
-    dislike = models.IntegerField('دیس لایک', default=False)
+    dislike = models.IntegerField('دیس لایک', default=0)
     updated_at = models.DateTimeField("اخرین بروزرسانی",auto_now=True)
     created_at = models.DateTimeField("زمان ساخت",auto_now_add=True)
     is_active = models.BooleanField("وضعیت", default=True)

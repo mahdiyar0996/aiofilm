@@ -404,13 +404,21 @@ class FavoriteView(View):
 class CommentView(View):
     def get(self, request):
         user,user_id,notifications_count = panel_base_data(request)
-        comments = Comment.objects.filter(user_id=user_id).select_related('movie').values(
-            'id', 'text', 'created_at','movie__name', 'movie__id',
-                            'movie__category__title', 'movie__name',
-                            'like', 'dislike')
+        
+        comments = cache.get(f'user-{user_id}-comments')
+        if not comments:
+            comments = Comment.objects.filter(user_id=user_id).select_related('movie').values(
+                'id', 'text', 'created_at','movie__name', 'movie__id',
+                                'movie__category__title', 'movie__name',
+                                'like', 'dislike')
+            cache.set(f'user-{user_id}-comments', comments, 60 * 10)
         comments_id = [comment['id'] for comment in comments]
-        replies = Reply.objects.filter(reply_to__id__in=comments_id).values(
-            'id', 'created_at', 'user__username', 'text', 'like', 'dislike')
+        
+        replies = cache.get(f'user-{user_id}-replies')
+        if not replies:
+            replies = Reply.objects.filter(reply_to__id__in=comments_id).values(
+                'id', 'created_at', 'user__username', 'text', 'like', 'dislike')
+            cache.set(f'user-{user_id}-replies', replies, 60 * 10)
         context = {**get_navbar(),
                 'user': user, 
                 'comments': comments,
