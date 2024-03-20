@@ -99,11 +99,17 @@ class Mytest(TransactionTestCase):
         response = self.client.get(reverse('login'))
         self.assertEqual(response.status_code, 200)
         
-        # response2 = self.client.post(reverse('login'), data={'username': 'test1', 'password': 'Test0996'})
-        # self.assertEqual(response2.status_code, 200)
-        # self.assertRedirects(response2, '/panel')
+        response2 = self.client.post(reverse('login'), data={'username': 'test1', 'password': 'Test0996'})
+        self.assertEqual(response2.status_code, 302)
+        self.assertEqual(response2.url, '/panel/')
         
         response3 = self.client.post(reverse('login'), data={'username': 'test1', 'password': 'Test09966'})
         self.assertEqual(response3.status_code, 400)
     
-    
+    # def test_panel(self):
+    #     self.client.logout()
+    #     s = self.client.login(username='test1', password='Test0996')
+    #     print(s)
+        
+    #     response = self.client.get(reverse('user-panel'))
+    #     self.assertEqual(response.status_code, 200)

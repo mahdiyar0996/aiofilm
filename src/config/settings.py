@@ -34,6 +34,10 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
+
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -148,6 +152,7 @@ redis = StrictRedis('localhost', 6379, 0, decode_responses=True)
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
 
+
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -199,6 +204,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DATE_INPUT_FORMATS = ['%d-%m-%Y']
 
-
-LOGIN_REDIRECT_URL = 'user-panel'
-LOGOUT_REDIRECT_URL = 'home'
+LOGIN_URL= 'login'
+LOGIN_REDIRECT_URL = '/panel/'
