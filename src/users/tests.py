@@ -8,11 +8,14 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from .tokens import email_verification_token
 from threading import Thread
 from django.contrib import messages
+from django.test import Client
+import requests
 
 
 class Mytest(TransactionTestCase):
     def setUp(self) -> None:
         self.u1 = User.objects.create_user(username='test1', email='test1@gmail.com', password='Test0996')
+        self.u7 = User.objects.create_user(username='test7', email='test7@gmail.com', password='Test0996', is_active=True)
 
     def test_user_create(self):
         u1 = User.objects.get(pk=self.u1.pk)
@@ -106,10 +109,16 @@ class Mytest(TransactionTestCase):
         response3 = self.client.post(reverse('login'), data={'username': 'test1', 'password': 'Test09966'})
         self.assertEqual(response3.status_code, 400)
     
-    # def test_panel(self):
-    #     self.client.logout()
-    #     s = self.client.login(username='test1', password='Test0996')
-    #     print(s)
+    def test_panel(self):
+        self.client.login(username='test1', password='Test0996')
+        response1 = self.client.get(reverse('user-panel'))
+        self.assertEqual(response1.status_code, 302)
         
-    #     response = self.client.get(reverse('user-panel'))
-    #     self.assertEqual(response.status_code, 200)
+        
+        self.client.login(username='csad2wsxzczdfsafsfds', password='Test0996')
+        response2 = self.client.get(reverse('user-panel'))
+        self.assertEqual(response2.status_code, 302)
+        
+        self.client.login(username='test7', password='Test0996')
+        response = self.client.get(reverse('user-panel'))
+        self.assertEqual(response.status_code, 200)

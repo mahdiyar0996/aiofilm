@@ -206,3 +206,10 @@ DATE_INPUT_FORMATS = ['%d-%m-%Y']
 
 LOGIN_URL= 'login'
 LOGIN_REDIRECT_URL = '/panel/'
+
+
+AUTHENTICATION_BACKENDS = [
+    # "django.contrib.auth.backends.ModelBackend",
+    'users.backends.EmailUsernameAuthentication',
+    # 'allauth.account.auth_backends.AuthenticationBackend',
+]
