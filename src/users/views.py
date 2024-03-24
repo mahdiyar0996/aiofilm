@@ -251,17 +251,29 @@ class PanelEditAccountView(View):
 class TicketListView(View):
     def get(self, request):
         user,user_id,notifications_count = panel_base_data(request)
-        tickets = cache.get(f'tickets-{user_id}')
+        
+        page = request.GET.get('page', '1')
+        count = 20
+        
+        tickets = cache.get(f'user-{user_id}-tickets')
+        paginator = cache.get(f'user-{user_id}-tickets-paginator{page}')
         if not tickets:
             tickets = Ticket.objects.filter(user__pk=user['id']).order_by(
                 'created_at').values('id','department', 'subject',
                                      'admin_closed', 'user_closed',
                                      'updated_at')
-            cache.set(f'tickets-{user_id}', tickets, 60 * 5)
-
+            tickets,paginator = get_paginator(request, tickets, count)
+            cache.set(f'user-{user_id}tickets', tickets, 60 * 10)
+            cache.set(f'user-{user_id}tickets-paginator', tickets, 60 * 10)
+            
+        tickets_counts = len(tickets) * int(page)
+        max_tickets_counts = paginator.count
         
         context = {**get_navbar(),'user': user,
                    'notifications_count': notifications_count,
+                   'paginator': paginator,
+                   'tickets_counts': tickets_counts,
+                   'max_tickets_counts': max_tickets_counts,
                    'tickets': tickets}
         return render(request, 'user_panel_ticket_list.html', context)
 
