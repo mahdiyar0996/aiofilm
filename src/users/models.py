@@ -7,7 +7,7 @@ from django_jalali.db import models as jmodels
 from .validators import valid_username, valid_email, valid_password
 from config.settings import redis
 import json
-
+import time
 
 class AbstractBase(models.Model):
     updated_at = jmodels.jDateTimeField("اخرین بروزرسانی",auto_now=True)
@@ -272,15 +272,11 @@ class Notification(AbstractBase):
         return self.subject
     
     
-    def get_notification_count(user_id):
-        notifications_count = Notification.objects.filter(Q(is_read=False) & Q(user__pk=user_id)).aggregate(count=Count('id'))
-        return notifications_count
-    
     
     def get_user_notifications_count(user_id):
         notifications_count = redis.hgetall(f'notification-{user_id}')
         if not notifications_count:
-            notifications_count = Notification.get_notification_count(user_id)
+            notifications_count = Notification.objects.filter(Q(is_read=False) & Q (user__id=user_id) | Q(user__id=None)).aggregate(count=Count('id'))
             with redis.pipeline() as pipeline:
                 pipeline.hset(f'notification-{user_id}', 'count', str(notifications_count['count']))
                 pipeline.expire(f'notification-{user_id}', 60 * 10)

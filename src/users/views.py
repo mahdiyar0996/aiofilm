@@ -25,7 +25,7 @@ from home.views import get_navbar
 from django.db.models import Q
 from utils.tools import get_paginator
 import jdatetime
-
+from threading import Thread
 
 def panel_base_data(request, field=None):
     user = User.get_current_user(request, field)
@@ -183,6 +183,17 @@ class PanelView(View):
                    }
         
         return render(request, 'user_panel_dashboard.html', context)
+
+
+class NotificationListView(View):
+    def get(self, request):
+        user,user_id,notifications_count = panel_base_data(request)
+        notifications = Notification.objects.filter(is_active=True).values('subject', 'message',
+                                                                             'is_read', 'id', 'created_at')
+
+        context = {**get_navbar(),'user': user,
+                   'notifications': notifications}
+        return render(request, 'user_panel_notification.html', context)
 
 
 class PanelChangePasswordView(View):

@@ -5,7 +5,7 @@ from .views import (LoginView, RegisterView,
 ResetPasswordView, ResetPasswordCompleteView,
 PanelView, LogoutView, PanelChangePasswordView,
 PanelEditAccountView, TicketListView, TicketDetailsView,
-TicketCloseByUserView, TicketCreateView, BookmarksView, FavoriteView,
+TicketCloseByUserView, TicketCreateView, BookmarksView, FavoriteView,NotificationListView,
 CommentView)
 
 urlpatterns = [
@@ -16,6 +16,7 @@ urlpatterns = [
     path('password-recovery-complete/<str:uidb64>/<str:token>', ResetPasswordCompleteView.as_view(), name='password-recovery-complete'),
     path('panel/', login_required(PanelView.as_view()), name='user-panel'),
     path('panel/change-password/', login_required(PanelChangePasswordView.as_view()), name='change-password'),
+    path('panel/notifications/', login_required(NotificationListView.as_view()), name='notifications'),
     path('panel/edit-account/', login_required(PanelEditAccountView.as_view()), name='user-edit-account'),
     path('panel/ticket/', login_required(TicketListView.as_view()), name='ticket-list'),
     path('panel/ticket/<int:id>/details', login_required(TicketDetailsView.as_view()), name='ticket-details'),
