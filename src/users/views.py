@@ -387,18 +387,31 @@ class BookmarksView(View):
 class FavoriteView(View):
     def get(self, request):
         user,user_id,notifications_count = panel_base_data(request)
-        favorites = cache.get(f'favorite-{user_id}')
+        
+        page = request.GET.get('page', '1')
+        count = 20
+        
+        favorites = cache.get(f'user-{user_id}-favorite-{page}')
+        paginator = cache.get(f'user-{user_id}-favorite-paginator{page}')
         if not favorites:
             favorites = Favorite.objects.select_related('movie', 'movie__category').filter(user_id=user_id).annotate(
                     count_of_favorite=Count('movie__favorite')).values(
                         'id', 'movie_id', 'movie__name', 'movie__summary',
                         'movie__imdb_rate', 'movie__is_ongoing', 'movie__created_at',
                         'movie__release_at', 'movie__category__id', 'movie__category__title', 'count_of_favorite')
-            cache.set(f'favorite-{user_id}', favorites, 60 * 5)
-
+            favorites,paginator = get_paginator(request, favorites, count)
+            cache.set(f'user-{user_id}-favorite-{page}', favorites, 60 * 10)
+            cache.set(f'user-{user_id}-favorite-paginator{page}', paginator, 60 * 10)
+            
+        favorites_counts = len(favorites) * int(page)
+        max_favorites_counts = paginator.count
+        print(favorites_counts)
         context = {**get_navbar(),
                    'user': user, 
                    'favorites': favorites,
+                   'favorites_counts': favorites_counts,
+                   'max_favorites_counts': max_favorites_counts,
+                   'paginator': paginator,
                    'notifications_count': notifications_count}
         return render(request, 'user_panel_favorite.html', context)
 
