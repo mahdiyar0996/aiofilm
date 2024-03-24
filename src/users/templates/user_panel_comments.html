@@ -43,9 +43,10 @@
                             <ul class="text-white list-unstyled">
                                 <li class="float-start"><a href="" class="text-muted"><i class="fa fa-thumbs-up float-start" aria-hidden="true"><span class="me-1">{{ comment.like }}</span></i></a></li>
                                 <li class="float-start ms-2"><a href="" class="text-muted text-decoration-none"><i class="fa fa-thumbs-down float-start" aria-hidden="true"><span class="me-1">{{ comment.dislike }}</span></i></a></li>
-                            </ul>
+                             </ul>
                         </div>
                         {% for reply in replies %}
+                        {% if reply.reply_to == comment.id %}
                         <div class="bg-gray d-flex flex-column px-4 py-3">
                             <ul class="list-unstyled d-block mb-1">
                                 <li class="float-start text-white">{{ reply.user__username }}</li>
@@ -61,9 +62,24 @@
                                     </ul>
                                 </div>
                             </div>
+                            {% endif %}
                         {% endfor %}
                     </div>
                 {% endfor %}
+                    <form method="get" class="text-white px-3 py-3 bg-gray d-flex flex-column gap-3 mb-5 flex-md-row w-100 justify-content-between mt-4 border border-1 border-purple">
+                        <div class="mt-2">
+                            نمایش از
+                            <span>{{ comments_counts }}</span>
+                            تا
+                            <span>{{ max_comments_counts }}</span>
+                            نتیجه
+                        </div>
+                        <div>
+                            {% with object=comments %}
+                            {% include "paginator.html" %}
+                            {% endwith %}
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

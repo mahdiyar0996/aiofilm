@@ -1,0 +1,36 @@
+<ul class="list-unstyled normal-font">
+    {% if object.has_previous %}
+        {% if object.number|add:-1 < object.number %}
+        <li class="float-start d-inline-block mx-1px my-2"><button name="page" value="{{ object.number|add:-1 }}" class="bg-darkblue text-white text-decoration-none px-2 px-sm-3 py-2 border-0"><i class="fa fa-angle-right" aria-hidden="true"></i></button></li>
+        {% endif %}
+        {% if object.number|add:-5 < object.number and object.number|add:-5 > 1 %}
+        <li class="float-start d-inline-block mx-1px my-2"><button name="page" value="1" class="bg-darkblue text-white text-decoration-none px-2 px-sm-3 py-2 border-0">1</button></li>
+        {% endif %}
+        {% if object.number|add:-2 < object.number and object.number|add:-2 > 1 and object.number < 6 %}
+        <li class="float-start d-inline-block mx-1px my-2"><button name="page" value="1" class="bg-darkblue text-white text-decoration-none px-2 px-sm-3 py-2 border-0">1</button></li>
+        {% endif %}
+        {% if object.number|add:-5 < object.number and object.number|add:-5 > 0 %}
+        <li class="float-start d-inline-block mx-1px my-2"><button name="page" value="{{ object.number|add:-5 }}" class="bg-darkblue text-white text-decoration-none px-2 px-sm-3 py-2 border-0">{{ object.number|add:-5 }}</button></li>
+        {% endif %}
+        {% if object.number|add:-2 < object.number and object.number|add:-2 > 0%}
+        <li class="float-start d-inline-block mx-1px my-2"><button name="page" value="{{ object.number|add:-2 }}" class="bg-darkblue text-white text-decoration-none px-2 px-sm-3 py-2 border-0">{{ object.number|add:-2 }}</button></li>
+        {% endif %}
+        {% if object.number|add:-1 < object.number %}
+        <li class="float-start d-inline-block mx-1px my-2"><button name="page" value="{{ object.number|add:-1 }}" class="bg-darkblue text-white text-decoration-none px-2 px-sm-3 py-2 border-0">{{ object.number|add:-1 }}</button></li>
+        {% endif %}
+    {% endif %}
+    <li class="float-start d-inline-block mx-1px my-2"><button name="page" value="{{ object.number }}" class="bg-primary text-white text-decoration-none px-2 px-sm-3 py-2 border-0">{{ object.number}}</button></li>
+    {% if object.has_next %}
+        {% if object.number|add:1 < paginator.num_pages %}
+        <li class="float-start d-inline-block mx-1px my-2"><button name="page" value="{{ object.number|add:1 }}" class="bg-darkblue text-white text-decoration-none px-2 px-sm-3 py-2 border-0">{{ object.number|add:1 }}</button></li>
+        {% endif %}
+        {% if object.number|add:2 < paginator.num_pages %}
+        <li class="float-start d-inline-block mx-1px my-2"><button name="page" value="{{ object.number|add:2 }}" class="bg-darkblue text-white text-decoration-none px-2 px-sm-3 py-2 border-0">{{ object.number|add:2 }}</button></li>
+        {% endif %}
+        {% if object.number|add:5 < paginator.num_pages %}
+        <li class="float-start d-inline-block mx-1px my-2"><button name="page" value="{{ object.number|add:5 }}" class="bg-darkblue text-white text-decoration-none px-2 px-sm-3 py-2 border-0">{{ object.number|add:5 }}</button></li>
+        {% endif %}
+        <li class="float-start d-inline-block mx-1px my-2"><button name="page" value="{{ paginator.num_pages }}" class="bg-darkblue text-white text-decoration-none px-2 px-sm-3 py-2 border-0">{{ paginator.num_pages }}</button></li>
+        <li class="float-start d-inline-block mx-1px my-2"><button name="page" value="" class="bg-darkblue text-white text-decoration-none px-2 px-sm-3 py-2 border-0"><i class="fa fa-angle-left" aria-hidden="true"></i></button></li>
+    {% endif %}
+</ul>

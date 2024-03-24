@@ -18,12 +18,6 @@ class EmailUsernameAuthentication(ModelBackend):
                                     )
         except User.DoesNotExist:
             return None
-        if not user.is_active:
-            try:
-                messages.error(request, 'حساب شما فعال نمی باشد', 'danger')
-                return None
-            except TypeError:
-                pass
         if user and check_password(password, user.password):
             return user
         return None

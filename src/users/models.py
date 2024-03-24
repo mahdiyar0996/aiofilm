@@ -125,12 +125,15 @@ class User(AbstractBaseUser, PermissionsMixin, AbstractBase):
         else:
             user = redis.hget(f"user-{user_id}", field)
             if not user and user_id:
-                user = request.user.to_dict()
-                with redis.pipeline() as pipeline:
-                    pipeline.hset(f"user-{user_id}", mapping=request.user.to_dict())
-                    pipeline.expire(f"user-{user_id}", 60 * 30)
-                    pipeline.execute()
-                user = user[field]
+                try:
+                    user = request.user.to_dict()
+                    with redis.pipeline() as pipeline:
+                        pipeline.hset(f"user-{user_id}", mapping=request.user.to_dict())
+                        pipeline.expire(f"user-{user_id}", 60 * 30)
+                        pipeline.execute()
+                    user = user[field]
+                except AttributeError:
+                    return None
         return user
     
     

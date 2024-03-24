@@ -23,7 +23,9 @@ from .forms import (LoginForm, RegisterForm, ResetPasswordForm,
 from payments.models import Subscribe, Payment, PaymentMethod
 from home.views import get_navbar
 from django.db.models import Q
+from utils.tools import get_paginator
 import jdatetime
+
 
 def panel_base_data(request, field=None):
     user = User.get_current_user(request, field)
@@ -405,23 +407,37 @@ class CommentView(View):
     def get(self, request):
         user,user_id,notifications_count = panel_base_data(request)
         
-        comments = cache.get(f'user-{user_id}-comments')
+        page = request.GET.get('page', '1')
+        count = 20
+        
+        comments = cache.get(f'user-{user_id}-comments-{page}')
+        paginator = cache.get(f'user-{user_id}-comments-paginator{page}')
         if not comments:
             comments = Comment.objects.filter(user_id=user_id).select_related('movie').values(
                 'id', 'text', 'created_at','movie__name', 'movie__id',
                                 'movie__category__title', 'movie__name',
                                 'like', 'dislike')
-            cache.set(f'user-{user_id}-comments', comments, 60 * 10)
+            comments,paginator = get_paginator(request, comments, count)
+            cache.set(f'user-{user_id}-comments-{page}', comments, 60 * 10)
+            cache.set(f'user-{user_id}-comments-paginator{page}', paginator, 60 * 10)
         comments_id = [comment['id'] for comment in comments]
         
         replies = cache.get(f'user-{user_id}-replies')
         if not replies:
-            replies = Reply.objects.filter(reply_to__id__in=comments_id).values(
+            replies = Reply.objects.filter(reply_to__id__in=comments_id).values('reply_to',
                 'id', 'created_at', 'user__username', 'text', 'like', 'dislike')
             cache.set(f'user-{user_id}-replies', replies, 60 * 10)
+            
+        comments_counts = len(comments) * int(page)
+        max_comments_counts = paginator.count
+        
         context = {**get_navbar(),
-                'user': user, 
+                'user': user,
+                'max_comments_counts': max_comments_counts,
+                'comments_counts': comments_counts,
                 'comments': comments,
                 'replies': replies,
+                'paginator': paginator,
                 'notifications_count': notifications_count}
+        
         return render(request, 'user_panel_comments.html', context)
