@@ -368,18 +368,29 @@ class BookmarksView(View):
     def get(self, request):
         user, user_id, notifications_count = panel_base_data(request)
         
-        bookmarks = cache.get(f'bookmark-{user_id}')
+        page = request.GET.get('page', '1')
+        count = 20
+        
+        bookmarks = cache.get(f'user-{user_id}-bookmarks')
+        paginator = cache.get(f'user-{user_id}-bookmarks-paginator{page}')
         if not bookmarks:
             bookmarks = Bookmark.objects.select_related('movie', 'movie__category').filter(user_id=user_id).annotate(
                 count_of_favorite=Count('movie__favorite')).values(
                     'id', 'movie_id', 'movie__name', 'movie__summary',
                     'movie__imdb_rate', 'movie__is_ongoing', 'movie__created_at',
                     'movie__release_at', 'movie__category__id', 'movie__category__title', 'count_of_favorite')
-            cache.set(f'bookmark-{user_id}', list(bookmarks), 60 * 5)
-                
+            bookmarks,paginator = get_paginator(request, bookmarks, count)
+            cache.set(f'user-{user_id}-bookmarks', bookmarks, 60 * 10)
+            cache.set(f'user-{user_id}-bookmarks-paginator{page}', paginator, 60 * 10)
+            
+        bookmarks_counts = len(bookmarks) * int(page)
+        max_bookmarks_counts = paginator.count
         context = {**get_navbar(),
                 'user': user, 
                 'bookmarks': bookmarks,
+                'paginator': paginator,
+                'bookmarks_counts': bookmarks_counts,
+                'max_bookmarks_counts': max_bookmarks_counts,
                 'notifications_count': notifications_count}
         return render(request, 'user_panel_bookmark.html', context)
 

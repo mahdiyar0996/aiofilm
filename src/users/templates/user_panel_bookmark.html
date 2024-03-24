@@ -52,6 +52,22 @@
                     {% endif %}
                 </div>
             </div>
+            {% if max_bookmarks_counts > 20 %}
+                <form method="get" class="text-white px-3 py-3 bg-gray d-flex flex-column gap-3 mb-5 flex-md-row w-100 justify-content-between mt-4 border border-1 border-purple">
+                    <div class="mt-2">
+                        نمایش از
+                        <span>{{ bookmarks_counts }}</span>
+                        تا
+                        <span>{{ max_bookmarks_counts }}</span>
+                        نتیجه
+                    </div>
+                    <div>
+                        {% with object=bookmarks %}
+                        {% include "paginator.html" %}
+                        {% endwith %}
+                    </div>
+                </form>
+            {% endif %}
         </div>
     </div>
 </div>
