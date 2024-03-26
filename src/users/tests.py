@@ -63,9 +63,6 @@ class Mytest(TransactionTestCase):
         response = self.client.get(reverse('password-recovery'))
         self.assertEqual(response.status_code, 200)
         
-        # response2 = self.client.post(reverse('password-recovery'), {'email': 'test1@gmail.com'})
-        # self.assertEqual(response2.status_code, 302)
-        
         response3 = self.client.post(reverse('password-recovery'), {'email': 'testttttttttttttt@gmail.com'})
         self.assertEqual(response3.status_code, 400)
         
