@@ -278,7 +278,7 @@ class TicketListView(View):
             cache.set(f'user-{user_id}tickets-paginator', tickets, 60 * 10)
             
         tickets_counts = len(tickets) * int(page)
-        max_tickets_counts = paginator.count
+        max_tickets_counts = paginator.count if paginator else 0
         
         context = {**get_navbar(),'user': user,
                    'notifications_count': notifications_count,
@@ -378,7 +378,7 @@ class TicketCreateView(View):
                                   subject=cd['subject'])
             TicketDetails.objects.create(ticket=ticket, user=request.user,
                                          message=cd['message'], file=cd['file'])
-            messages.success(request, 'تیکت شما ارسال ساخته شد', 'success')
+            messages.success(request, 'تیکت شما ارسال شد', 'success')
             cache.delete(f'tickets-{user_id}')
             return redirect('ticket-list')
         context = {**get_navbar(),'form': form,
@@ -407,7 +407,7 @@ class BookmarksView(View):
             cache.set(f'user-{user_id}-bookmarks-paginator{page}', paginator, 60 * 10)
             
         bookmarks_counts = len(bookmarks) * int(page)
-        max_bookmarks_counts = paginator.count
+        max_bookmarks_counts = paginator.count if paginator else 0
         context = {**get_navbar(),
                 'user': user, 
                 'bookmarks': bookmarks,
@@ -438,7 +438,7 @@ class FavoriteView(View):
             cache.set(f'user-{user_id}-favorite-paginator{page}', paginator, 60 * 10)
             
         favorites_counts = len(favorites) * int(page)
-        max_favorites_counts = paginator.count
+        max_favorites_counts = paginator.count if paginator else 0
         print(favorites_counts)
         context = {**get_navbar(),
                    'user': user, 
@@ -476,7 +476,7 @@ class CommentView(View):
             cache.set(f'user-{user_id}-replies', replies, 60 * 10)
             
         comments_counts = len(comments) * int(page)
-        max_comments_counts = paginator.count
+        max_comments_counts = paginator.count if paginator else 0 
         
         context = {**get_navbar(),
                 'user': user,

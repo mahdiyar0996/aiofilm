@@ -130,7 +130,7 @@ class TicketDetailsForm(forms.ModelForm):
 
 class TicketForm(forms.ModelForm):
     message = forms.CharField(max_length=1000, required=True)
-    file = forms.FileField()
+    file = forms.FileField(required=False)
     
     class Meta:
         model = Ticket
